@@ -1,0 +1,91 @@
+[lints.rust]
+unsafe_code = "forbid"
+# unused = "allow"
+
+[package]
+name = "morphiq"
+version = "0.1.0"
+edition = "2024"
+description = "Transforming Human Resource Operations with Clarity, Precision, and Intelligence"
+authors = ["Descartin Lance Phillip <cnale1211435@gmail.com>"]
+readme = "README.md"
+homepage = "https://morphiqlume.com"
+repository = "https://github.com/icarusvagner/morhpiq-lume"
+documentation = "https://github.com/icarusvagner/morhpiq-lume/wiki"
+license = "MIT OR Apache-2.0"
+keywords = ["gui", "hrmo", "desktop"]
+include = [
+  "/src/**/*.rs",
+  "/assets/fonts/Raleway/*.ttf",
+  "/assets/fonts/Orbitron/*.ttf",
+  "/assets/logos/icons/full/icon.png",
+  "/assets/logos/icons/raw/icon.png",
+  "/assets/fonts/icons/font/*.ttf",
+]
+
+#================================================================================
+# Release Profile Optimization
+#================================================================================
+[profile.release]
+opt-level = 3         # Maximum optimizations for speed
+lto = true            # Enable Link Time Optimization
+strip = true          # Remove debug symbols for smaller binary
+
+[dependencies]
+# Async Messaging
+async-channel = "2.5.0"                    # Lightweight async channel for inter-thread communication
+
+# Time, Date, and Config
+chrono = { version = "0.4.41", default-features = false, features = ["serde"] } # Date/time manipulation
+time = { version = "0.3.41", features = ["formatting", "serde", "parsing", "wasm-bindgen", "serde-human-readable"] } # Alternative modern time lib
+confy = "1.0.0"                            # Persistent app config management
+directories = "6.0.0"                      # Platform-aware config/cache/data paths
+
+# GUI Framework & Theming
+iced = { version = "0.13.1", features = ["tokio", "svg", "advanced", "lazy", "image", "canvas"] } # Native GUI framework
+palette = "0.7.6"                          # Color palette library (for dynamic themes)
+iced_aw = { version = "0.12.2", features = ["drop_down"] }
+
+# Charts and Data Visualization
+plotters = { version = "0.3.7", default-features = false, features = ["area_series", "line_series"] } # Plotting backend
+plotters-iced = "0.11.0"                  # Integration of plotters into Iced GUI
+
+# Email & Document Intake
+# imap = "2.4.1"                             # For reading emails (IMAP inbox integration)
+lettre = "0.11.18"                         # For sending emails (SMTP)
+native-tls = "0.2.14"                      # TLS support for IMAP/SMTP (via native libraries)
+# imap-proto = "0.16.5"
+
+# Audio (System sounds or TTS)
+rodio = { version = "0.21.1", default-features = false, features = ["mp3", "playback"] } # Audio playback
+
+# Serialization / Deserialization
+serde = { version = "1.0.219", default-features = false, features = ["derive"] } # Core serialization
+serde_json = "1.0.141"                     # JSON parser/encoder for configs or local data
+
+# Unique Identifiers & Encoding
+uuid = { version = "1.17.0", features = ["v4", "fast-rng", "v7"] } # Generate UUIDs for records
+base64 = { version = "0.22.1" }            # Encode/decode Base64 (for tokens, IDs)
+
+# Visual Transitions / Interpolation
+splines = "5.0.0"                          # Smooth animations, easing, graph lines
+
+# Regex Utilities
+lazy-regex = { version = "3.4.1" }         # Fast compile-once regex for validations
+
+# Other
+thiserror = "2.0.12"
+clap = { version = "4.5.42", features = ["derive"] }
+plotters-backend = "0.3.7"
+toml = "0.9.5"
+mockd = { version = "0.4.51", features = ["name", "words"] }
+
+#================================================================================
+# Development & Testing
+#================================================================================
+[dev-dependencies]
+serde_test = "1"                           # Test serialization compatibility
+rstest = "0.26"                            # Parameterized unit testing
+serial_test = { version = "3", default-features = false } # Run tests serially (important for IO/config conflicts)
+insta = "1.43.1"                           # Snapshot testing (used for UI/component snapshots)
+pretty_assertions = "1.4.1"                # Better diff output for test assertions
