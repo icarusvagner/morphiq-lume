@@ -13,8 +13,8 @@ pub enum ContainerType {
     Base100NoBorder,
     Base200,
     Base200NoBorder,
-    #[default]
     Base300,
+    #[default]
     Base300NoBorder,
     Primary,
     PrimaryNoBorder,
@@ -104,7 +104,11 @@ impl ContainerType {
                 | ContainerType::ErrorNoBorder
                 | ContainerType::Base100NoBorder
                 | ContainerType::Base200NoBorder
-                | ContainerType::Base300NoBorder => Border::default(),
+                | ContainerType::Base300NoBorder => Border {
+                    color: Color::TRANSPARENT,
+                    width: 0.0,
+                    radius: BORDER_WIDTH.into(),
+                },
                 _ => Border {
                     color: match self {
                         ContainerType::Success => colors.success,

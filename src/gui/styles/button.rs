@@ -11,7 +11,9 @@ use crate::gui::styles::{style_constant::BORDER_WIDTH, types::style_type::StyleT
 #[derive(Default)]
 pub enum ButtonType {
     #[default]
-    Base,
+    Base100,
+    Base200,
+    Base300,
     Primary,
     Secondary,
     Accent,
@@ -39,7 +41,9 @@ impl ButtonType {
 
         Style {
             background: Some(match self {
-                ButtonType::Base => Background::Color(colors.base_200),
+                ButtonType::Base100 => Background::Color(colors.base_100),
+                ButtonType::Base200 => Background::Color(colors.base_200),
+                ButtonType::Base300 => Background::Color(colors.base_300),
                 ButtonType::Primary => Background::Color(colors.primary),
                 ButtonType::Secondary => Background::Color(colors.secondary),
                 ButtonType::Accent => Background::Color(colors.accent),
@@ -91,9 +95,7 @@ impl ButtonType {
 
         Style {
             background: Some(match self {
-                ButtonType::Primary | ButtonType::GhostHovered => {
-                    Background::Color(self.lighted_color(colors.primary))
-                }
+                ButtonType::Primary => Background::Color(self.lighted_color(colors.primary)),
                 ButtonType::Secondary => Background::Color(self.lighted_color(colors.secondary)),
                 ButtonType::Accent => Background::Color(self.lighted_color(colors.accent)),
                 ButtonType::Neutral => Background::Color(self.lighted_color(colors.neutral)),
@@ -116,7 +118,11 @@ impl ButtonType {
                 _ => colors.base_content,
             },
             border: match self {
-                ButtonType::Ghost | ButtonType::GhostHovered => Border::default(),
+                ButtonType::Ghost | ButtonType::GhostHovered => Border {
+                    color: Color::TRANSPARENT,
+                    width: BORDER_WIDTH,
+                    ..Default::default()
+                },
                 _ => Border {
                     color: match self {
                         ButtonType::Primary => self.lighted_color(colors.primary),
@@ -187,7 +193,9 @@ impl ButtonType {
 
         Style {
             background: Some(match self {
-                ButtonType::Base => Background::Color(colors.base_200),
+                ButtonType::Base100 => Background::Color(self.lighted_color(colors.base_100)),
+                ButtonType::Base200 => Background::Color(self.lighted_color(colors.base_200)),
+                ButtonType::Base300 => Background::Color(self.lighted_color(colors.base_300)),
                 ButtonType::Primary => Background::Color(colors.primary),
                 ButtonType::Secondary => Background::Color(colors.secondary),
                 ButtonType::Accent => Background::Color(colors.accent),

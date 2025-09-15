@@ -10,13 +10,13 @@ use crate::gui::styles::types::style_type::StyleType;
 
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum TextType {
-    #[default]
     Base100,
     Base200,
     Base300,
     Primary,
     Secondary,
     Accent,
+    #[default]
     Neutral,
     Info,
     Success,

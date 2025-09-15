@@ -6,11 +6,8 @@ use iced::{
 
 use crate::{
     gui::{
-        pages::home::HomeMessage,
-        styles::{
-            button::ButtonType, container::ContainerType, text::TextType,
-            types::style_type::StyleType,
-        },
+        pages::home::{ContentView, HomeMessage, OpenSettings},
+        styles::{container::ContainerType, text::TextType, types::style_type::StyleType},
         types::message::Message,
     },
     utils::types::icon::Icon,
@@ -59,10 +56,7 @@ impl Header {
                         .line_height(text::LineHeight::Relative(1.7)),
                 )
                 .align_y(Vertical::Center);
-            button(content)
-                .class(ButtonType::Base)
-                .on_press(message)
-                .into()
+            button(content).on_press(message).into()
         } else {
             button(
                 icon.to_text()
@@ -71,7 +65,6 @@ impl Header {
                     .align_x(Horizontal::Center)
                     .align_y(Vertical::Center),
             )
-            .class(ButtonType::Base)
             .on_press(message)
             .into()
         }
@@ -82,27 +75,29 @@ impl Header {
             .push(self.header_btn(
                 None,
                 Icon::Morphiq,
-                Message::Home(HomeMessage::Header(HeaderMessage::Dashboard)),
+                Message::Home(HomeMessage::Content(ContentView::Dashboard)),
             ))
             .push(self.header_btn(
                 Some("Search".to_string()),
                 Icon::Search,
-                Message::Home(HomeMessage::Header(HeaderMessage::Search)),
+                Message::Home(HomeMessage::Content(ContentView::Search)),
             ))
             .push(self.header_btn(
                 Some("Add Employee".to_string()),
                 Icon::UserRoundPlus,
-                Message::Home(HomeMessage::Header(HeaderMessage::AddEmployee)),
+                Message::Home(HomeMessage::Content(ContentView::AddEmployee)),
             ))
             .push(self.header_btn(
                 Some("Event Postings".to_string()),
                 Icon::CalendarDays,
-                Message::Home(HomeMessage::Header(HeaderMessage::EventPosting)),
+                Message::Home(HomeMessage::Content(ContentView::EventsPosting)),
             ))
             .push(self.header_btn(
                 Some("Organization Settings".to_string()),
                 Icon::LayoutPanelLeft,
-                Message::Home(HomeMessage::Header(HeaderMessage::OrgSettings)),
+                Message::Home(HomeMessage::Content(ContentView::Settings(
+                    OpenSettings::OrgSettings,
+                ))),
             ))
             .spacing(5)
             .align_y(Vertical::Center)
@@ -114,17 +109,26 @@ impl Header {
             .push(self.header_btn(
                 None,
                 Icon::Globe,
-                Message::Home(HomeMessage::Header(HeaderMessage::Language)),
-            ))
-            .push(self.header_btn(
-                None,
-                Icon::MessageSquareMore,
-                Message::Home(HomeMessage::Header(HeaderMessage::Chat)),
+                Message::Home(HomeMessage::Content(ContentView::Settings(
+                    OpenSettings::Languages,
+                ))),
             ))
             .push(self.header_btn(
                 None,
                 Icon::BellRing,
-                Message::Home(HomeMessage::Header(HeaderMessage::Notifications)),
+                Message::Home(HomeMessage::Content(ContentView::Notifications)),
+            ))
+            .push(self.header_btn(
+                None,
+                Icon::UserRound,
+                Message::Home(HomeMessage::Content(ContentView::Profile)),
+            ))
+            .push(self.header_btn(
+                None,
+                Icon::Palette,
+                Message::Home(HomeMessage::Content(ContentView::Settings(
+                    OpenSettings::Themes,
+                ))),
             ))
             .spacing(5)
             .align_y(Vertical::Center)

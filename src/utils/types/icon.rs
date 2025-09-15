@@ -42,6 +42,7 @@ pub enum Icon {
     UserRoundPen,
     UserRoundPlus,
     UsersRound,
+    UserRound,
     Venus,
     ChevronDown,
     ChevronLeft,
@@ -155,6 +156,7 @@ impl Icon {
             Icon::MailOpen => 'v',
             Icon::CloseX => 'w',
             Icon::ArrowUpFromLine => 'x',
+            Icon::UserRound => 'y',
         }
     }
 

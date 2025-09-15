@@ -1,12 +1,9 @@
-use iced::{
-    widget::{container, text},
-    window, Element, Task,
-};
+use iced::{widget::container, window, Element, Task};
 
 use crate::{
     configs::configs::Configs,
     gui::{
-        pages::{login::LoginMessage, OpenPage, Pages},
+        pages::{home::HomeMessage, login::LoginMessage, OpenPage, Pages},
         styles::types::{
             custom_palette::{CustomPalette, ExtraStyles},
             palette::Palette,
@@ -82,7 +79,13 @@ impl Morphiq {
                     self.page.login.update(login_msg);
                 }
             }
-            Message::Home(home_msg) => self.page.home.update(home_msg),
+            Message::Home(home_msg) => {
+                if let HomeMessage::Logout = home_msg {
+                    self.open_page = OpenPage::Login;
+                } else {
+                    self.page.home.update(home_msg);
+                }
+            }
             _ => {}
         }
         Task::none()

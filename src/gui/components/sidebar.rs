@@ -60,14 +60,12 @@ impl SidebarMenu {
                     .push(
                         v.1.to_text()
                             .size(22.0)
-                            .class(TextType::Neutral)
                             .align_x(Horizontal::Center)
                             .align_y(Vertical::Center),
                     )
                     .push(
                         text(v.0)
                             .size(22.0)
-                            .class(TextType::Neutral)
                             .align_x(Horizontal::Center)
                             .align_y(Vertical::Center),
                     )
@@ -115,7 +113,7 @@ impl SidebarMenu {
                 )
                 .width(Length::Fill)
                 .on_press(Message::Home(HomeMessage::Logout))
-                .class(ButtonType::Secondary),
+                .class(ButtonType::Primary),
             )
             .spacing(15)
             .width(Length::Fill)
@@ -127,7 +125,7 @@ impl SidebarMenu {
             .height(Length::Fill)
             .align_x(Alignment::Center)
             .align_y(Alignment::Start)
-            .class(ContainerType::Base200)
+            .class(ContainerType::Base100)
             .into()
     }
 }

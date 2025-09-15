@@ -11,7 +11,7 @@ use crate::gui::{
     pages::home::{
         attendance::AttendanceView, dashboard::DashboardView, documents::DocumentsView,
         edit_profile::EditProfileView, employee::EmployeeView, leaves::LeavesView,
-        payroll::PayrollView, settings::SettingsView,
+        payroll::PayrollView,
     },
     styles::types::style_type::StyleType,
     types::message::Message,
@@ -27,6 +27,8 @@ mod panes;
 mod payroll;
 mod settings;
 
+pub use settings::{OpenSettings, SettingsView};
+
 #[allow(clippy::enum_variant_names)]
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone, PartialEq, Eq, Copy, Default)]
@@ -34,12 +36,18 @@ pub enum ContentView {
     #[default]
     Dashboard,
     Employee,
+    AddEmployee,
     Attendance,
     Payroll,
     Leaves,
     Documents,
-    Settings,
+    Settings(OpenSettings),
+    Profile,
     EditProfile,
+    Search,
+    Events,
+    EventsPosting,
+    Notifications,
 }
 
 #[allow(clippy::enum_variant_names)]
@@ -49,6 +57,7 @@ pub struct Home {
     pub sidebar: SidebarMenu,
     pub header: Header,
     pub content: ContentView,
+    pub settings: SettingsView,
 }
 
 #[allow(clippy::enum_variant_names)]
@@ -61,7 +70,13 @@ pub enum HomeMessage {
 }
 
 impl Home {
-    pub(crate) fn update(&mut self, _message: HomeMessage) {}
+    pub(crate) fn update(&mut self, message: HomeMessage) {
+        match message {
+            HomeMessage::Header(header_msg) => self.header.update(header_msg),
+            HomeMessage::Content(view) => self.content = view,
+            HomeMessage::Logout => {}
+        }
+    }
     pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
         let view = Row::new()
             .push(self.sidebar.view())
@@ -83,8 +98,9 @@ impl Home {
             ContentView::Payroll => PayrollView::view(),
             ContentView::Leaves => LeavesView::view(),
             ContentView::Documents => DocumentsView::view(),
-            ContentView::Settings => SettingsView::view(),
+            ContentView::Settings(settings_view) => self.settings.view(settings_view),
             ContentView::EditProfile => EditProfileView::view(),
+            _ => DashboardView::view(),
         }
     }
 }
