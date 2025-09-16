@@ -14,7 +14,6 @@ pub enum ContainerType {
     Base200,
     Base200NoBorder,
     Base300,
-    #[default]
     Base300NoBorder,
     Primary,
     PrimaryNoBorder,
@@ -37,59 +36,81 @@ pub enum ContainerType {
     Overlay,
     Bordered,
     Ghost,
+
+    // Default
+    #[default]
+    Standard,
 }
 
 impl ContainerType {
-    fn appearance(&self, style: &StyleType) -> Style {
+    fn appearance(self, style: &StyleType) -> Style {
         let colors = style.get_palette();
         let ext = style.get_extension();
 
         Style {
-            text_color: Some(match self {
-                ContainerType::Primary | ContainerType::PrimaryNoBorder => colors.primary_content,
-                ContainerType::Secondary | ContainerType::SecondaryNoBorder => {
-                    colors.secondary_content
-                }
-                ContainerType::Accent | ContainerType::AccentNoBorder => colors.accent_content,
-                ContainerType::Neutral | ContainerType::NeutralNoBorder => colors.neutral_content,
-                ContainerType::Info | ContainerType::InfoNoBorder => colors.info_content,
-                ContainerType::Success | ContainerType::SuccessNoBorder => colors.success_content,
-                ContainerType::Warning | ContainerType::WarningNoBorder => colors.warning_content,
-                ContainerType::Error | ContainerType::ErrorNoBorder => colors.error_content,
-                _ => colors.base_content,
-            }),
-            background: Some(match self {
-                ContainerType::Primary | ContainerType::PrimaryNoBorder => {
-                    Background::Color(colors.primary)
-                }
-                ContainerType::Secondary | ContainerType::SecondaryNoBorder => {
-                    Background::Color(colors.secondary)
-                }
-                ContainerType::Accent | ContainerType::AccentNoBorder => {
-                    Background::Color(colors.accent)
-                }
-                ContainerType::Neutral | ContainerType::NeutralNoBorder => {
-                    Background::Color(colors.neutral)
-                }
-                ContainerType::Info | ContainerType::InfoNoBorder => Background::Color(colors.info),
-                ContainerType::Error | ContainerType::ErrorNoBorder => {
-                    Background::Color(colors.error)
-                }
-                ContainerType::Base100 | ContainerType::Base100NoBorder => {
-                    Background::Color(colors.base_100)
-                }
-                ContainerType::Base200 | ContainerType::Base200NoBorder => {
-                    Background::Color(colors.base_200)
-                }
-                ContainerType::Base300 | ContainerType::Base300NoBorder => {
-                    Background::Color(colors.base_300)
-                }
-                ContainerType::Overlay => Background::Color(Color {
-                    a: colors.neutral.a - 0.60,
-                    ..colors.neutral
-                }),
-                _ => Background::Color(Color::TRANSPARENT),
-            }),
+            text_color: if self == ContainerType::Standard {
+                None
+            } else {
+                Some(match self {
+                    ContainerType::Primary | ContainerType::PrimaryNoBorder => {
+                        colors.primary_content
+                    }
+                    ContainerType::Secondary | ContainerType::SecondaryNoBorder => {
+                        colors.secondary_content
+                    }
+                    ContainerType::Accent | ContainerType::AccentNoBorder => colors.accent_content,
+                    ContainerType::Neutral | ContainerType::NeutralNoBorder => {
+                        colors.neutral_content
+                    }
+                    ContainerType::Info | ContainerType::InfoNoBorder => colors.info_content,
+                    ContainerType::Success | ContainerType::SuccessNoBorder => {
+                        colors.success_content
+                    }
+                    ContainerType::Warning | ContainerType::WarningNoBorder => {
+                        colors.warning_content
+                    }
+                    ContainerType::Error | ContainerType::ErrorNoBorder => colors.error_content,
+                    _ => colors.base_content,
+                })
+            },
+            background: if self == ContainerType::Standard {
+                None
+            } else {
+                Some(match self {
+                    ContainerType::Primary | ContainerType::PrimaryNoBorder => {
+                        Background::Color(colors.primary)
+                    }
+                    ContainerType::Secondary | ContainerType::SecondaryNoBorder => {
+                        Background::Color(colors.secondary)
+                    }
+                    ContainerType::Accent | ContainerType::AccentNoBorder => {
+                        Background::Color(colors.accent)
+                    }
+                    ContainerType::Neutral | ContainerType::NeutralNoBorder => {
+                        Background::Color(colors.neutral)
+                    }
+                    ContainerType::Info | ContainerType::InfoNoBorder => {
+                        Background::Color(colors.info)
+                    }
+                    ContainerType::Error | ContainerType::ErrorNoBorder => {
+                        Background::Color(colors.error)
+                    }
+                    ContainerType::Base100 | ContainerType::Base100NoBorder => {
+                        Background::Color(colors.base_100)
+                    }
+                    ContainerType::Base200 | ContainerType::Base200NoBorder => {
+                        Background::Color(colors.base_200)
+                    }
+                    ContainerType::Base300 | ContainerType::Base300NoBorder => {
+                        Background::Color(colors.base_300)
+                    }
+                    ContainerType::Overlay => Background::Color(Color {
+                        a: colors.neutral.a - 0.60,
+                        ..colors.neutral
+                    }),
+                    _ => Background::Color(Color::TRANSPARENT),
+                })
+            },
             border: match self {
                 ContainerType::Overlay
                 | ContainerType::Base300

@@ -9,7 +9,6 @@ use crate::gui::styles::{style_constant::BORDER_WIDTH, types::style_type::StyleT
 
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum TextInputType {
-    #[default]
     Base,
     Primary,
     Secondary,
@@ -20,6 +19,10 @@ pub enum TextInputType {
     Warning,
     Error,
     Ghost,
+
+    // Default
+    #[default]
+    Standard,
 }
 
 impl TextInputType {
@@ -90,13 +93,25 @@ impl TextInputType {
             TextInputType::Success => self.lighted_color(colors.success),
             TextInputType::Warning => self.lighted_color(colors.warning),
             TextInputType::Error => self.lighted_color(colors.error),
-            _ => self.lighted_color(colors.base_content),
+            _ => self.lighted_color(colors.base_300),
         }
     }
 
     #[allow(clippy::unused_self)]
     fn value_color(&self, style: &StyleType) -> Color {
-        style.get_palette().neutral
+        let colors = style.get_palette();
+
+        match self {
+            TextInputType::Primary => self.lighted_color(colors.primary_content),
+            TextInputType::Secondary => self.lighted_color(colors.secondary_content),
+            TextInputType::Accent => self.lighted_color(colors.accent_content),
+            TextInputType::Neutral => self.lighted_color(colors.neutral_content),
+            TextInputType::Info => self.lighted_color(colors.info_content),
+            TextInputType::Success => self.lighted_color(colors.success_content),
+            TextInputType::Warning => self.lighted_color(colors.warning_content),
+            TextInputType::Error => self.lighted_color(colors.error_content),
+            _ => self.lighted_color(colors.base_content),
+        }
     }
 
     #[allow(clippy::unused_self)]

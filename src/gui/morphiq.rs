@@ -94,7 +94,7 @@ impl Morphiq {
     pub fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
         let content = match self.open_page {
             OpenPage::Login => self.page.login.view(),
-            OpenPage::Home => self.page.home.view(),
+            OpenPage::Home => self.page.home.view(self),
         };
 
         container(content).padding(12.0).into()

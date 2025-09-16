@@ -7,21 +7,21 @@ use crate::gui::styles::{
 
 #[rustfmt::skip]
 pub const NORD_PALETTE: Palette = Palette {
-    base_100: Color { r: 0.951, g: 0.953, b: 0.965, a: 1.0, }, // oklch(95.127%...)
-    base_200: Color { r: 0.933, g: 0.937, b: 0.957, a: 1.0, }, // oklch(93.299%...)
-    base_300: Color { r: 0.902, g: 0.910, b: 0.953, a: 1.0, }, // oklch(89.925%...)
-    base_content: Color { r: 0.322, g: 0.333, b: 0.376, a: 1.0, }, // oklch(32.437%...)
+    base_100: Color { r: 94.11 / 250.0, g: 129.0 / 250.0, b: 171.86 / 250.0, a: 1.0, },
+    base_200: Color { r: 0.933, g: 0.937, b: 0.957, a: 1.0, }, 
+    base_300: Color { r: 0.902, g: 0.910, b: 0.953, a: 1.0, }, 
+    base_content: Color { r: 0.322, g: 0.333, b: 0.376, a: 1.0, }, 
 
-    primary: Color { r: 0.467, g: 0.525, b: 0.714, a: 1.0, }, // oklch(59.435%...)
-    primary_content: Color { r: 0.118, g: 0.129, b: 0.176, a: 1.0, }, // oklch(11.887%...)
+    primary: Color { r: 94.11 / 250.0, g: 129.0 / 250.0, b: 171.86 / 250.0, a: 1.0, }, 
+    primary_content: Color { r: 0.118, g: 0.129, b: 0.176, a: 1.0, }, 
 
-    secondary: Color { r: 0.545, g: 0.600, b: 0.769, a: 1.0, }, // oklch(69.651%...)
-    secondary_content: Color { r: 0.137, g: 0.145, b: 0.196, a: 1.0, }, // oklch(13.93%...)
+    secondary: Color { r: 129.05 / 250.0, g: 160.99 / 250.0, b: 192.93 / 250.0, a: 1.0, },
+    secondary_content: Color { r: 0.137, g: 0.145, b: 0.196, a: 1.0, }, 
 
-    accent: Color { r: 0.655, g: 0.725, b: 0.878, a: 1.0, }, // oklch(77.464%...)
-    accent_content: Color { r: 0.155, g: 0.161, b: 0.204, a: 1.0, }, // oklch(15.492%...)
+    accent: Color { r: 136.21 / 250.0, g: 191.96 / 250.0, b: 207.89 / 250.0, a: 1.0, }, 
+    accent_content: Color { r: 0.155, g: 0.161, b: 0.204, a: 1.0, }, 
 
-    neutral: Color { r: 0.435, g: 0.459, b: 0.565, a: 1.0, }, // oklch(45.229%...)
+    neutral: Color { r: 76.06 / 250.0, g: 86.0 / 250.0, b: 105.88 / 250.0, a: 1.0, }, 
     neutral_content: Color { r: 0.902, g: 0.910, b: 0.953, a: 1.0, }, // oklch(89.925%...)
 
     info: Color { r: 0.769, g: 0.541, b: 0.706, a: 1.0, }, // oklch(69.207%...)

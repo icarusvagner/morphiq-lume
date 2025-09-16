@@ -2,6 +2,7 @@
 
 #[allow(clippy::module_name_repetitions)]
 use iced::widget::rule::{Catalog, FillMode, Style};
+use iced::Color;
 
 use crate::gui::styles::types::style_type::StyleType;
 
@@ -19,6 +20,8 @@ pub enum RuleType {
     Success,
     Warning,
     Error,
+
+    PaletteColor(Color, u16),
 }
 
 impl RuleType {
@@ -38,8 +41,13 @@ impl RuleType {
                 RuleType::Success => colors.success,
                 RuleType::Warning => colors.warning,
                 RuleType::Error => colors.error,
+
+                RuleType::PaletteColor(color, _) => *color,
             },
-            width: 1,
+            width: match self {
+                RuleType::PaletteColor(_, width) => *width,
+                _ => 1,
+            },
             radius: 0.0.into(),
             fill_mode: FillMode::Full,
         }

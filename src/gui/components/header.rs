@@ -43,7 +43,6 @@ impl Header {
                 .push(
                     icon.to_text()
                         .size(18.0)
-                        .class(TextType::Neutral)
                         .align_x(Horizontal::Center)
                         .align_y(Vertical::Center),
                 )
@@ -52,7 +51,6 @@ impl Header {
                         .size(18.0)
                         .align_x(Horizontal::Center)
                         .align_y(Vertical::Center)
-                        .class(TextType::Neutral)
                         .line_height(text::LineHeight::Relative(1.7)),
                 )
                 .align_y(Vertical::Center);
@@ -61,7 +59,6 @@ impl Header {
             button(
                 icon.to_text()
                     .size(22)
-                    .class(TextType::Neutral)
                     .align_x(Horizontal::Center)
                     .align_y(Vertical::Center),
             )
@@ -108,6 +105,13 @@ impl Header {
         Row::new()
             .push(self.header_btn(
                 None,
+                Icon::Palette,
+                Message::Home(HomeMessage::Content(ContentView::Settings(
+                    OpenSettings::Themes,
+                ))),
+            ))
+            .push(self.header_btn(
+                None,
                 Icon::Globe,
                 Message::Home(HomeMessage::Content(ContentView::Settings(
                     OpenSettings::Languages,
@@ -122,13 +126,6 @@ impl Header {
                 None,
                 Icon::UserRound,
                 Message::Home(HomeMessage::Content(ContentView::Profile)),
-            ))
-            .push(self.header_btn(
-                None,
-                Icon::Palette,
-                Message::Home(HomeMessage::Content(ContentView::Settings(
-                    OpenSettings::Themes,
-                ))),
             ))
             .spacing(5)
             .align_y(Vertical::Center)

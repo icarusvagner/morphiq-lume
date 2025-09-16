@@ -8,6 +8,7 @@ use crate::gui::{
         header::{Header, HeaderMessage},
         sidebar::SidebarMenu,
     },
+    morphiq::Morphiq,
     pages::home::{
         attendance::AttendanceView, dashboard::DashboardView, documents::DocumentsView,
         edit_profile::EditProfileView, employee::EmployeeView, leaves::LeavesView,
@@ -77,10 +78,10 @@ impl Home {
             HomeMessage::Logout => {}
         }
     }
-    pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
+    pub(crate) fn view<'a>(&'a self, morphiq: &Morphiq) -> Element<'a, Message, StyleType> {
         let view = Row::new()
             .push(self.sidebar.view())
-            .push(self.to_view(self.content))
+            .push(self.to_view(self.content, morphiq))
             .spacing(5);
         let content = Column::new().push(self.header.view()).push(view).spacing(5);
 
@@ -90,6 +91,7 @@ impl Home {
     pub(crate) fn to_view<'a>(
         &'a self,
         content_view: ContentView,
+        morphiq: &Morphiq,
     ) -> Element<'a, Message, StyleType> {
         match content_view {
             ContentView::Dashboard => DashboardView::view(),
@@ -98,7 +100,7 @@ impl Home {
             ContentView::Payroll => PayrollView::view(),
             ContentView::Leaves => LeavesView::view(),
             ContentView::Documents => DocumentsView::view(),
-            ContentView::Settings(settings_view) => self.settings.view(settings_view),
+            ContentView::Settings(settings_view) => self.settings.view(settings_view, morphiq),
             ContentView::EditProfile => EditProfileView::view(),
             _ => DashboardView::view(),
         }

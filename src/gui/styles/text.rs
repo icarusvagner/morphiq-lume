@@ -16,12 +16,14 @@ pub enum TextType {
     Primary,
     Secondary,
     Accent,
-    #[default]
     Neutral,
     Info,
     Success,
     Warning,
     Error,
+
+    #[default]
+    Standard,
 }
 
 impl TextType {
@@ -31,19 +33,24 @@ impl TextType {
         let colors = style.get_palette();
 
         Style {
-            color: Some(match self {
-                TextType::Primary => colors.primary,
-                TextType::Secondary => colors.secondary,
-                TextType::Accent => colors.accent,
-                TextType::Neutral => colors.neutral,
-                TextType::Info => colors.info,
-                TextType::Success => colors.success,
-                TextType::Warning => colors.warning,
-                TextType::Error => colors.error,
-                TextType::Base100 => colors.base_100,
-                TextType::Base200 => colors.base_200,
-                _ => colors.base_content,
-            }),
+            color: if self == TextType::Standard {
+                None
+            } else {
+                Some(match self {
+                    TextType::Primary => colors.primary,
+                    TextType::Secondary => colors.secondary,
+                    TextType::Accent => colors.accent,
+                    TextType::Neutral => colors.neutral,
+                    TextType::Info => colors.info,
+                    TextType::Success => colors.success,
+                    TextType::Warning => colors.warning,
+                    TextType::Error => colors.error,
+                    TextType::Base100 => colors.base_100,
+                    TextType::Base200 => colors.base_200,
+                    TextType::Base300 => colors.base_300,
+                    _ => colors.base_content,
+                })
+            },
         }
     }
 }

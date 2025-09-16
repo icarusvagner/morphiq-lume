@@ -47,20 +47,19 @@ impl Login {
             .push(
                 text("Username")
                     .size(18)
-                    .line_height(text::LineHeight::Relative(1.7))
-                    .class(TextType::Neutral),
+                    .line_height(text::LineHeight::Relative(1.7)),
             )
             .push(
                 container(
                     text_input("Username", &self.username)
                         .line_height(text::LineHeight::Relative(1.7))
-                        .class(TextInputType::Ghost)
                         .on_input(|val| {
                             Message::Login(LoginMessage::InputFieldChange(
                                 val,
                                 self.password.clone(),
                             ))
-                        }),
+                        })
+                        .class(TextInputType::Ghost),
                 )
                 .padding(10.0)
                 .width(Length::Fill)
@@ -75,8 +74,7 @@ impl Login {
             .push(
                 text("Password")
                     .size(18)
-                    .line_height(text::LineHeight::Relative(1.7))
-                    .class(TextType::Neutral),
+                    .line_height(text::LineHeight::Relative(1.7)),
             )
             .push(
                 container(
@@ -114,7 +112,6 @@ impl Login {
             Icon::EyeOff
                 .to_text()
                 .size(20)
-                .class(TextType::Neutral)
                 .align_x(Alignment::Center)
                 .align_y(Alignment::Center)
                 .into()
@@ -122,7 +119,6 @@ impl Login {
             Icon::Eye
                 .to_text()
                 .size(20)
-                .class(TextType::Neutral)
                 .align_x(Alignment::Center)
                 .align_y(Alignment::Center)
                 .into()
@@ -132,8 +128,7 @@ impl Login {
     fn title<'a>(&'a self) -> Element<'a, Message, StyleType> {
         Row::new()
             .push(
-                text("Sign-in your abbys gym account")
-                    .class(TextType::Neutral)
+                text("Sign-in your Morphiq Lume account.")
                     .size(24)
                     .font(OUTFIT_BOLD)
                     .line_height(text::LineHeight::Relative(1.7)),
