@@ -6,8 +6,9 @@ use iced::{
 
 use crate::{
     gui::{
+        morphiq::Morphiq,
         pages::home::{ContentView, HomeMessage, OpenSettings},
-        styles::{container::ContainerType, text::TextType, types::style_type::StyleType},
+        styles::{button::ButtonType, container::ContainerType, types::style_type::StyleType},
         types::message::Message,
     },
     utils::types::icon::Icon,
@@ -54,7 +55,10 @@ impl Header {
                         .line_height(text::LineHeight::Relative(1.7)),
                 )
                 .align_y(Vertical::Center);
-            button(content).on_press(message).into()
+            button(content)
+                .on_press(message)
+                .class(ButtonType::Base100)
+                .into()
         } else {
             button(
                 icon.to_text()
@@ -62,6 +66,7 @@ impl Header {
                     .align_x(Horizontal::Center)
                     .align_y(Vertical::Center),
             )
+            .class(ButtonType::Base100)
             .on_press(message)
             .into()
         }
@@ -101,15 +106,15 @@ impl Header {
             .into()
     }
 
-    fn right_menu<'a>(&'a self) -> Element<'a, Message, StyleType> {
+    fn right_menu<'a>(&'a self, morphiq: &Morphiq) -> Element<'a, Message, StyleType> {
+        let toggle_theme = if morphiq.configs.settings.style == StyleType::Dark {
+            Icon::Sun
+        } else {
+            Icon::Moon
+        };
+
         Row::new()
-            .push(self.header_btn(
-                None,
-                Icon::Palette,
-                Message::Home(HomeMessage::Content(ContentView::Settings(
-                    OpenSettings::Themes,
-                ))),
-            ))
+            .push(self.header_btn(None, toggle_theme, Message::ChangeTheme))
             .push(self.header_btn(
                 None,
                 Icon::Globe,
@@ -146,11 +151,11 @@ impl Header {
         }
     }
 
-    pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
+    pub(crate) fn view<'a>(&'a self, morphiq: &Morphiq) -> Element<'a, Message, StyleType> {
         let content = Row::new()
             .push(self.left_menu())
             .push(horizontal_space())
-            .push(self.right_menu())
+            .push(self.right_menu(morphiq))
             .align_y(Vertical::Center);
 
         container(content)

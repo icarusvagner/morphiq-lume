@@ -13,6 +13,6 @@ pub struct ViewAll;
 
 impl ViewAll {
     pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
-        container(text("Settings view").size(42).class(TextType::Neutral)).into()
+        container(text("Settings view").size(42)).into()
     }
 }

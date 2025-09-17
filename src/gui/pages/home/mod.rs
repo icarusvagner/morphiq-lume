@@ -83,7 +83,10 @@ impl Home {
             .push(self.sidebar.view())
             .push(self.to_view(self.content, morphiq))
             .spacing(5);
-        let content = Column::new().push(self.header.view()).push(view).spacing(5);
+        let content = Column::new()
+            .push(self.header.view(morphiq))
+            .push(view)
+            .spacing(5);
 
         container(content).into()
     }

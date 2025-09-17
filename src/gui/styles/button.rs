@@ -1,19 +1,19 @@
-//! Button style
-use iced::Color;
-#[allow(clippy::module_name_repetitions)]
 use iced::{
     widget::button::{Catalog, Status, Style},
-    Background, Border, Shadow, Vector,
+    Background, Border, Color, Shadow,
 };
 
-use crate::gui::styles::{style_constant::BORDER_WIDTH, types::style_type::StyleType};
+use crate::gui::styles::{
+    style_constant::{BORDER_RADIUS, BORDER_WIDTH},
+    types::style_type::StyleType,
+};
 
 #[derive(Default)]
 pub enum ButtonType {
-    #[default]
     Base100,
     Base200,
     Base300,
+    #[default]
     Primary,
     Secondary,
     Accent,
@@ -23,21 +23,20 @@ pub enum ButtonType {
     Warning,
     Error,
     Ghost,
-    GhostHovered,
 }
 
 impl ButtonType {
     #[allow(clippy::unused_self)]
-    fn lighted_color(&self, color: Color) -> Color {
+    fn lighten_color(&self, color: Color) -> Color {
         Color {
             a: color.a - 0.05,
             ..color
         }
     }
 
+    #[allow(clippy::unused_self)]
     fn active(&self, style: &StyleType) -> Style {
         let colors = style.get_palette();
-        let ext = style.get_extension();
 
         Style {
             background: Some(match self {
@@ -52,23 +51,24 @@ impl ButtonType {
                 ButtonType::Success => Background::Color(colors.success),
                 ButtonType::Warning => Background::Color(colors.warning),
                 ButtonType::Error => Background::Color(colors.error),
-                ButtonType::Ghost | ButtonType::GhostHovered => {
-                    Background::Color(Color::TRANSPARENT)
-                }
+                ButtonType::Ghost => Background::Color(Color::TRANSPARENT),
             }),
             text_color: match self {
-                ButtonType::Primary => colors.primary_content,
-                ButtonType::Secondary => colors.secondary_content,
-                ButtonType::Accent => colors.accent_content,
-                ButtonType::Neutral => colors.neutral_content,
-                ButtonType::Info => colors.info_content,
-                ButtonType::Success => colors.success_content,
-                ButtonType::Warning => colors.warning_content,
-                ButtonType::Error => colors.error_content,
-                _ => colors.base_content,
+                ButtonType::Primary
+                | ButtonType::Secondary
+                | ButtonType::Accent
+                | ButtonType::Neutral
+                | ButtonType::Info
+                | ButtonType::Success
+                | ButtonType::Warning
+                | ButtonType::Error => colors.primary_content,
+                ButtonType::Base100
+                | ButtonType::Base200
+                | ButtonType::Base300
+                | ButtonType::Ghost => colors.base_content,
             },
             border: match self {
-                ButtonType::Ghost | ButtonType::GhostHovered => Border::default(),
+                ButtonType::Ghost => Border::default(),
                 _ => Border {
                     color: match self {
                         ButtonType::Primary => colors.primary,
@@ -82,29 +82,29 @@ impl ButtonType {
                         _ => colors.base_200,
                     },
                     width: BORDER_WIDTH,
-                    radius: ext.radius_boxes.into(),
+                    radius: BORDER_RADIUS.into(),
                 },
             },
             shadow: Shadow::default(),
         }
     }
 
+    #[allow(clippy::unused_self)]
     fn hovered(&self, style: &StyleType) -> Style {
         let colors = style.get_palette();
-        let ext = style.get_extension();
 
         Style {
             background: Some(match self {
-                ButtonType::Primary => Background::Color(self.lighted_color(colors.primary)),
-                ButtonType::Secondary => Background::Color(self.lighted_color(colors.secondary)),
-                ButtonType::Accent => Background::Color(self.lighted_color(colors.accent)),
-                ButtonType::Neutral => Background::Color(self.lighted_color(colors.neutral)),
-                ButtonType::Info => Background::Color(self.lighted_color(colors.info)),
-                ButtonType::Success => Background::Color(self.lighted_color(colors.success)),
-                ButtonType::Warning => Background::Color(self.lighted_color(colors.warning)),
-                ButtonType::Error => Background::Color(self.lighted_color(colors.error)),
+                ButtonType::Primary => Background::Color(self.lighten_color(colors.primary)),
+                ButtonType::Secondary => Background::Color(self.lighten_color(colors.secondary)),
+                ButtonType::Accent => Background::Color(self.lighten_color(colors.accent)),
+                ButtonType::Neutral => Background::Color(self.lighten_color(colors.neutral)),
+                ButtonType::Info => Background::Color(self.lighten_color(colors.info)),
+                ButtonType::Success => Background::Color(self.lighten_color(colors.success)),
+                ButtonType::Warning => Background::Color(self.lighten_color(colors.warning)),
+                ButtonType::Error => Background::Color(self.lighten_color(colors.error)),
                 ButtonType::Ghost => Background::Color(Color::TRANSPARENT),
-                _ => Background::Color(self.lighted_color(colors.base_200)),
+                _ => Background::Color(self.lighten_color(colors.base_200)),
             }),
             text_color: match self {
                 ButtonType::Primary => colors.primary_content,
@@ -115,37 +115,40 @@ impl ButtonType {
                 ButtonType::Success => colors.success_content,
                 ButtonType::Warning => colors.warning_content,
                 ButtonType::Error => colors.error_content,
+                ButtonType::Base100 | ButtonType::Base200 | ButtonType::Base300 => {
+                    colors.base_content
+                }
                 _ => colors.base_content,
             },
             border: match self {
-                ButtonType::Ghost | ButtonType::GhostHovered => Border {
+                ButtonType::Ghost => Border {
                     color: Color::TRANSPARENT,
                     width: BORDER_WIDTH,
                     ..Default::default()
                 },
                 _ => Border {
                     color: match self {
-                        ButtonType::Primary => self.lighted_color(colors.primary),
-                        ButtonType::Secondary => self.lighted_color(colors.secondary),
-                        ButtonType::Accent => self.lighted_color(colors.accent),
-                        ButtonType::Neutral => self.lighted_color(colors.neutral),
-                        ButtonType::Info => self.lighted_color(colors.info),
-                        ButtonType::Success => self.lighted_color(colors.success),
-                        ButtonType::Warning => self.lighted_color(colors.warning),
-                        ButtonType::Error => self.lighted_color(colors.error),
+                        ButtonType::Primary => self.lighten_color(colors.primary),
+                        ButtonType::Secondary => self.lighten_color(colors.secondary),
+                        ButtonType::Accent => self.lighten_color(colors.accent),
+                        ButtonType::Neutral => self.lighten_color(colors.neutral),
+                        ButtonType::Info => self.lighten_color(colors.info),
+                        ButtonType::Success => self.lighten_color(colors.success),
+                        ButtonType::Warning => self.lighten_color(colors.warning),
+                        ButtonType::Error => self.lighten_color(colors.error),
                         _ => Color::TRANSPARENT,
                     },
                     width: BORDER_WIDTH,
-                    radius: ext.radius_boxes.into(),
+                    radius: BORDER_RADIUS.into(),
                 },
             },
             shadow: Shadow::default(),
         }
     }
 
+    #[allow(clippy::unused_self)]
     fn disabled(&self, style: &StyleType) -> Style {
         let colors = style.get_palette();
-        let ext = style.get_extension();
 
         Style {
             background: Some(match self {
@@ -172,30 +175,26 @@ impl ButtonType {
                 _ => colors.base_content,
             },
             border: match self {
-                ButtonType::Ghost | ButtonType::GhostHovered => Border::default(),
+                ButtonType::Ghost => Border::default(),
                 _ => Border {
                     color: colors.base_300,
                     width: BORDER_WIDTH,
-                    radius: ext.radius_boxes.into(),
+                    radius: BORDER_RADIUS.into(),
                 },
             },
-            shadow: Shadow {
-                color: colors.base_300,
-                offset: Vector::new(0.0, 0.3),
-                blur_radius: 0.10,
-            },
+            shadow: Shadow::default(),
         }
     }
 
+    #[allow(clippy::unused_self)]
     fn pressed(&self, style: &StyleType) -> Style {
         let colors = style.get_palette();
-        let ext = style.get_extension();
 
         Style {
             background: Some(match self {
-                ButtonType::Base100 => Background::Color(self.lighted_color(colors.base_100)),
-                ButtonType::Base200 => Background::Color(self.lighted_color(colors.base_200)),
-                ButtonType::Base300 => Background::Color(self.lighted_color(colors.base_300)),
+                ButtonType::Base100 => Background::Color(self.lighten_color(colors.base_100)),
+                ButtonType::Base200 => Background::Color(self.lighten_color(colors.base_200)),
+                ButtonType::Base300 => Background::Color(self.lighten_color(colors.base_300)),
                 ButtonType::Primary => Background::Color(colors.primary),
                 ButtonType::Secondary => Background::Color(colors.secondary),
                 ButtonType::Accent => Background::Color(colors.accent),
@@ -228,18 +227,13 @@ impl ButtonType {
                         | ButtonType::Info
                         | ButtonType::Success
                         | ButtonType::Warning
-                        | ButtonType::Error
-                        | ButtonType::GhostHovered => 0.0,
+                        | ButtonType::Error => 0.0,
                         _ => BORDER_WIDTH,
                     },
-                    radius: ext.radius_boxes.into(),
+                    radius: BORDER_RADIUS.into(),
                 },
             },
-            shadow: Shadow {
-                color: colors.base_300,
-                offset: Vector::new(0.0, 0.3),
-                blur_radius: 0.10,
-            },
+            shadow: Shadow::default(),
         }
     }
 }
@@ -251,12 +245,12 @@ impl Catalog for StyleType {
         Self::Class::default()
     }
 
-    fn style(&self, class: &Self::Class<'_>, status: iced::widget::button::Status) -> Style {
+    fn style(&self, class: &Self::Class<'_>, status: Status) -> Style {
         match status {
             Status::Active => class.active(self),
             Status::Hovered => class.hovered(self),
-            Status::Disabled => class.disabled(self),
             Status::Pressed => class.pressed(self),
+            Status::Disabled => class.pressed(self),
         }
     }
 }

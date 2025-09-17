@@ -14,6 +14,7 @@ use crate::{
 mod configs;
 mod countries;
 mod gui;
+mod images;
 mod translations;
 mod utils;
 

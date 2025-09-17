@@ -13,11 +13,6 @@ pub struct ViewOrganization;
 
 impl ViewOrganization {
     pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
-        container(
-            text("Organization Settings view")
-                .size(42)
-                .class(TextType::Neutral),
-        )
-        .into()
+        container(text("Organization Settings view").size(42)).into()
     }
 }

@@ -78,6 +78,8 @@ pub enum Icon {
     MailOpen,
     CloseX,
     ArrowUpFromLine,
+    Sun,
+    Moon,
 }
 
 impl Icon {
@@ -157,6 +159,8 @@ impl Icon {
             Icon::CloseX => 'w',
             Icon::ArrowUpFromLine => 'x',
             Icon::UserRound => 'y',
+            Icon::Sun => 'z',
+            Icon::Moon => '{',
         }
     }
 

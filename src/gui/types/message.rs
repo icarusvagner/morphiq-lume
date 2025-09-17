@@ -14,12 +14,12 @@ pub enum Message {
     TickDashboard,
     /// Change application Style
     Style(StyleType),
-    /// Deserialize a style from a path
-    LoadStyle(String),
     /// Hides the current settings view
     CloseSettings,
     /// Set notification volume
     ChangeVolume(u8),
+    /// Change the appearance of the system
+    ChangeTheme,
     /// Save the configuration of the app and quit
     Quit,
     /// Start with some dashboard data

@@ -9,10 +9,7 @@ use iced::Color;
 use plotters::style::RGBColor;
 use serde::{Deserialize, Serialize};
 
-use crate::gui::styles::{
-    style_constant::fonts::{OUTFIT_BOLD, OUTFIT_REGULAR, RALEWAY_BOLD, RALEWAY_REGULAR},
-    types::{color_remote::color_hash, palette_extension::PaletteExtension},
-};
+use crate::gui::styles::types::color_remote::color_hash;
 
 use super::color_remote::{deserialize_color, serialize_color};
 
@@ -94,22 +91,22 @@ pub struct Palette {
         deserialize_with = "deserialize_color",
         serialize_with = "serialize_color"
     )]
-    pub success: Color,
-    #[serde(
-        deserialize_with = "deserialize_color",
-        serialize_with = "serialize_color"
-    )]
-    pub success_content: Color,
-    #[serde(
-        deserialize_with = "deserialize_color",
-        serialize_with = "serialize_color"
-    )]
     pub warning: Color,
     #[serde(
         deserialize_with = "deserialize_color",
         serialize_with = "serialize_color"
     )]
     pub warning_content: Color,
+    #[serde(
+        deserialize_with = "deserialize_color",
+        serialize_with = "serialize_color"
+    )]
+    pub success: Color,
+    #[serde(
+        deserialize_with = "deserialize_color",
+        serialize_with = "serialize_color"
+    )]
+    pub success_content: Color,
     #[serde(
         deserialize_with = "deserialize_color",
         serialize_with = "serialize_color"
@@ -124,89 +121,11 @@ pub struct Palette {
 
 impl Palette {
     pub fn generate_buttons_color(self) -> Color {
-        let primary = self.primary;
-        let is_nightly = primary.r + primary.g + primary.b <= 1.5;
-
-        if is_nightly {
-            Color {
-                r: f32::min(primary.r + 0.15, 1.0),
-                g: f32::min(primary.g + 0.15, 1.0),
-                b: f32::min(primary.b + 0.15, 1.0),
-                a: 1.0,
-            }
-        } else {
-            Color {
-                r: f32::max(primary.r + 0.15, 0.0),
-                g: f32::max(primary.g + 0.15, 0.0),
-                b: f32::max(primary.b + 0.15, 0.0),
-                a: 1.0,
-            }
-        }
+        self.primary
     }
 
     pub fn generate_containers_color(self) -> Color {
-        let primary = self.base_100;
-        let is_nightly = primary.r + primary.g + primary.b <= 1.5;
-
-        if is_nightly {
-            Color {
-                r: f32::min(primary.r + 0.15, 1.0),
-                g: f32::min(primary.g + 0.15, 1.0),
-                b: f32::min(primary.b + 0.15, 1.0),
-                a: 1.0,
-            }
-        } else {
-            Color {
-                r: f32::max(primary.r + 0.15, 0.0),
-                g: f32::max(primary.g + 0.15, 0.0),
-                b: f32::max(primary.b + 0.15, 0.0),
-                a: 1.0,
-            }
-        }
-    }
-
-    pub fn generate_palette_extension(self) -> PaletteExtension {
-        let primary = self.primary;
-        let text_headers = self.primary_content;
-        let text_body = self.base_content;
-        let red_alert_color = self.warning;
-
-        let is_text_body_dark = text_body.r + text_body.b + text_body.g <= 1.5;
-        let is_text_header_dark = text_headers.r + text_headers.b + text_headers.g <= 1.5;
-
-        let is_nightly = primary.r + primary.g + primary.b <= 1.5;
-        let font = if is_text_body_dark {
-            OUTFIT_BOLD
-        } else {
-            OUTFIT_REGULAR
-        };
-
-        let font_headers = if is_text_header_dark {
-            RALEWAY_BOLD
-        } else {
-            RALEWAY_REGULAR
-        };
-
-        let alpha_round_borders = if is_nightly { 0.15 } else { 0.75 };
-        let alpha_round_containers = if is_nightly { 0.3 } else { 0.6 };
-        let buttons_color = self.generate_buttons_color();
-        let containers_color = self.generate_containers_color();
-
-        PaletteExtension {
-            is_nightly,
-            font,
-            font_headers,
-            radius_selectors: 4.0,
-            radius_fields: 4.0,
-            radius_boxes: 8.0,
-            size_selectors: 4.0,
-            size_fields: 4.0,
-            alpha_round_borders,
-            alpha_round_containers,
-            buttons_color,
-            containers_color,
-            red_alert_color,
-        }
+        self.base_100
     }
 
     /// Deserialize [`Palette`] from `path`

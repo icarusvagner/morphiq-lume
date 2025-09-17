@@ -1,12 +1,10 @@
 mod view_all;
 mod view_languages;
 mod view_org;
-mod view_themes;
 
 use view_all::ViewAll;
 use view_languages::ViewLanguages;
 use view_org::ViewOrganization;
-use view_themes::ViewThemes;
 
 use iced::{widget::container, Element};
 
@@ -15,7 +13,6 @@ use crate::gui::{morphiq::Morphiq, styles::types::style_type::StyleType, types::
 #[derive(Default, Clone, Debug)]
 pub struct SettingsView {
     pub view_all: ViewAll,
-    pub view_themes: ViewThemes,
     pub view_languages: ViewLanguages,
     pub view_org: ViewOrganization,
 }
@@ -26,7 +23,6 @@ pub struct SettingsView {
 pub enum OpenSettings {
     #[default]
     All,
-    Themes,
     Languages,
     OrgSettings,
 }
@@ -45,11 +41,10 @@ impl SettingsView {
     fn to_view<'a>(
         &'a self,
         view: OpenSettings,
-        morphiq: &Morphiq,
+        _morphiq: &Morphiq,
     ) -> Element<'a, Message, StyleType> {
         match view {
             OpenSettings::All => self.view_all.view(),
-            OpenSettings::Themes => self.view_themes.view(morphiq),
             OpenSettings::Languages => self.view_languages.view(),
             OpenSettings::OrgSettings => self.view_org.view(),
         }

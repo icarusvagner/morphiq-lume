@@ -73,7 +73,7 @@ impl SidebarMenu {
                     .width(Length::Fill)
                     .align_y(Alignment::Center),
             )
-            .class(ButtonType::GhostHovered)
+            .class(ButtonType::Ghost)
             .on_press(v.2)
             .into()
         }))
@@ -91,17 +91,17 @@ impl SidebarMenu {
                             .push(
                                 Icon::LogOut
                                     .to_text()
+                                    .class(TextType::BaseContent)
                                     .size(20)
                                     .align_x(Horizontal::Center)
-                                    .align_y(Vertical::Center)
-                                    .class(TextType::Base100),
+                                    .align_y(Vertical::Center),
                             )
                             .push(
                                 text("Logout")
                                     .size(20)
+                                    .class(TextType::BaseContent)
                                     .align_x(Horizontal::Center)
-                                    .align_y(Vertical::Center)
-                                    .class(TextType::Base100),
+                                    .align_y(Vertical::Center),
                             )
                             .spacing(10)
                             .align_y(Alignment::Center),
@@ -112,8 +112,7 @@ impl SidebarMenu {
                     .align_y(Alignment::Center),
                 )
                 .width(Length::Fill)
-                .on_press(Message::Home(HomeMessage::Logout))
-                .class(ButtonType::Primary),
+                .on_press(Message::Home(HomeMessage::Logout)),
             )
             .spacing(15)
             .width(Length::Fill)

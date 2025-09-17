@@ -13,11 +13,6 @@ pub struct ViewLanguages;
 
 impl ViewLanguages {
     pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
-        container(
-            text("Languages Settings view")
-                .size(42)
-                .class(TextType::Neutral),
-        )
-        .into()
+        container(text("Languages Settings view").size(42)).into()
     }
 }

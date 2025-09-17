@@ -4,11 +4,7 @@ use crate::{
     configs::configs::Configs,
     gui::{
         pages::{home::HomeMessage, login::LoginMessage, OpenPage, Pages},
-        styles::types::{
-            custom_palette::{CustomPalette, ExtraStyles},
-            palette::Palette,
-            style_type::StyleType,
-        },
+        styles::types::style_type::StyleType,
         types::message::Message,
     },
 };
@@ -55,16 +51,6 @@ impl Morphiq {
             Message::Style(style) => {
                 self.configs.settings.style = style;
             }
-            Message::LoadStyle(path) => {
-                self.configs.settings.style_path.clone_from(&path);
-                if let Ok(palette) = Palette::from_file(&path) {
-                    let style = StyleType::Custom(ExtraStyles::CustomToml(
-                        CustomPalette::from_palette(palette),
-                    ));
-
-                    self.configs.settings.style = style;
-                }
-            }
             Message::CloseSettings => {}
             Message::ChangeVolume(_) => {}
             Message::Quit => {
@@ -84,6 +70,13 @@ impl Morphiq {
                     self.open_page = OpenPage::Login;
                 } else {
                     self.page.home.update(home_msg);
+                }
+            }
+            Message::ChangeTheme => {
+                if self.configs.settings.style == StyleType::Light {
+                    self.configs.settings.style = StyleType::Dark;
+                } else {
+                    self.configs.settings.style = StyleType::Light;
                 }
             }
             _ => {}

@@ -42,7 +42,7 @@ confy = "1.0.0"                            # Persistent app config management
 directories = "6.0.0"                      # Platform-aware config/cache/data paths
 
 # GUI Framework & Theming
-iced = { version = "0.13.1", features = ["tokio", "svg", "advanced", "lazy", "image", "canvas"] } # Native GUI framework
+iced = { version = "0.13.1", features = ["tokio", "debug", "svg", "advanced", "lazy", "image", "canvas"] } # Native GUI framework
 palette = "0.7.6"                          # Color palette library (for dynamic themes)
 iced_aw = { version = "0.12.2", features = ["drop_down"] }
 

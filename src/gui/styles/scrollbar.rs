@@ -7,7 +7,7 @@ use iced::{
 };
 
 use crate::gui::styles::{
-    style_constant::BORDER_ROUNDED_RADIUS,
+    style_constant::{BORDER_RADIUS, BORDER_ROUNDED_RADIUS, BORDER_WIDTH},
     types::{palette::mix_colors, style_type::StyleType},
 };
 
@@ -21,7 +21,6 @@ impl ScrollbarType {
     #[allow(clippy::unused_self)]
     fn active(&self, style: &StyleType) -> Style {
         let colors = style.get_palette();
-        let ext = style.get_extension();
 
         let rail = Rail {
             background: Some(Background::Color(Color::TRANSPARENT)),
@@ -34,8 +33,8 @@ impl ScrollbarType {
                 color: colors.base_300,
                 border: Border {
                     color: colors.base_100,
-                    width: ext.size_fields,
-                    radius: ext.radius_boxes.into(),
+                    width: BORDER_WIDTH,
+                    radius: BORDER_RADIUS.into(),
                 },
             },
         };
@@ -51,29 +50,28 @@ impl ScrollbarType {
     #[allow(clippy::unused_self)]
     fn hovered(&self, style: &StyleType, is_mouse_over_x: bool, is_mouse_over_y: bool) -> Style {
         let colors = style.get_palette();
-        let ext = style.get_extension();
 
         let [horizontal_rail, vertical_rail] =
             [is_mouse_over_x, is_mouse_over_y].map(|is_over| Rail {
                 background: Some(Background::Color(Color {
-                    a: ext.alpha_round_borders,
+                    a: BORDER_RADIUS,
                     ..colors.base_200
                 })),
                 border: Border {
                     color: Color::TRANSPARENT,
                     width: 0.0,
-                    radius: ext.size_fields.into(),
+                    radius: BORDER_RADIUS.into(),
                 },
                 scroller: Scroller {
                     color: if is_over {
                         colors.primary
                     } else {
-                        mix_colors(colors.primary, ext.buttons_color)
+                        colors.secondary
                     },
                     border: Border {
                         color: colors.primary,
                         width: 0.0,
-                        radius: ext.radius_boxes.into(),
+                        radius: BORDER_RADIUS.into(),
                     },
                 },
             });
