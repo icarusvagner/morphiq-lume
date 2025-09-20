@@ -6,18 +6,13 @@ use crate::gui::styles::{
     types::palette::Palette,
 };
 
-#[derive(Clone, Copy, Serialize, Deserialize, Debug, Hash, PartialEq)]
+#[derive(Default, Clone, Copy, Serialize, Deserialize, Debug, Hash, PartialEq)]
 #[serde(tag = "style", content = "name")]
 #[allow(clippy::large_enum_variant)]
 pub enum StyleType {
-    Dark,
+    #[default]
     Light,
-}
-
-impl Default for StyleType {
-    fn default() -> Self {
-        Self::Light
-    }
+    Dark,
 }
 
 impl DefaultStyle for StyleType {

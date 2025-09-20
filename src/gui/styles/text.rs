@@ -1,4 +1,7 @@
-use iced::widget::text::{Catalog, Style};
+use iced::{
+    widget::text::{Catalog, Style},
+    Color,
+};
 
 use crate::gui::styles::types::style_type::StyleType;
 
@@ -22,7 +25,7 @@ impl TextType {
                 Some(match self {
                     TextType::BaseContent => color.base_content,
                     TextType::Content => color.primary_content,
-                    _ => color.base_content,
+                    _ => Color::default(),
                 })
             },
         }

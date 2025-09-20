@@ -1,6 +1,6 @@
 use iced::{
-    widget::{container, Column, Row},
-    Element,
+    widget::{container, scrollable, Column, Row, Scrollable},
+    Element, Length, Padding,
 };
 
 use crate::gui::{
@@ -59,6 +59,7 @@ pub struct Home {
     pub header: Header,
     pub content: ContentView,
     pub settings: SettingsView,
+    pub dashboard: DashboardView,
 }
 
 #[allow(clippy::enum_variant_names)]
@@ -79,10 +80,22 @@ impl Home {
         }
     }
     pub(crate) fn view<'a>(&'a self, morphiq: &Morphiq) -> Element<'a, Message, StyleType> {
+        let scrollable_content = Scrollable::new(self.to_view(self.content, morphiq))
+            .direction(scrollable::Direction::Vertical(
+                scrollable::Scrollbar::new()
+                    .width(0.0)
+                    .margin(0.0)
+                    .scroller_width(3.0)
+                    .anchor(scrollable::Anchor::Start),
+            ))
+            .width(Length::Fill)
+            .height(Length::Fill);
+
         let view = Row::new()
             .push(self.sidebar.view())
-            .push(self.to_view(self.content, morphiq))
+            .push(scrollable_content)
             .spacing(5);
+
         let content = Column::new()
             .push(self.header.view(morphiq))
             .push(view)
@@ -96,8 +109,8 @@ impl Home {
         content_view: ContentView,
         morphiq: &Morphiq,
     ) -> Element<'a, Message, StyleType> {
-        match content_view {
-            ContentView::Dashboard => DashboardView::view(),
+        container(match content_view {
+            ContentView::Dashboard => DashboardView::view(&self.dashboard),
             ContentView::Employee => EmployeeView::view(),
             ContentView::Attendance => AttendanceView::view(),
             ContentView::Payroll => PayrollView::view(),
@@ -105,7 +118,9 @@ impl Home {
             ContentView::Documents => DocumentsView::view(),
             ContentView::Settings(settings_view) => self.settings.view(settings_view, morphiq),
             ContentView::EditProfile => EditProfileView::view(),
-            _ => DashboardView::view(),
-        }
+            _ => DashboardView::view(&self.dashboard),
+        })
+        .padding(Padding::ZERO.left(15).right(15).bottom(5))
+        .into()
     }
 }

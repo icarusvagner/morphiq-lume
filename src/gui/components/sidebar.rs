@@ -27,8 +27,8 @@ impl SidebarMenu {
             Message::Home(HomeMessage::Content(ContentView::Dashboard)),
         ),
         (
-            "Employees",
-            Icon::UsersRound,
+            "Our Staff",
+            Icon::UserRound,
             Message::Home(HomeMessage::Content(ContentView::Employee)),
         ),
         (
@@ -91,15 +91,15 @@ impl SidebarMenu {
                             .push(
                                 Icon::LogOut
                                     .to_text()
-                                    .class(TextType::BaseContent)
+                                    .class(TextType::Content)
                                     .size(20)
                                     .align_x(Horizontal::Center)
                                     .align_y(Vertical::Center),
                             )
                             .push(
                                 text("Logout")
+                                    .class(TextType::Content)
                                     .size(20)
-                                    .class(TextType::BaseContent)
                                     .align_x(Horizontal::Center)
                                     .align_y(Vertical::Center),
                             )
@@ -111,6 +111,7 @@ impl SidebarMenu {
                     .align_x(Alignment::Center)
                     .align_y(Alignment::Center),
                 )
+                .class(ButtonType::Primary)
                 .width(Length::Fill)
                 .on_press(Message::Home(HomeMessage::Logout)),
             )

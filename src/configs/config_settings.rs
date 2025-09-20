@@ -8,7 +8,7 @@ use crate::{location, MORPHIQ_LOWERCASE};
 
 use crate::{gui::styles::types::style_type::StyleType, translations::types::language::Language};
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default)]
 pub struct ConfigSettings {
     pub language: Language,
     pub style_path: String,
@@ -43,15 +43,15 @@ impl ConfigSettings {
     }
 }
 
-impl Default for ConfigSettings {
-    fn default() -> Self {
-        ConfigSettings {
-            language: Language::default(),
-            style_path: String::new(),
-            style: StyleType::default(),
-        }
-    }
-}
+// impl Default for ConfigSettings {
+//     fn default() -> Self {
+//         ConfigSettings {
+//             language: Language::default(),
+//             style_path: String::new(),
+//             style: StyleType::Dark,
+//         }
+//     }
+// }
 
 #[cfg(test)]
 mod tests {

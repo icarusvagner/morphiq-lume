@@ -171,15 +171,16 @@ impl Login {
                     button(
                         text("Submit")
                             .width(Length::Fill)
+                            .class(TextType::Content)
                             .align_x(Horizontal::Center)
                             .align_y(Vertical::Center)
                             .size(18)
-                            .class(TextType::BaseContent)
                             .font(Font {
                                 weight: iced::font::Weight::Medium,
                                 ..Default::default()
                             }),
                     )
+                    .class(ButtonType::Primary)
                     .padding(10.0)
                     .width(Length::Fill)
                     .on_press(Message::Login(LoginMessage::LoginSubmitted)),

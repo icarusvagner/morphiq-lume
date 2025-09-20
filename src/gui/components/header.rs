@@ -54,6 +54,7 @@ impl Header {
                         .align_y(Vertical::Center)
                         .line_height(text::LineHeight::Relative(1.7)),
                 )
+                .spacing(5.0)
                 .align_y(Vertical::Center);
             button(content)
                 .on_press(message)

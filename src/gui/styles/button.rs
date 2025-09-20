@@ -103,8 +103,7 @@ impl ButtonType {
                 ButtonType::Success => Background::Color(self.lighten_color(colors.success)),
                 ButtonType::Warning => Background::Color(self.lighten_color(colors.warning)),
                 ButtonType::Error => Background::Color(self.lighten_color(colors.error)),
-                ButtonType::Ghost => Background::Color(Color::TRANSPARENT),
-                _ => Background::Color(self.lighten_color(colors.base_200)),
+                _ => Background::Color(self.lighten_color(colors.base_300)),
             }),
             text_color: match self {
                 ButtonType::Primary => colors.primary_content,
@@ -123,8 +122,8 @@ impl ButtonType {
             border: match self {
                 ButtonType::Ghost => Border {
                     color: Color::TRANSPARENT,
-                    width: BORDER_WIDTH,
-                    ..Default::default()
+                    width: 0.0,
+                    radius: BORDER_RADIUS.into(),
                 },
                 _ => Border {
                     color: match self {
@@ -138,7 +137,10 @@ impl ButtonType {
                         ButtonType::Error => self.lighten_color(colors.error),
                         _ => Color::TRANSPARENT,
                     },
-                    width: BORDER_WIDTH,
+                    width: match self {
+                        ButtonType::Base100 | ButtonType::Base200 | ButtonType::Base300 => 0.0,
+                        _ => BORDER_WIDTH,
+                    },
                     radius: BORDER_RADIUS.into(),
                 },
             },

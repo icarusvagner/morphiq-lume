@@ -3,8 +3,12 @@ use iced::{
     Background, Border, Color, Shadow,
 };
 
-use crate::gui::styles::{style_constant::BORDER_RADIUS, types::style_type::StyleType};
+use crate::gui::styles::{
+    style_constant::{StandardNames, BORDER_RADIUS},
+    types::style_type::StyleType,
+};
 
+#[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum ContainerType {
     Base100,
@@ -19,7 +23,7 @@ pub enum ContainerType {
     Warning,
     Error,
     Overlay,
-    Icon,
+    Icon(StandardNames),
     #[default]
     Standard,
     Bordered,
@@ -40,16 +44,41 @@ impl ContainerType {
 
         Style {
             text_color: match self {
-                ContainerType::Overlay | ContainerType::Icon => None,
+                ContainerType::Overlay => None,
+                ContainerType::Icon(icon_name) => Some(match icon_name {
+                    StandardNames::Base100 | StandardNames::Base200 | StandardNames::Base300 => {
+                        colors.base_content
+                    }
+                    StandardNames::Primary
+                    | StandardNames::Secondary
+                    | StandardNames::Accent
+                    | StandardNames::Neutral => colors.primary_content,
+                    StandardNames::Info => colors.info_content,
+                    StandardNames::Success => colors.success_content,
+                    StandardNames::Warning => colors.warning_content,
+                    StandardNames::Error => colors.error_content,
+                }),
                 _ => Some(match self {
                     ContainerType::Standard | ContainerType::Bordered => colors.base_content,
                     _ => colors.primary_content,
                 }),
             },
-            background: if self == ContainerType::Standard {
-                Some(Background::Color(colors.base_200))
-            } else {
-                Some(match self {
+            background: match self {
+                ContainerType::Standard => Some(Background::Color(colors.base_200)),
+                ContainerType::Icon(icon_name) => Some(Background::Color(match icon_name {
+                    StandardNames::Base100 => colors.base_100,
+                    StandardNames::Base200 => colors.base_200,
+                    StandardNames::Base300 => colors.base_300,
+                    StandardNames::Primary => colors.primary,
+                    StandardNames::Secondary => colors.secondary,
+                    StandardNames::Accent => colors.accent,
+                    StandardNames::Neutral => colors.neutral,
+                    StandardNames::Info => colors.info,
+                    StandardNames::Success => colors.success,
+                    StandardNames::Warning => colors.warning,
+                    StandardNames::Error => colors.error,
+                })),
+                _ => Some(match self {
                     ContainerType::Primary => Background::Color(colors.primary),
                     ContainerType::Secondary => Background::Color(colors.secondary),
                     ContainerType::Accent => Background::Color(colors.accent),
@@ -64,13 +93,16 @@ impl ContainerType {
                         ..colors.neutral
                     }),
                     _ => Background::Color(Color::TRANSPARENT),
-                })
+                }),
             },
             border: match self {
-                ContainerType::Standard | ContainerType::Overlay | ContainerType::Icon => {
-                    Border::default()
-                }
+                ContainerType::Standard | ContainerType::Overlay => Border::default(),
                 ContainerType::Ghost => Border::default(),
+                ContainerType::Icon(_) => Border {
+                    width: 0.0,
+                    radius: 1000.0.into(),
+                    ..Default::default()
+                },
                 _ => Border {
                     color: self.lighten_color(colors.base_300),
                     width: 1.0,

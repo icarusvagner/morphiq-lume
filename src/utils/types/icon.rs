@@ -3,6 +3,7 @@ use iced::widget::Text;
 use crate::gui::styles::{style_constant::fonts::ICONS, types::style_type::StyleType};
 
 #[allow(clippy::large_enum_variant, dead_code)]
+#[derive(Debug, Clone)]
 pub enum Icon {
     AlignJustify,
     ChartPieSlice,
@@ -80,6 +81,13 @@ pub enum Icon {
     ArrowUpFromLine,
     Sun,
     Moon,
+    CreditCard,
+    Layers,
+    ShoppingCart,
+    ViewGrid,
+    Repeat,
+    Sync,
+    Check,
 }
 
 impl Icon {
@@ -161,6 +169,13 @@ impl Icon {
             Icon::UserRound => 'y',
             Icon::Sun => 'z',
             Icon::Moon => '{',
+            Icon::CreditCard => '|',
+            Icon::Layers => '}',
+            Icon::ShoppingCart => '~',
+            Icon::ViewGrid => '!',
+            Icon::Repeat => '"',
+            Icon::Sync => '#',
+            Icon::Check => '$',
         }
     }
 
