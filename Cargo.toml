@@ -44,11 +44,11 @@ directories = "6.0.0"                      # Platform-aware config/cache/data pa
 # GUI Framework & Theming
 iced = { version = "0.13.1", features = ["tokio", "debug", "svg", "advanced", "lazy", "image", "canvas"] } # Native GUI framework
 palette = "0.7.6"                          # Color palette library (for dynamic themes)
-iced_aw = { version = "0.12.2", features = ["drop_down"] }
 
 # Charts and Data Visualization
 plotters = { version = "0.3.7", default-features = false, features = ["area_series", "line_series"] } # Plotting backend
 plotters-iced = "0.11.0"                  # Integration of plotters into Iced GUI
+plotters-backend = "0.3.7"
 
 # Email & Document Intake
 # imap = "2.4.1"                             # For reading emails (IMAP inbox integration)
@@ -76,7 +76,6 @@ lazy-regex = { version = "3.4.1" }         # Fast compile-once regex for validat
 # Other
 thiserror = "2.0.12"
 clap = { version = "4.5.42", features = ["derive"] }
-plotters-backend = "0.3.7"
 toml = "0.9.5"
 mockd = { version = "0.4.51", features = ["name", "words"] }
 
