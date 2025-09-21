@@ -1,0 +1,116 @@
+a. Technical Requirements
+Tech stack:
+    // Iced (Rust GUI framework)
+    Leptos (Rust Wasm framework)
+    Axum (Rust backend framework)
+    PostgreSQL
+    GitHub (CI/CD)
+    Docker
+
+1. System Architecture
+    Architecture Style: Modular Monolith (with option to evolve into service-oriented components if needed).
+    Primary Technology Stack:
+        Backend: Rust (axum/tokio for web + async runtime, sqlx for DB integration).
+        Frontend: Rust (iced for desktop GUI, leptos for web SSR if web modules are needed).
+        Database / Infrastructure Backbone: PostgreSQL (used universally for persistence, caching, messaging, scheduling, and analytics).
+        Deployment: Docker/Kubernetes-ready containers with systemd service support for desktops.
+
+2. Database Requirements
+    PostgreSQL as Primary DB
+        Separated DB: read_storage and write_storage, scale as it grows
+        Database Normalization: Use 2NF or more to reduce redundancy and improve data integrity.
+        Schema Design: Normalized schemas with JSONB for flexible fields.
+
+        Extensions:
+            pg_cron -> scheduling jobs (payroll cycles, report generation).
+            pg_partman -> time-series partitioning (attendance logs, event records).
+            pgmq -> message queues (task processing, async notifications).
+            pg_bouncer -> connection pooling.
+            timescaledb (optional) -> advanced time-series queries for biometric/attendance logs.
+
+        Caching in PostgreSQL
+            Use UNLOGGED tables or materialized views for frequently accessed dashboard summaries.
+            Leverage pg_hint_plan and prepared statements for query optimization.
+
+
+3. Security Requirements
+    Authentication & Authorization
+        Password hashing -> argon2 with per-user salt.
+        Role-based access control stored in Postgres.
+        Audit trails via AFTER INSERT/UPDATE triggers into an audit_log table.
+
+    Data Security
+        TLS/SSL for all DB connections.
+        Row-Level Security (RLS) policies for multi-tenant or department-based isolation.
+        Encrypted columns for sensitive Personal Identifiable Information (PII) (e.g., salaries, employee documents).
+
+4. Messaging & Background Jobs
+    Message Queue:
+        Implement with pgmq for task queues (e.g., payroll calculation jobs, notifications).
+        Workers in Rust consuming tasks via async channels from Postgres.
+
+    Scheduling / Cron:
+        pg_cron for recurring jobs (monthly payroll, daily attendance rollups, weekly reports).
+
+5. Application Performance
+    Lazy Loading
+        Load components, pages, and data on-demand in Iced/Leptos.
+        Use Postgres materialized views for caching heavy dashboard queries.
+
+    Scalability
+        Sharding not required initially (start single-node).
+        Partition large tables (attendance logs, payroll history).
+        Support for read-replica scaling if needed.
+
+6. Testing & CI/CD
+    Unit Tests (Rust + sqlx macros with a Postgres test container).
+        Integration Tests against seeded Postgres databases.
+        Load Testing with k6/Locust + monitoring Postgres performance.
+
+    Continuous Integration:
+        GitHub Actions / GitLab CI with Postgres container.
+
+    Continuous Deployment:
+        Containerized app deployments with migrations (sqlx migrate).
+
+
+a.b Extended With Database replication
+    Benefits of this setup:
+        If the master fails, a replica can take over with minimal downtime.
+        Read-heavy HR dashboard queries won’t slow down payroll/CRUD operations.
+        Supports future multi-region replication for disaster recovery.
+
+    Database Replication & High Availability
+        Replication Strategy:
+            Asynchronous streaming replication for read scalability.
+            Synchronous replication for critical write consistency in financial modules (Payroll, Leave Requests, Attendance).
+            Hot standby replicas for read-heavy workloads (dashboards, reports, analytics).
+        Failover & Recovery:
+            Use Patroni or repmgr for automated failover between master and replicas.
+            Monitor replication lag (pg_stat_replication).
+            Promote a replica to master automatically if the primary fails.
+        Separation of Workloads:
+            Master Node (Primary): Handles all write operations (CRUD, Payroll processing, Leave Approvals).
+            Replica Nodes (Standbys): Handle:
+            Reporting queries (attendance history, payroll reports).
+            Analytics dashboards.
+            Caching / materialized view refreshes.
+        Backup & Restore:
+            Continuous archiving with WAL-E/WAL-G for point-in-time recovery.
+            Nightly logical backups for schema + reference data.
+
+    Scaling with Replication
+        Read Scaling:
+            Offload dashboard queries to replicas.
+            Use a connection pooler (pgbouncer/pgpool-II) with read/write splitting.
+        Queue & Cron Load Balancing:
+            Ensure that pgmq (message queue) and pg_cron run only on the master to avoid conflicts.
+            Replicas should not schedule jobs, but they can serve analytics on job results.
+        Write and Update Scaling:
+            Batch writing / update for heavy loads data
+
+    Observability in Replication Setup
+        Replication monitoring using:
+            pg_stat_replication for lag and streaming health.
+            pg_exporter -> Prometheus + Grafana dashboards for failover alerts.
+        Regular failover testing to ensure minimal downtime during master node failures.

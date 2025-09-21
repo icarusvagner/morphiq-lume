@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Add a plain CSS file: see https://trunkrs.dev/assets/#css -->
+  <!-- If using Tailwind with Leptos CSR, see https://trunkrs.dev/assets/#tailwind instead-->
+
+  <!-- CSS & Tailwind -->
+  <link data-trunk rel="css" href="css/globals.css" />
+  <link data-trunk rel="tailwind-css" href="css/tailwind.css" />
+
+  <!-- Trunk Rust (WASM build pipeline) -->
+  <link data-trunk rel="rust" data-wasm-opt="z" data-weak-refs />
+  <base data-trunk-public-url />
+
+  <!-- Static Assets -->
+  <link data-trunk rel="copy-dir" href="assets/" />
+  <link data-trunk rel="copy-dir" href="assets/images/" />
+  <link data-trunk rel="copy-dir" href="public/" />
+  <link data-trunk rel="copy-dir" href="fonts/" />
+
+</head>
+
+<body></body>
+
+</html>
