@@ -1,5 +1,5 @@
 use iced::{
-	widget::{container, Column, Row},
+	widget::{container, text, Column, Row},
 	Alignment, Element, Length,
 };
 
@@ -7,7 +7,8 @@ use crate::{
 	gui::{
 		components::cards::dashboard_card::{dashboard_card, sec_card},
 		styles::{
-			container::ContainerType, style_constant::StandardNames,
+			container::ContainerType,
+			style_constant::{fonts::RALEWAY_BOLD, StandardNames},
 			types::style_type::StyleType,
 		},
 		types::message::Message,
@@ -17,6 +18,8 @@ use crate::{
 
 #[derive(Debug, Clone, Default)]
 pub struct DashboardView;
+
+pub struct DashboardTable {}
 
 impl DashboardView {
 	pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
@@ -76,6 +79,11 @@ impl DashboardView {
 		.height(110.0);
 
 		let content = Column::new()
+			.push(text("Dashboard Overview")
+				.size(32.0)
+				.align_y(Alignment::Center)
+				.align_x(Alignment::Start)
+				.font(RALEWAY_BOLD))
 			.push(first_cards)
 			.push(second_cards)
 			.spacing(15.0);

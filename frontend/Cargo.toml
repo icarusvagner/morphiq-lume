@@ -1,0 +1,72 @@
+[package]
+name = "frontend"
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+authors.workspace = true
+readme.workspace = true
+homepage.workspace = true
+repository.workspace = true
+documentation.workspace = true
+license.workspace = true
+keywords.workspace = true
+include.workspace = true
+
+[dependencies]
+# Async Messaging
+async-channel.workspace = true                    # Lightweight async channel for inter-thread communication
+
+# Time, Date, and Config
+chrono.workspace = true # Date/time manipulation
+time.workspace = true # Alternative modern time lib
+confy.workspace = true                            # Persistent app config management
+directories.workspace = true                      # Platform-aware config/cache/data paths
+
+# GUI Framework & Theming
+iced.workspace = true # Native GUI framework
+palette.workspace = true                          # Color palette library (for dynamic themes)
+
+# Charts and Data Visualization
+plotters.workspace = true # Plotting backend
+plotters-iced.workspace = true                  # Integration of plotters into Iced GUI
+plotters-backend.workspace = true
+
+# Email & Document Intake
+# imap = "2.4.1"                             # For reading emails (IMAP inbox integration)
+lettre.workspace = true                         # For sending emails (SMTP)
+native-tls.workspace = true                      # TLS support for IMAP/SMTP (via native libraries)
+# imap-proto = "0.16.5"
+
+# Audio (System sounds or TTS)
+rodio.workspace = true # Audio playback
+
+# Serialization / Deserialization
+serde.workspace = true # Core serialization
+serde_json.workspace = true                     # JSON parser/encoder for configs or local data
+
+# Unique Identifiers & Encoding
+uuid.workspace = true # Generate UUIDs for records
+base64.workspace = true            # Encode/decode Base64 (for tokens, IDs)
+
+# Visual Transitions / Interpolation
+splines.workspace = true                          # Smooth animations, easing, graph lines
+
+# Regex Utilities
+lazy-regex.workspace = true          # Fast compile-once regex for validations
+
+# Other
+thiserror.workspace = true
+clap.workspace = true
+toml.workspace = true
+mockd.workspace = true
+iced_table.workspace = true
+
+#================================================================================
+# Development & Testing
+#================================================================================
+[dev-dependencies]
+serde_test = "1"                           # Test serialization compatibility
+rstest = "0.26"                            # Parameterized unit testing
+serial_test = { version = "3", default-features = false } # Run tests serially (important for IO/config conflicts)
+insta = "1.43.1"                           # Snapshot testing (used for UI/component snapshots)
+pretty_assertions = "1.4.1"                # Better diff output for test assertions

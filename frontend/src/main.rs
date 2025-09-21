@@ -20,7 +20,7 @@ mod utils;
 
 const MORPHIQ_LOWERCASE: &str = "morphiq_lume";
 const MORPHIQ_TITLECASE: &str = "Morphiq Lume";
-const WINDOW_ICON: &[u8] = include_bytes!("../assets/logos/icons/raw/icon.png");
+const WINDOW_ICON: &[u8] = include_bytes!("../../assets/logos/icons/raw/icon.png");
 
 pub fn main() -> iced::Result {
 	let configs = CONFIGS.clone();

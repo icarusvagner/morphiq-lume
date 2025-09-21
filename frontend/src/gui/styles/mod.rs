@@ -6,6 +6,7 @@ pub mod rule;
 pub mod scrollbar;
 pub mod style_constant;
 pub mod svg;
+pub mod table;
 pub mod text;
 pub mod text_input;
 pub mod themes;

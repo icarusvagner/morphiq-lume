@@ -1,0 +1,109 @@
+1. Overview
+    Morphiq Lume is a Human Resource Management Office (HRMO) desktop application designed to streamline employee management, payroll, attendance tracking, and related HR workflows. The system aims to be modular, extensible, and optimized for smooth user experience while ensuring reliability and data integrity.
+
+2. Functional
+    a. Employee Management
+        1. CRUD employee records.
+        2. Store personal records, job roles, departments, and contact details.
+        3. Search and filter employees by department, job role, status, and activity.
+        4. Export employee data to CSV/PDF.
+
+    b. Payroll System
+        1. Configure salary structures, allowances, and deductions.
+        2. Generate monthly payroll reports (For analytics).
+        3. Process salaries with tax and benefit calculations.
+        4. Export payslips (PDF).
+
+    c. Attendance Tracking
+        1. Record daily attendance logs (soon intregrated with biometrics).
+        2. Track working hours, absences, and overtime.
+        3. Generate attendance summary reports (per employee, per department).
+
+    d. Event Management
+        1. Manage HR-related events (trainings, company events, deadlines).
+        2. Calendar view for scheduled activities (able to manage event from the calendar).
+        3. Send notifications / reminders inside the system.
+
+    e. Leave Requests
+        1. Employee can request leave (sick, vacation, emergency).
+        2. Managers can approve / reject leave requests.
+        3. Track leave balances per employee.
+
+    f. Document Inbox
+        1. Centralized repository for HR documents (contracts, memos, reports).
+        2. Secure upload, download, and access control filtered by role.
+
+        -- Soon
+            1. Email Integration (able to recieve and reply to emails).
+
+    g. HR dashboard
+        1. Overview of HR metrics: active employees, attendance stats, payroll status.
+        2. Quick links to core modules.
+        3. Data visualization (charts / graphs).
+
+        -- Soon
+            1. Recent emails.
+            2. Activity logs.
+
+2.2 Functional (Future Enhancements - planned soon)
+    a. Biometric Integration
+        1. Integration with biometric devices for automated attendance logging.
+    b. Asset Issuance & Management
+        1. Assign and track company assets (laptops, ID card, equipments).
+        2. Asset lifecycle management (issued, returned, lost, maintenance).
+    c. Performance Review System
+        1. Set evaluation periods and criteria.
+        2. 360deg feedback (self, peer, manager).
+        3. Generate performance reports for promotions or corrective action.
+    d. Recruitment / Applicant Tracking System
+        1. Manage job postings and applications.
+        2. Candidate profiles with resumes and interview notes.
+        3. Hiring pipelines (applied -> interview -> hired/rejected).
+
+
+3. Non-Functional Requirements
+    a. Performance
+        1. All core operations (CRUD, dashboard load) should respond in < 300ms under normal conditions.
+        2. Payroll batch generation for <= 1000 employees must complete within 2 minutes.
+    b. Scalability
+        1. System must support up to 5000 employees without major redesign.
+    c. Security
+        1. Role-based access control (RBAC) for sensitive modules (payroll, documents).
+        2. Passwords stored using Argon2 hashing.
+        3. Audit logs for CRUD operations.
+    d. Reliability
+        1. System should recover gracefully from crashes (auto-save, transaction rollback).
+        2. Critical operations (payroll, leave approval) must be atomic.
+    e. Usability
+        1. Clean, intuitive UI with minimal training required.
+        2. Consistent navigation across modules.
+    f. Maintainability
+        1. Modular architecture (separate components for employee, payroll, attendance, etc.).
+        2. Code should follow agreed naming conventions and linting rules.
+    g. Lazy Loading (Optimization)
+        1. Components, pages, and data requests must be lazily loaded to improve perceived performance.
+            Example: Employee list loads on demand with pagination/infinite scroll.
+
+4. Acceptance Criteria
+    a. Users can perform CRUD on employees with full validation and persistence.
+    b. Payroll can be generated for at least 1 department with correct tax / deductions.
+    c. Attendance logs can be stored and summarize per employee, time entry.
+    d. HR dashboard shows at least 3 visualize KPIs (Key Performance Indicator).
+    e. Lazy Loading must be applied in at least.
+        1. Employee list view.
+        2. Document / Email inbox.
+        3. Attendance records.
+        4. Each charts / graphs.
+
+5. Dependencies / External System
+    Databases:
+        SQLs -
+            1. PostgreSQL
+        No-SQLs -
+            1. Firebase
+            2. Supabase
+    Optional:
+        1. Radis (caching, session storage)
+    Future:
+        1. Biometric devices (vendor SDK required)
+        2. RFIDs card
