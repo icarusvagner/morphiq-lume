@@ -4,6 +4,7 @@ use leptos_router::{components::*, StaticSegment};
 
 // Modules
 mod components;
+mod error_page;
 mod layouts;
 mod pages;
 
