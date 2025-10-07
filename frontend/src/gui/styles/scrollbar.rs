@@ -8,7 +8,7 @@ use iced::{
 
 use crate::gui::styles::{
     style_constant::{BORDER_RADIUS, BORDER_ROUNDED_RADIUS, BORDER_WIDTH},
-    types::{palette::mix_colors, style_type::StyleType},
+    types::style_type::StyleType,
 };
 
 #[derive(Default)]

@@ -3,10 +3,7 @@ use iced::{
     Element,
 };
 
-use crate::gui::{
-    styles::{text::TextType, types::style_type::StyleType},
-    types::message::Message,
-};
+use crate::gui::{styles::types::style_type::StyleType, types::message::Message};
 
 #[derive(Default, Debug, Clone)]
 pub struct ViewAll;

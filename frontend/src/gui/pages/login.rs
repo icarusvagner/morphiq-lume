@@ -1,6 +1,6 @@
 use iced::{
     alignment::{Horizontal, Vertical},
-    widget::{button, container, image::Handle, text, text_input, Column, Image, Row},
+    widget::{button, container, svg::Handle, text, text_input, Column, Row, Svg},
     Alignment, Element, Font, Length,
 };
 
@@ -12,7 +12,7 @@ use crate::{
         },
         types::message::Message,
     },
-    images::IMAGE_01,
+    images::IMAGE_03,
     utils::types::icon::Icon,
 };
 
@@ -45,14 +45,16 @@ impl Default for Login {
 impl Login {
     fn left_image<'a>(&'a self) -> Element<'a, Message, StyleType> {
         container(
-            Image::new(Handle::from_bytes(IMAGE_01))
-                .content_fit(iced::ContentFit::Cover)
-                .height(Length::Fill)
-                .width(Length::Fill),
+            Svg::new(Handle::from_memory(IMAGE_03))
+                .content_fit(iced::ContentFit::Contain)
+                .width(300.0)
+                .height(400.0),
         )
-        .width(450.0)
-        .height(600.0)
         .padding(1.50)
+        .height(Length::Fill)
+        .width(Length::Fill)
+        .align_x(Alignment::Center)
+        .align_y(Alignment::Center)
         .into()
     }
 

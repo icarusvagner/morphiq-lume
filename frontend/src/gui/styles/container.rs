@@ -8,7 +8,7 @@ use crate::gui::styles::{
     types::style_type::StyleType,
 };
 
-#[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
+#[allow(clippy::enum_variant_names, clippy::large_enum_variant, dead_code)]
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
 pub enum ContainerType {
     Base100,
