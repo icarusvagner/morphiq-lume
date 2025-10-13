@@ -1,0 +1,19 @@
+[package]
+name = "lume-utils"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+base64 = "0.22.1"
+time = { workspace = true, features = ["formatting", "serde", "parsing"] }

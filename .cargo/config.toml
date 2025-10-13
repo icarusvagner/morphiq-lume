@@ -1,0 +1,23 @@
+[cargo-new]
+vcs = "none"
+
+[env]
+RUST_LOG = "lume_auth=debug,lume_utils=debug,lume_error=debug,frontend=debug,gen_key=debug"
+
+# -- Service Environment Variables
+# IMPORTANT: 
+#   For cargo commands only.
+#   For deployed env, should be managed by container 
+#   (e.g., Kubernetes).
+
+## -- Secrets
+# Keys and passwords below are for localhost dev ONLY.
+# e.g., "welcome" type of passwords.
+# i.e., Encryption not needed.
+
+SERVICE_DB_URL = "postgres://castlebtye_dev:Dev_only.2025@localhost/morphiq_lume_db"
+
+SERVICE_PWD_KEY = "qd01WlklqJG4UUWAC6uQhX65rRe_Xud-mg0vWcpVgEt2GEGVdeIBPaw9KgYfRXsX8hK3hZl-lLqREj58VTbdzw"
+
+SERVICE_TOKEN_KEY = "ur3qQNyyUG3yMjQrHoqnP17OxbY9RIUKw8Ao3pLBRpl48lfiSNAOWCaNSp4GlmrgiqFEJHUVHOaJO80foKwc0w"
+SERVICE_TOKEN_DURATION_SEC = "1800"                                                                          # 30 minutes

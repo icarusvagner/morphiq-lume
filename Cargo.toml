@@ -1,30 +1,18 @@
 [workspace]
-members = ["frontend", "shared/*"]
+members = ["frontend", "shared/*", "tools/gen-key"]
 resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
+edition = "2024"
 authors = ["Descartin Lance Phillip <cnale1211435@gmail.com>"]
 description = "Transforming Human Resource Operations with Clarity, Precision, and Intelligence"
 homepage = "https://morphiqlume.com"
 documentation = "https://github.com/icarusvagner/morhpiq-lume/wiki"
 readme = "README.md"
-keywords = [
-    "gui",
-    "hrmo",
-    "desktop",
-]
+keywords = ["gui", "hrmo", "desktop"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/icarusvagner/morhpiq-lume"
-edition = "2024"
-include = [
-    "/src/**/*.rs",
-    "/assets/fonts/Raleway/*.ttf",
-    "/assets/fonts/Orbitron/*.ttf",
-    "/assets/logos/icons/full/icon.png",
-    "/assets/logos/icons/raw/icon.png",
-    "/assets/fonts/icons/font/*.ttf",
-]
 
 [workspace.lints.rust]
 unsafe_code = { level = "forbid", priority = 5 }
@@ -76,6 +64,7 @@ csv = "1.3.1"
 futures = "0.3.31"
 html-escape = "0.2.13"
 humantime = "2.3.0"
+time = "0.3.44"
 isocountry = "0.3.2"
 leptos = { version = "0.8.9", features = ["csr", "nightly"] }
 leptos_meta = "0.8.5"
@@ -94,7 +83,9 @@ thiserror = "2.0.16"
 toml = "0.9.7"
 urlencoding = "2.1.3"
 gloo = { version = "0.11.0", features = ["file", "futures"] }
-tauri-sys = { git = "https://github.com/opensourcecheemsburgers/tauri-sys", features = ["all"] }
+tauri-sys = { git = "https://github.com/opensourcecheemsburgers/tauri-sys", features = [
+        "all",
+] }
 tailwind_fuse = { version = "0.3.2", features = ["variant"] }
 tracing-subscriber-wasm = "0.1"
 dotenv = "0.15.0"
@@ -110,22 +101,27 @@ leptos_icons = "0.7"
 wasm-bindgen = "0.2.103"
 wasm-bindgen-test = "0.3.53"
 
+tokio = "1.47.1"
+uuid = "1.18.1"
+derive_more = "2.0.1"
+enum_dispatch = "0.3.13"
+
 [workspace.dependencies.web-sys]
 version = "0.3.80"
 features = [
-    "Document",
-    "Window",
-    "Navigator",
-    "HtmlAudioElement",
-    "HtmlMediaElement",
-    "HtmlVideoElement",
-    "Performance",
-    "TextTrack",
-    "TextTrackMode",
-    "TextTrackList",
-    "MouseEvent",
-    "PointerEvent",
-    "Screen",
-    "ScreenOrientation",
-    "OrientationLockType",
-] 
+        "Document",
+        "Window",
+        "Navigator",
+        "HtmlAudioElement",
+        "HtmlMediaElement",
+        "HtmlVideoElement",
+        "Performance",
+        "TextTrack",
+        "TextTrackMode",
+        "TextTrackList",
+        "MouseEvent",
+        "PointerEvent",
+        "Screen",
+        "ScreenOrientation",
+        "OrientationLockType",
+]

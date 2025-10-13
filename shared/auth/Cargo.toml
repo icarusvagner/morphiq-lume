@@ -1,0 +1,28 @@
+[package]
+name = "lume-auth"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+hmac = "0.12.1"
+blake3 = "1.8.2"
+lazy-regex = "3.4.1"
+sha2 = "0.10.9"
+argon2 = { version = "0.5.3", features = ["std"] }
+derive_more = { workspace = true, features = ["from", "display"] }
+serde = { workspace = true, features = ["derive"] }
+tokio = { workspace = true, features = ["full"] }
+uuid = { workspace = true, features = ["fast-rng", "v4", "v7"] }
+lume-utils = { version = "0.1.0", path = "../utils" }
+enum_dispatch.workspace = true
