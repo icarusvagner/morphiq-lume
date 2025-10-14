@@ -24,14 +24,14 @@ include = [
 
 [workspace.lints.rust]
 unsafe_code = { level = "forbid", priority = 5 }
-unused = { level = "allow", priority = 5 }
+unused = { level = "allow", priority = 4 }
 dead_code = { level = "allow", priority = 5 }
 
 [workspace.lints.clippy]
-all = { level = "warn", priority = 5 }
+all = { level = "warn", priority = 4 }
 # cargo = { level = "warn", priority = 5 }
-pedantic = { level = "warn", priority = 5 }
-nursery = { level = "warn", priority = 5 }
+pedantic = { level = "warn", priority = 4 }
+nursery = { level = "warn", priority = 4 }
 # restriction = { level = "warn", priority = 5 }
 unwrap_used = { level = "forbid", priority = 5 }
 empty_structs_with_brackets = { level = "allow", priority = 5 }

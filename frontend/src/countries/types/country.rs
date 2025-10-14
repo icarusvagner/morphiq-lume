@@ -1,7 +1,7 @@
 use std::fmt;
 use std::fmt::Formatter;
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Default)]
 pub enum Country {
     AD,
     AE,
@@ -235,6 +235,7 @@ pub enum Country {
     UA,
     UG,
     UM,
+    #[default]
     US,
     UY,
     UZ,
@@ -255,15 +256,9 @@ pub enum Country {
     ZZ,
 }
 
-impl Default for Country {
-    fn default() -> Self {
-        Self::ZZ
-    }
-}
-
 impl fmt::Display for Country {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        if self.eq(&Country::ZZ) {
+        if self.eq(&Country::US) {
             write!(f, "?")
         } else {
             write!(f, "{self:?}")

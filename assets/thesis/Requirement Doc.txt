@@ -34,7 +34,7 @@
         2. Secure upload, download, and access control filtered by role.
 
         -- Soon
-            1. Email Integration (able to recieve and reply to emails).
+            1. Email Integration (able to receive and reply to emails).
 
     g. HR dashboard
         1. Overview of HR metrics: active employees, attendance stats, payroll status.
@@ -99,6 +99,7 @@
     Databases:
         SQLs -
             1. PostgreSQL
+            2. DuckDB / SQLite
         No-SQLs -
             1. Firebase
             2. Supabase

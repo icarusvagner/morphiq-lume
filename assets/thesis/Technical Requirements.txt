@@ -1,6 +1,6 @@
 a. Technical Requirements
 Tech stack:
-    // Iced (Rust GUI framework)
+    Iced (Rust GUI framework)
     Leptos (Rust Wasm framework)
     Axum (Rust backend framework)
     PostgreSQL

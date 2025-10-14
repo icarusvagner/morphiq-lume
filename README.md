@@ -2,7 +2,7 @@
 
 > **Transforming Human Resource Operations with Clarity, Precision, and Intelligence.**
 
-Morphiq Lume is a modern, secure, and efficient desktop-based Human Resource Management Office (HRMO) system built using **Rust** and the **Iced GUI framework**. Designed for both government and private institutions, it offers a modular architecture for handling payroll, employee records, attendance, events, and more.
+Morphiq Lume is a modern, secure, and efficient desktop-based Human Resource Management Office (HRIS) system built using **Rust** and the **Iced GUI framework**. Designed for both government and private institutions, it offers a modular architecture for handling payroll, employee records, attendance, events, and more.
 
 ---
 
@@ -26,7 +26,7 @@ Together, Morphiq Lume is built to reveal clarity in people operations while sta
 
 | Module               | Description |
 |----------------------|-------------|
-| 🧑‍💼 **Employee Management** | Core of the system; rich profiles, rank/dept mapping, data tagging |
+| 🧑‍💼**Employee Management** | Core of the system; rich profiles, rank/dept mapping, data tagging |
 | 💰 **Payroll System**         | Auto-sync with attendance/leaves, rules engine for computation |
 | ⏱️ **Attendance Tracking**   | Manual input + biometrics-ready interface |
 | 🗓️ **Event Management**      | Plan, invite, and track employee participation |
