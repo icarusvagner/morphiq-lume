@@ -2,17 +2,21 @@ use std::f32::consts;
 
 use iced::{
 	Font,
+	Length,
 	Radians,
 	Renderer,
 	alignment::{
 		Horizontal,
 		Vertical,
 	},
-	widget::canvas::{
-		self,
-		Frame,
-		Text,
-		path::Arc,
+	widget::{
+		Canvas,
+		canvas::{
+			self,
+			Frame,
+			Text,
+			path::Arc,
+		},
 	},
 };
 
@@ -103,16 +107,28 @@ impl<Message, Theme: Catalog> canvas::Program<Message, Theme> for DonutChart {
 		let inner_circle = canvas::Path::circle(center, radius - 6.0);
 		frame.fill(&inner_circle, style.background);
 		frame.fill_text(Text {
-			content: self.title().clone(),
+			content: self.title(),
 			position: center,
 			vertical_alignment: Vertical::Center,
 			horizontal_alignment: Horizontal::Center,
 			color: style.text_color,
-			size: FONT_SIZE_SUBTITLE,
+			size: FONT_SIZE_SUBTITLE.into(),
 			font: self.font,
 			..Default::default()
 		});
 
 		vec![frame.into_geometry()]
 	}
+}
+
+pub fn donut_chart<Message, Theme: Catalog>(
+	title: String,
+	font: Font,
+	labels: Vec<String>,
+	values: Vec<u32>,
+	size: (Length, Length),
+) -> Canvas<DonutChart, Message, Theme, Renderer> {
+	iced::widget::canvas(DonutChart::new(title, font, labels, values))
+		.width(size.0)
+		.height(size.1)
 }
