@@ -1,8 +1,5 @@
-[workspace]
-members = ["frontend", "server"]
-resolver = "2"
-
-[workspace.package]
+[package]
+name = "morphiq-lume"
 version = "0.1.0"
 edition = "2024"
 description = "Transforming Human Resource Operations with Clarity, Precision, and Intelligence"
@@ -22,12 +19,12 @@ include = [
         "/assets/fonts/icons/font/*.ttf",
 ]
 
-[workspace.lints.rust]
+[lints.rust]
 unsafe_code = { level = "forbid", priority = 5 }
 unused = { level = "allow", priority = 4 }
 dead_code = { level = "allow", priority = 5 }
 
-[workspace.lints.clippy]
+[lints.clippy]
 all = { level = "warn", priority = 4 }
 # cargo = { level = "warn", priority = 5 }
 pedantic = { level = "warn", priority = 4 }
@@ -60,7 +57,7 @@ lto = "off"
 incremental = true
 debug = false       # Enable if debugging is necessary.
 
-[workspace.dependencies]
+[dependencies]
 # Async Messaging
 async-channel = "2.5.0" # Lightweight async channel for inter-thread communication
 
@@ -94,6 +91,7 @@ palette = "0.7.6" # Color palette library (for dynamic themes)
 plotters = { version = "0.3.7", default-features = false, features = [
         "area_series",
         "line_series",
+        "histogram",
 ] } # Plotting backend
 plotters-iced = "0.11.0" # Integration of plotters into Iced GUI
 plotters-backend = "0.3.7"
@@ -136,3 +134,43 @@ clap = { version = "4.5.42", features = ["derive"] }
 toml = "0.9.5"
 mockd = { version = "0.4.51", features = ["name", "words"] }
 iced_table = "0.13.0"
+maxminddb = "0.26.0"
+
+#================================================================================
+
+[target.'cfg(windows)'.dependencies]
+gag = "1.0.0"
+
+#================================================================================
+
+[target.'cfg(not(target_arch = "powerpc64"))'.dependencies]
+reqwest = { version = "0.12.24", default-features = false, features = ["json", "rustls-tls"] }
+
+#================================================================================
+
+[target.'cfg(target_arch = "powerpc64")'.dependencies]
+reqwest = { version = "0.12.24", features = ["json"] }
+
+#================================================================================
+
+[dev-dependencies]
+serde_test = "1.0.177"
+rstest = "0.26.1"
+serial_test = { version = "3.2.0", default-features = false }
+
+#================================================================================
+
+[build-dependencies]
+phf_codegen = "0.13.1"
+phf_shared = "0.13.1"
+rustrict = { version = "0.7.36", default-features = false, features = ["censor"] }
+
+#================================================================================
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1.12"
+
+#================================================================================
+
+[badges]
+maintenance = { status = "actively-developed" }
