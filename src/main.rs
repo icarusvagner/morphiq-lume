@@ -1,3 +1,4 @@
+#[allow(unused)]
 use std::borrow::Cow;
 
 #[cfg(target_os = "linux")]

@@ -41,6 +41,7 @@ module_name_repetitions = { level = "allow", priority = 5 }
 future_not_send = { level = "allow", priority = 5 }
 redundant_closure_for_method_calls = { level = "allow", priority = 5 }
 unused_async = { level = "allow", priority = 5 }                       # Only here until IndexedDB refactor
+# unused = { level = "allow", priority = 5 }
 
 #================================================================================
 # Release Profile Optimization and Dev
