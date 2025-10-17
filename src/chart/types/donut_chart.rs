@@ -23,7 +23,7 @@ use iced::{
 use crate::gui::{
 	styles::{
 		donut::Catalog,
-		style_constant::fonts::FONT_SIZE_SUBTITLE,
+		style_constant::fonts::FONT_SIZE_TITLE,
 	},
 	types::message::Message,
 };
@@ -52,7 +52,7 @@ impl DonutChart {
 
 	fn title(&self) -> String {
 		let total = self.total();
-		format!("{total} ({})", self.title)
+		format!("{total} {}", self.title)
 	}
 
 	fn angles(&self) -> Vec<(Radians, Radians)> {
@@ -104,7 +104,7 @@ impl<Message, Theme: Catalog> canvas::Program<Message, Theme> for DonutChart {
 			frame.fill(&path, color);
 		}
 
-		let inner_circle = canvas::Path::circle(center, radius - 6.0);
+		let inner_circle = canvas::Path::circle(center, radius - 18.0);
 		frame.fill(&inner_circle, style.background);
 		frame.fill_text(Text {
 			content: self.title(),
@@ -112,7 +112,7 @@ impl<Message, Theme: Catalog> canvas::Program<Message, Theme> for DonutChart {
 			vertical_alignment: Vertical::Center,
 			horizontal_alignment: Horizontal::Center,
 			color: style.text_color,
-			size: FONT_SIZE_SUBTITLE.into(),
+			size: FONT_SIZE_TITLE.into(),
 			font: self.font,
 			..Default::default()
 		});

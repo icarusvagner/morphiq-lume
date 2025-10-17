@@ -17,4 +17,8 @@ impl BarChart {
 	) -> Self {
 		Self { title, labels, values, font }
 	}
+
+	fn title(&self) -> String {
+		self.title.clone()
+	}
 }
