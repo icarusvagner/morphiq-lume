@@ -1,7 +1,10 @@
 use iced::window;
 
 use crate::gui::{
-	pages::{home::HomeMessage, login::LoginMessage},
+	pages::{
+		home::HomeMessage,
+		login::LoginMessage,
+	},
 	styles::types::style_type::StyleType,
 };
 

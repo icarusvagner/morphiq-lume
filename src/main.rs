@@ -1,4 +1,3 @@
-#[allow(unused)]
 use std::borrow::Cow;
 
 #[cfg(target_os = "linux")]
@@ -59,12 +58,11 @@ use crate::{
 	},
 };
 
+mod chart;
 mod configs;
 mod countries;
 mod gui;
-#[allow(dead_code)]
 mod images;
-mod chart;
 mod translations;
 mod utils;
 

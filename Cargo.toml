@@ -21,7 +21,7 @@ include = [
 
 [lints.rust]
 unsafe_code = { level = "forbid", priority = 5 }
-unused = { level = "allow", priority = 4 }
+# unused = { level = "allow", priority = 4 }
 dead_code = { level = "allow", priority = 5 }
 
 [lints.clippy]

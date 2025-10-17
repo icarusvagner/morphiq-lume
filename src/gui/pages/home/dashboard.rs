@@ -9,11 +9,9 @@ use iced::{
 	},
 	widget::{
 		Column,
-		Container,
 		Row,
 		container,
 		horizontal_space,
-		rule,
 		text,
 		vertical_rule,
 		vertical_space,

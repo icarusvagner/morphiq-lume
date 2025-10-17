@@ -19,7 +19,7 @@ pub enum SvgType {
 
 impl SvgType {
 	#[allow(clippy::trivially_copy_pass_by_ref, clippy::use_self)]
-	fn appearance(&self, style: &StyleType) -> Style {
+	const fn appearance(&self, style: &StyleType) -> Style {
 		Style {
 			color: match self {
 				SvgType::AdaptColor => Some(style.get_palette().base_content),

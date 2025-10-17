@@ -42,7 +42,7 @@ pub enum TextInputType {
 )]
 impl TextInputType {
 	#[allow(clippy::unused_self)]
-	fn selection_color(&self, style: &StyleType) -> Color {
+	const fn selection_color(&self, style: &StyleType) -> Color {
 		style.get_palette().primary
 	}
 
@@ -57,7 +57,7 @@ impl TextInputType {
 	}
 
 	#[allow(clippy::unused_self)]
-	fn value_color(&self, style: &StyleType) -> Color {
+	const fn value_color(&self, style: &StyleType) -> Color {
 		style.get_palette().base_content
 	}
 	fn active(&self, style: &StyleType) -> Style {

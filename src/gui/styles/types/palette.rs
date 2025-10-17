@@ -133,11 +133,11 @@ pub struct Palette {
 }
 
 impl Palette {
-	pub fn generate_buttons_color(self) -> Color {
+	pub const fn generate_buttons_color(self) -> Color {
 		self.primary
 	}
 
-	pub fn generate_containers_color(self) -> Color {
+	pub const fn generate_containers_color(self) -> Color {
 		self.base_100
 	}
 
@@ -164,6 +164,7 @@ impl Palette {
 	}
 }
 
+#[allow(clippy::use_self)]
 impl Hash for Palette {
 	fn hash<H: Hasher>(&self, state: &mut H) {
 		let Palette {

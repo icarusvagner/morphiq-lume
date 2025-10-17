@@ -1,18 +1,22 @@
 use iced::{
-    widget::{container, text},
-    Element,
+	Element,
+	widget::{
+		container,
+		text,
+	},
 };
 
 use crate::gui::{
-    styles::{text::TextType, types::style_type::StyleType},
-    types::message::Message,
+	styles::types::style_type::StyleType,
+	types::message::Message,
 };
 
 #[derive(Default, Debug, Clone)]
 pub struct ViewOrganization;
 
+#[allow(clippy::unused_self)]
 impl ViewOrganization {
-    pub(crate) fn view<'a>(&'a self) -> Element<'a, Message, StyleType> {
-        container(text("Organization Settings view").size(42)).into()
-    }
+	pub(crate) fn view(&self) -> Element<'_, Message, StyleType> {
+		container(text("Organization Settings view").size(42)).into()
+	}
 }

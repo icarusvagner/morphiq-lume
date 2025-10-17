@@ -48,8 +48,7 @@ pub use settings::{
 	SettingsView,
 };
 
-#[allow(clippy::enum_variant_names)]
-#[allow(clippy::large_enum_variant)]
+#[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 #[derive(Debug, Clone, PartialEq, Eq, Copy, Default)]
 pub enum ContentView {
 	#[default]
@@ -69,8 +68,7 @@ pub enum ContentView {
 	Notifications,
 }
 
-#[allow(clippy::enum_variant_names)]
-#[allow(clippy::large_enum_variant)]
+#[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 #[derive(Debug, Clone, Default)]
 pub struct Home {
 	pub sidebar: SidebarMenu,
@@ -80,8 +78,7 @@ pub struct Home {
 	pub dashboard: DashboardView,
 }
 
-#[allow(clippy::enum_variant_names)]
-#[allow(clippy::large_enum_variant)]
+#[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 #[derive(Clone, Debug)]
 pub enum HomeMessage {
 	Header(HeaderMessage),

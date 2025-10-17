@@ -5,7 +5,7 @@ use crate::gui::styles::{
 	types::style_type::StyleType,
 };
 
-#[allow(clippy::large_enum_variant, dead_code)]
+#[allow(clippy::large_enum_variant, unused)]
 #[derive(Debug, Clone)]
 pub enum Icon {
 	AlignJustify,

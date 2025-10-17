@@ -10,7 +10,7 @@ pub enum DonutStype {
 
 impl DonutStype {
 	#[allow(clippy::unused_self, clippy::trivially_copy_pass_by_ref)]
-	fn active(&self, style: &StyleType) -> Style {
+	const fn active(&self, style: &StyleType) -> Style {
 		let colors = style.get_palette();
 
 		Style {

@@ -130,3 +130,24 @@ impl ScaleAndCheck for SizeTuple {
 		Self(x, y)
 	}
 }
+
+#[cfg(test)]
+#[allow(clippy::use_self)]
+mod test {
+	use crate::ConfigWindow;
+
+	impl ConfigWindow {
+		pub fn test_path() -> String {
+			format!("{}/{}.toml", env!("CARGO_MANIFEST_DIR"), Self::FILE_NAME)
+		}
+
+		pub fn load() -> Self {
+			confy::load_path::<ConfigWindow>(ConfigWindow::test_path())
+				.unwrap_or_else(|_| ConfigWindow::default())
+		}
+
+		pub fn store(self) -> Result<(), confy::ConfyError> {
+			confy::store_path(ConfigWindow::test_path(), self)
+		}
+	}
+}
