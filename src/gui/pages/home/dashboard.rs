@@ -2,6 +2,7 @@ use iced::{
 	Alignment,
 	Element,
 	Length,
+	Pixels,
 	alignment::{
 		Horizontal,
 		Vertical,
@@ -12,7 +13,9 @@ use iced::{
 		Row,
 		container,
 		horizontal_space,
+		rule,
 		text,
+		vertical_rule,
 		vertical_space,
 	},
 };
@@ -26,6 +29,7 @@ use crate::{
 		},
 		styles::{
 			container::ContainerType,
+			rule::RuleType,
 			style_constant::{
 				StandardNames,
 				fonts::RALEWAY_BOLD,
@@ -40,8 +44,8 @@ use crate::{
 #[derive(Debug, Clone, Default)]
 pub struct DashboardView;
 
+#[allow(clippy::unused_self)]
 impl DashboardView {
-	#[allow(clippy::unused_self)]
 	pub(crate) fn view(&self) -> Element<'_, Message, StyleType> {
 		let first_cards = container(
 			Row::new()
@@ -108,13 +112,50 @@ impl DashboardView {
 			)
 			.push(first_cards)
 			.push(second_cards)
-			.push(self.chart_01())
+			.push(
+				Row::new()
+					.push(self.chart_01())
+					.push(self.chart_01())
+					.spacing(15.0),
+			)
 			.spacing(15.0);
 
 		container(content).width(Length::Fill).into()
 	}
 
-	#[allow(clippy::unused_self)]
+	fn labels(
+		&self,
+		rule_type: RuleType,
+		title: String,
+		count: u32,
+	) -> Element<'_, Message, StyleType> {
+		Row::new()
+			.push(vertical_rule(Pixels(10.0)).class(rule_type))
+			.push(
+				Row::new()
+					.push(
+						text(title)
+							.size(18)
+							.font(RALEWAY_BOLD)
+							.line_height(text::LineHeight::Relative(1.7))
+							.align_x(Horizontal::Left)
+							.align_y(Vertical::Center),
+					)
+					.push(horizontal_space())
+					.push(
+						text(count)
+							.size(20)
+							.line_height(text::LineHeight::Relative(1.7))
+							.align_x(Horizontal::Right)
+							.align_y(Vertical::Center),
+					),
+			)
+			.padding(5)
+			.height(Length::Fill)
+			.align_y(Alignment::Center)
+			.into()
+	}
+
 	fn chart_01(&self) -> Element<'_, Message, StyleType> {
 		container(
 			Row::new()
@@ -134,86 +175,33 @@ impl DashboardView {
 					container(
 						Column::new()
 							.push(vertical_space())
-							.push(
-								Row::new()
-									.push(
-										text("Male")
-											.size(18)
-											.font(RALEWAY_BOLD)
-											.line_height(
-												text::LineHeight::Relative(1.7),
-											)
-											.align_x(Horizontal::Left)
-											.align_y(Vertical::Center),
-									)
-									.push(
-										text(25)
-											.size(20)
-											.line_height(
-												text::LineHeight::Relative(1.7),
-											)
-											.align_x(Horizontal::Right)
-											.align_y(Vertical::Center),
-									)
-									.spacing(15.0),
-							)
-							.push(
-								Row::new()
-									.push(
-										text("Female")
-											.size(18)
-											.font(RALEWAY_BOLD)
-											.line_height(
-												text::LineHeight::Relative(1.7),
-											)
-											.align_x(Horizontal::Left)
-											.align_y(Vertical::Center),
-									)
-									.push(
-										text(32)
-											.size(20)
-											.line_height(
-												text::LineHeight::Relative(1.7),
-											)
-											.align_x(Horizontal::Right)
-											.align_y(Vertical::Center),
-									)
-									.spacing(15.0),
-							)
-							.push(
-								Row::new()
-									.push(
-										text("Others")
-											.size(18)
-											.font(RALEWAY_BOLD)
-											.line_height(
-												text::LineHeight::Relative(1.7),
-											)
-											.align_x(Horizontal::Left)
-											.align_y(Vertical::Center),
-									)
-									.push(
-										text(5)
-											.size(20)
-											.line_height(
-												text::LineHeight::Relative(1.7),
-											)
-											.align_x(Horizontal::Right)
-											.align_y(Vertical::Center),
-									)
-									.spacing(15.0),
-							)
+							.push(self.labels(
+								RuleType::Primary,
+								"Male".to_string(),
+								25,
+							))
+							.push(self.labels(
+								RuleType::Secondary,
+								"Female".to_string(),
+								32,
+							))
+							.push(self.labels(
+								RuleType::Accent,
+								"Others".to_string(),
+								5,
+							))
+							.spacing(10.0)
 							.push(vertical_space()),
 					)
 					.class(ContainerType::Ghost)
-					.align_y(Alignment::Center),
+					.height(Length::Fill)
+					.width(Length::FillPortion(2)),
 				)
 				.height(Length::Fill),
 		)
+		.padding(15.0)
 		.align_y(Alignment::Center)
-		.padding(5.0)
 		.class(ContainerType::Base300)
-		.width(700.0)
 		.height(400.0)
 		.into()
 	}

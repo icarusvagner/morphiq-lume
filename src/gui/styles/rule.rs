@@ -51,7 +51,7 @@ impl RuleType {
 			},
 			width: match self {
 				RuleType::PaletteColor(_, width) => *width,
-				_ => 1,
+				_ => 5,
 			},
 			radius: 0.0.into(),
 			fill_mode: FillMode::Full,
