@@ -64,7 +64,6 @@ mod countries;
 mod gui;
 #[allow(dead_code)]
 mod images;
-// mod mmdb;
 mod chart;
 mod translations;
 mod utils;

@@ -2,25 +2,26 @@ use iced::color;
 
 use crate::gui::styles::types::palette::Palette;
 
-pub static DARK_PALETTE: std::sync::LazyLock<Palette> = std::sync::LazyLock::new(|| Palette {
-    base_100: color!(0x1F2937),
-    base_200: color!(0x111827),
-    base_300: color!(0x020817),
-    base_content: color!(0xFFFFFF),
-    primary: color!(0x0D9488),
-    primary_content: color!(0xFFFFFF),
-    secondary: color!(0xFB923C),
-    secondary_content: color!(0xFFFFFF),
-    accent: color!(0x3B82F6),
-    accent_content: color!(0xFFFFFF),
-    neutral: color!(0x0891B2),
-    neutral_content: color!(0xFFFFFF),
-    info: color!(0x00BAFE),
-    info_content: color!(0xFFFFFF),
-    warning: color!(0xFCB700),
-    warning_content: color!(0xFFFFFF),
-    success: color!(0x00D390),
-    success_content: color!(0xFFFFFF),
-    error: color!(0xFF637D),
-    error_content: color!(0xFFFFFF),
-});
+pub static DARK_PALETTE: std::sync::LazyLock<Palette> =
+	std::sync::LazyLock::new(|| Palette {
+		base_100: color!(0x1F2_937),
+		base_200: color!(0x111_827),
+		base_300: color!(0x020_817),
+		base_content: color!(0xFFF_FFF),
+		primary: color!(0x0D9_488),
+		primary_content: color!(0xFFF_FFF),
+		secondary: color!(0xFB9_23C),
+		secondary_content: color!(0xFFF_FFF),
+		accent: color!(0x3B8_2F6),
+		accent_content: color!(0xFFF_FFF),
+		neutral: color!(0x089_1B2),
+		neutral_content: color!(0xFFF_FFF),
+		info: color!(0x00B_AFE),
+		info_content: color!(0xFFF_FFF),
+		warning: color!(0xFCB_700),
+		warning_content: color!(0xFFF_FFF),
+		success: color!(0x00D_390),
+		success_content: color!(0xFFF_FFF),
+		error: color!(0xFF6_37D),
+		error_content: color!(0xFFF_FFF),
+	});

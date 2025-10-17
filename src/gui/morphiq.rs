@@ -108,7 +108,7 @@ impl Morphiq {
 		container(content).padding(12.0).into()
 	}
 
-	pub fn scale_factor(&self) -> f64 {
+	pub const fn scale_factor(&self) -> f64 {
 		self.configs.settings.scale_factor
 	}
 }
