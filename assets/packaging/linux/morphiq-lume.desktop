@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=Morphiq Lume
+Comment=Application for HRMO
+Categories=Utility;
+Exec=/usr/bin/morphiq-lume
+Icon=morphiq_lume
+Terminal=false

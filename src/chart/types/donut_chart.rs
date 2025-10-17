@@ -20,12 +20,9 @@ use iced::{
 	},
 };
 
-use crate::gui::{
-	styles::{
-		donut::Catalog,
-		style_constant::fonts::FONT_SIZE_TITLE,
-	},
-	types::message::Message,
+use crate::gui::styles::{
+	donut::Catalog,
+	style_constant::fonts::FONT_SIZE_TITLE,
 };
 
 #[derive(Clone, Debug)]
@@ -79,11 +76,11 @@ impl<Message, Theme: Catalog> canvas::Program<Message, Theme> for DonutChart {
 
 	fn draw(
 		&self,
-		state: &Self::State,
+		_state: &Self::State,
 		renderer: &Renderer,
 		theme: &Theme,
 		bounds: iced::Rectangle,
-		cursor: iced::advanced::mouse::Cursor,
+		_cursor: iced::advanced::mouse::Cursor,
 	) -> Vec<canvas::Geometry> {
 		let mut frame = Frame::new(renderer, bounds.size());
 		let center = frame.center();

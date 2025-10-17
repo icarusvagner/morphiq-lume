@@ -1,28 +1,37 @@
 [package]
 name = "morphiq-lume"
 version = "0.1.0"
-edition = "2024"
+edition = "2024"                                                                                 # ensure your CI/toolchain supports Rust edition 2024
 description = "Transforming Human Resource Operations with Clarity, Precision, and Intelligence"
 authors = ["Descartin Lance Phillip <cnale1211435@gmail.com>"]
 readme = "README.md"
 homepage = "https://morphiqlume.com"
-repository = "https://github.com/icarusvagner/morhpiq-lume"
-documentation = "https://github.com/icarusvagner/morhpiq-lume/wiki"
+repository = "https://github.com/icarusvagner/morphiq-lume"                                      # fixed typo
+documentation = "https://github.com/icarusvagner/morphiq-lume/wiki"
 license = "MIT OR Apache-2.0"
 keywords = ["gui", "hrmo", "desktop"]
+
+# Files to include when packaging (no leading slashes)
 include = [
-        "/src/**/*.rs",
-        "/assets/fonts/Raleway/*.ttf",
-        "/assets/fonts/Orbitron/*.ttf",
-        "/assets/logos/icons/full/icon.png",
-        "/assets/logos/icons/raw/icon.png",
-        "/assets/fonts/icons/font/*.ttf",
+        "src/**/*.rs",
+        "assets/fonts/Raleway/*.ttf",
+        "assets/fonts/Orbitron/*.ttf",
+        "assets/logos/icons/full/icon.png",
+        "assets/logos/icons/raw/icon.png",
+        "assets/fonts/icons/font/*.ttf",
 ]
 
+# NOTE: Cargo itself doesn't understand [lints.*] — if these are for a custom tool or CI, keep them
+# but document which tool reads them (cargo-deny, custom linter, etc).
 [lints.rust]
 unsafe_code = { level = "forbid", priority = 5 }
-# unused = { level = "allow", priority = 4 }
 dead_code = { level = "allow", priority = 5 }
+
+# [lints.clippy]
+# all = { level = "warn", priority = 4 }
+# pedantic = { level = "warn", priority = 4 }
+# nursery = { level = "warn", priority = 4 }
+# unwrap_used = { level = "forbid", priority = 5 }
 
 [lints.clippy]
 all = { level = "warn", priority = 4 }
@@ -175,6 +184,55 @@ rustrict = { version = "0.7.36", default-features = false, features = [
 
 [target.'cfg(windows)'.build-dependencies]
 winres = "0.1.12"
+
+[package.metadata.deb]
+maintainer = "Akaza Ruthven <ruthakaza@gmail.com>"
+copyright = "2025, Akaza Ruthven"
+license-file = ["LICENSE", "0"]
+depends = "$auto"
+section = "utils"
+priority = "optional"
+assets = [
+        [
+                "target/release/rust-gui-kit",
+                "usr/bin/",
+                "755",
+        ],
+        [
+                "assets/packaging/linux/rust-gui-kit.desktop",
+                "usr/share/applications/",
+                "644",
+        ],
+        [
+                "assets/packaging/linux/rust-gui-kit.png",
+                "usr/share/icons/hicolor/256x256/apps/",
+                "644",
+        ],
+]
+
+[package.metadata.rpm]
+maintainer = "Akaza Ruthven <ruthakaza@gmail.com>"
+license = "MIT"
+assets = [
+        [
+                "target/release/rust-gui-kit",
+                "/usr/bin/",
+                "755",
+        ],
+        [
+                "assets/packaging/linux/rust-gui-kit.desktop",
+                "/usr/share/applications/",
+                "644",
+        ],
+        [
+                "assets/packaging/linux/rust-gui-kit.png",
+                "/usr/share/icons/hicolor/256x256/apps/",
+                "644",
+        ],
+]
+
+[target.x86_64-pc-windows-gnu]
+linker = "x86_64-w64-mingw32-gcc"
 
 #================================================================================
 

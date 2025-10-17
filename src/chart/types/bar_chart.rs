@@ -1,30 +1,17 @@
 use std::f64;
 
 use iced::{
-	Color,
 	Font,
 	Renderer,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
 	widget::canvas::{
 		self,
 		Frame,
-		Path,
-		Text,
 	},
 };
 
 use crate::gui::{
-	styles::{
-		bar::Catalog,
-		style_constant::{
-			CHART_BAR_WIDTH,
-			fonts::FONT_SIZE_TITLE,
-		},
-	},
-	types::message::Message,
+	styles,
+	styles::bar::Catalog,
 };
 
 #[derive(Clone, Debug)]
@@ -59,11 +46,11 @@ impl<Message, Theme: Catalog> canvas::Program<Message, Theme> for BarChart {
 
 	fn draw(
 		&self,
-		state: &Self::State,
+		_state: &Self::State,
 		renderer: &Renderer,
 		theme: &Theme,
 		bounds: iced::Rectangle,
-		cursor: iced::advanced::mouse::Cursor,
+		_cursor: iced::advanced::mouse::Cursor,
 	) -> Vec<canvas::Geometry> {
 		let mut frame = Frame::new(renderer, bounds.size());
 		let style =
