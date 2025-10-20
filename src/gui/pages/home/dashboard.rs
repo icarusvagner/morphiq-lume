@@ -47,7 +47,7 @@ pub struct DashboardView;
 
 #[allow(clippy::unused_self)]
 impl DashboardView {
-	pub(crate) fn view(&self) -> Element<'_, Message, StyleType> {
+	pub fn view(&self) -> Element<'_, Message, StyleType> {
 		let first_cards = container(
 			Row::new()
 				.push(dashboard_card(

@@ -1,12 +1,16 @@
 use iced::window;
 
-use crate::{chart::ChartMessage, gui::{
-	pages::{
-		home::HomeMessage,
-		login::LoginMessage,
+use crate::{
+	chart::ChartMessage,
+	gui::{
+		pages::{
+			home::HomeMessage,
+			login::LoginMessage,
+		},
+		styles::types::style_type::StyleType,
+		types::tables::TableMessage,
 	},
-	styles::types::style_type::StyleType,
-}};
+};
 
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone)]
@@ -36,4 +40,6 @@ pub enum Message {
 	Home(HomeMessage),
 	/// Messages for Charts
 	Chart(ChartMessage),
+	/// Tables messages
+	Tables(TableMessage),
 }

@@ -15,7 +15,10 @@ use crate::{
 			login::LoginMessage,
 		},
 		styles::types::style_type::StyleType,
-		types::message::Message,
+		types::{
+			message::Message,
+			tables::DashboardTableMsg,
+		},
 	},
 };
 
@@ -92,6 +95,16 @@ impl Morphiq {
 					self.configs.settings.style = StyleType::Dark;
 				} else {
 					self.configs.settings.style = StyleType::Light;
+				}
+			}
+			Message::Tables(tbl_msg) => {
+				if matches!(
+					tbl_msg,
+					crate::gui::types::tables::TableMessage::Dashboard(
+						DashboardTableMsg::SyncHeader(_)
+					)
+				) {
+					self.page.home.dashboard.view();
 				}
 			}
 			Message::Chart(_) => {}
