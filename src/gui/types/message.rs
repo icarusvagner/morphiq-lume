@@ -1,12 +1,12 @@
 use iced::window;
 
-use crate::gui::{
+use crate::{chart::ChartMessage, gui::{
 	pages::{
 		home::HomeMessage,
 		login::LoginMessage,
 	},
 	styles::types::style_type::StyleType,
-};
+}};
 
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone)]
@@ -34,4 +34,6 @@ pub enum Message {
 	/// Login view message
 	Login(LoginMessage),
 	Home(HomeMessage),
+	/// Messages for Charts
+	Chart(ChartMessage),
 }

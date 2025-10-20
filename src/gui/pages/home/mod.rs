@@ -111,7 +111,7 @@ impl Home {
 				.height(Length::Fill);
 
 		let view = Row::new()
-			.push(self.sidebar.view())
+			.push(self.sidebar.view(morphiq))
 			.push(scrollable_content)
 			.spacing(5);
 

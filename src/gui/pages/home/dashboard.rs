@@ -19,7 +19,10 @@ use iced::{
 };
 
 use crate::{
-	chart::types::donut_chart::donut_chart,
+	chart::types::{
+		bar_chart::histogram_chart,
+		donut_chart::donut_chart,
+	},
 	gui::{
 		components::cards::dashboard_card::{
 			dashboard_card,
@@ -113,7 +116,7 @@ impl DashboardView {
 			.push(
 				Row::new()
 					.push(self.chart_01())
-					.push(self.chart_01())
+					.push(self.chart_02())
 					.spacing(15.0),
 			)
 			.spacing(15.0);
@@ -128,7 +131,7 @@ impl DashboardView {
 		count: u32,
 	) -> Element<'_, Message, StyleType> {
 		Row::new()
-			.push(vertical_rule(Pixels(10.0)).class(rule_type))
+			.push(vertical_rule(Pixels(5.0)).class(rule_type))
 			.push(
 				Row::new()
 					.push(
@@ -149,9 +152,33 @@ impl DashboardView {
 					),
 			)
 			.padding(5)
-			.height(Length::Fill)
 			.align_y(Alignment::Center)
 			.into()
+	}
+
+	fn chart_02(&self) -> Element<'_, Message, StyleType> {
+		container(
+			Row::new()
+				.push(histogram_chart(
+					"Attendance".to_string(),
+					[
+						"Christian Perez".to_string(),
+						"Bert Casquejo".to_string(),
+						"Dian Enovero".to_string(),
+						"Lance Phillip Descartin".to_string(),
+					]
+					.to_vec(),
+					[12.0, 10.0, 9.0, 17.0].to_vec(),
+					RALEWAY_BOLD,
+					(Length::Fill, Length::Fill),
+				))
+				.height(Length::Fill),
+		)
+		.padding(15.0)
+		.align_y(Alignment::Center)
+		.class(ContainerType::Base300)
+		.height(500.0)
+		.into()
 	}
 
 	fn chart_01(&self) -> Element<'_, Message, StyleType> {
@@ -167,7 +194,7 @@ impl DashboardView {
 					]
 					.to_vec(),
 					[25, 32, 5].to_vec(),
-					(Length::Fixed(500.0), Length::Fixed(500.0)),
+					(Length::Fixed(380.0), Length::Fill),
 				))
 				.push(
 					container(
@@ -195,12 +222,13 @@ impl DashboardView {
 					.height(Length::Fill)
 					.width(Length::FillPortion(2)),
 				)
+				.spacing(20.0)
 				.height(Length::Fill),
 		)
-		.padding(15.0)
+		.padding(30.0)
 		.align_y(Alignment::Center)
 		.class(ContainerType::Base300)
-		.height(400.0)
+		.height(500.0)
 		.into()
 	}
 }

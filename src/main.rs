@@ -61,6 +61,7 @@ use crate::{
 mod chart;
 mod configs;
 mod countries;
+mod crates;
 mod gui;
 mod images;
 mod translations;
@@ -70,7 +71,13 @@ const MORPHIQ_LOWERCASE: &str = "morphiq_lume";
 const MORPHIQ_TITLECASE: &str = "Morphiq Lume";
 const WINDOW_ICON: &[u8] = include_bytes!("../assets/logos/icons/raw/icon.png");
 
-pub fn main() -> iced::Result {
+pub fn main() -> anyhow::Result<()> {
+	tracing_subscriber::fmt()
+		.with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+		.with_target(false)
+		.without_time()
+		.init();
+
 	let configs = CONFIGS.clone();
 	let boot_tash_chain = window::get_latest()
 		.map(Message::StartApp)
@@ -88,6 +95,8 @@ pub fn main() -> iced::Result {
 	}
 
 	let ConfigWindow { position, size, .. } = configs.window;
+
+	tracing::info!("Morphiq Lume is Running");
 
 	iced::application(MORPHIQ_TITLECASE, Morphiq::update, Morphiq::view)
 		.settings(Settings {
@@ -152,5 +161,7 @@ pub fn main() -> iced::Result {
 		})
 		.theme(Morphiq::theme)
 		.scale_factor(Morphiq::scale_factor)
-		.run_with(move || (Morphiq::new(configs), boot_tash_chain))
+		.run_with(move || (Morphiq::new(configs), boot_tash_chain))?;
+
+	Ok(())
 }

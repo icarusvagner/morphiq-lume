@@ -94,6 +94,7 @@ impl Morphiq {
 					self.configs.settings.style = StyleType::Light;
 				}
 			}
+			Message::Chart(_) => {}
 			_ => {}
 		}
 		Task::none()

@@ -19,6 +19,7 @@ use iced::{
 
 use crate::{
 	gui::{
+		morphiq::Morphiq,
 		pages::home::{
 			ContentView,
 			HomeMessage,
@@ -146,13 +147,21 @@ impl SidebarMenu {
 		}))
 	}
 
-	pub fn view(&self) -> Element<'_, Message, StyleType> {
+	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
+		let colors = morphiq.configs.settings.style.get_palette();
+
 		let content = Column::new()
 			.push(self.get_tooltip_menus())
-			.push(horizontal_rule(2.0).class(RuleType::Base200))
+			.push(
+				horizontal_rule(2.0)
+					.class(RuleType::PaletteColor(colors.base_200, 2)),
+			)
 			.push(self.get_additional_tooltop_menus())
 			.push(vertical_space())
-			.push(horizontal_rule(2.0).class(RuleType::Base200))
+			.push(
+				horizontal_rule(2.0)
+					.class(RuleType::PaletteColor(colors.base_200, 2)),
+			)
 			.push(
 				button(
 					container(
