@@ -7,7 +7,6 @@ use iced::{
 		Vertical,
 	},
 	widget::{
-		button,
 		container,
 		responsive,
 		scrollable,
@@ -25,7 +24,7 @@ use crate::gui::{
 };
 
 #[derive(Debug, Clone)]
-pub struct DashboardTable {
+pub struct EmployeeTable {
 	pub columns: Vec<ColumnTable>,
 	pub rows: Vec<RowTable>,
 	pub header: scrollable::Id,
@@ -33,7 +32,7 @@ pub struct DashboardTable {
 	pub footer: scrollable::Id,
 }
 
-impl Default for DashboardTable {
+impl Default for EmployeeTable {
 	fn default() -> Self {
 		Self {
 			columns: vec![
@@ -52,7 +51,7 @@ impl Default for DashboardTable {
 	}
 }
 
-impl DashboardTable {
+impl EmployeeTable {
 	pub fn view(&self) -> Element<'_, Message, StyleType> {
 		let table = responsive(|_| {
 			let mut table = table(
@@ -85,6 +84,7 @@ pub enum ColumnKind {
 	#[default]
 	EmployeeId,
 	Fullname,
+	Position,
 	Department,
 	Interaction,
 	WorkHours,
@@ -103,7 +103,7 @@ impl ColumnTable {
 		let width = match kind {
 			ColumnKind::EmployeeId => 100.0,
 			ColumnKind::Fullname => 400.0,
-			ColumnKind::Department => 410.0,
+			ColumnKind::Department | ColumnKind::Position => 205.0,
 			ColumnKind::Interaction => 420.0,
 			ColumnKind::WorkHours => 135.0,
 			ColumnKind::Status => 90.0,
@@ -117,10 +117,33 @@ impl ColumnTable {
 pub struct RowTable {
 	pub id_num: String,
 	pub full_name: String,
+	pub position: String,
 	pub department: String,
 	pub interaction: String,
 	pub work_hours: String,
 	pub status: String,
+}
+
+impl RowTable {
+	pub fn new(
+		id_num: String,
+		full_name: String,
+		position: String,
+		department: String,
+		interaction: String,
+		work_hours: String,
+		status: String,
+	) -> Self {
+		Self {
+			id_num,
+			full_name,
+			position,
+			department,
+			interaction,
+			work_hours,
+			status: status.to_uppercase(),
+		}
+	}
 }
 
 impl<'a> table::Column<'a, Message, StyleType, Renderer> for ColumnTable {
@@ -130,6 +153,7 @@ impl<'a> table::Column<'a, Message, StyleType, Renderer> for ColumnTable {
 		let content = match self.kind {
 			ColumnKind::EmployeeId => "ID Number",
 			ColumnKind::Fullname => "Fullname",
+			ColumnKind::Position => "Position",
 			ColumnKind::Department => "Department",
 			ColumnKind::Interaction => "Interaction",
 			ColumnKind::WorkHours => "Working Hours",
@@ -152,19 +176,14 @@ impl<'a> table::Column<'a, Message, StyleType, Renderer> for ColumnTable {
 		let content = match self.kind {
 			ColumnKind::EmployeeId => row.id_num.clone(),
 			ColumnKind::Fullname => row.full_name.clone(),
+			ColumnKind::Position => row.position.clone(),
 			ColumnKind::Department => row.department.clone(),
 			ColumnKind::Interaction => row.interaction.clone(),
 			ColumnKind::WorkHours => row.work_hours.clone(),
 			ColumnKind::Status => row.status.clone(),
 		};
 
-		let button = button(text(content)).on_press(Message::Home(
-			crate::gui::pages::home::HomeMessage::Content(
-				crate::gui::pages::home::ContentView::Dashboard,
-			),
-		));
-
-		container(button).width(Length::Fill).center_y(32).into()
+		container(text(content)).width(Length::Fill).center_y(32).into()
 	}
 
 	fn width(&self) -> f32 {

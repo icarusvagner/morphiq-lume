@@ -130,7 +130,7 @@ lazy-regex = "3.4.1" # Fast compile-once regex for validations
 thiserror = "2.0.12"
 clap = { version = "4.5.42", features = ["derive"] }
 toml = "0.9.5"
-mockd = { version = "0.4.51", features = ["name", "words"] }
+mockd = { version = "0.4.51", features = ["name", "words", "unique"] }
 iced_table = "0.13.0"
 maxminddb = "0.26.0"
 anyhow = "1.0.100"

@@ -76,6 +76,7 @@ pub struct Home {
 	pub content: ContentView,
 	pub settings: SettingsView,
 	pub dashboard: DashboardView,
+	employee: EmployeeView,
 }
 
 #[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
@@ -94,7 +95,8 @@ impl Home {
 			HomeMessage::Logout => {}
 		}
 	}
-	pub(crate) fn view<'a>(
+
+	pub fn view<'a>(
 		&'a self,
 		morphiq: &Morphiq,
 	) -> Element<'a, Message, StyleType> {
@@ -121,13 +123,13 @@ impl Home {
 		container(content).into()
 	}
 
-	pub(crate) fn to_view<'a>(
+	pub fn to_view<'a>(
 		&'a self,
 		content_view: ContentView,
 		morphiq: &Morphiq,
 	) -> Element<'a, Message, StyleType> {
 		container(match content_view {
-			ContentView::Employee => EmployeeView::view(),
+			ContentView::Employee => self.employee.view(),
 			ContentView::Attendance => AttendanceView::view(),
 			ContentView::Payroll => PayrollView::view(),
 			ContentView::Leaves => LeavesView::view(),

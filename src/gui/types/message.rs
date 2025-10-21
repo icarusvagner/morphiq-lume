@@ -1,4 +1,7 @@
-use iced::window;
+use iced::{
+	widget::scrollable,
+	window,
+};
 
 use crate::{
 	chart::ChartMessage,
@@ -7,8 +10,7 @@ use crate::{
 			home::HomeMessage,
 			login::LoginMessage,
 		},
-		styles::types::style_type::StyleType,
-		types::tables::TableMessage,
+		styles::types::style_type::StyleType, types::tables::TableMessage,
 	},
 };
 
@@ -38,8 +40,13 @@ pub enum Message {
 	/// Login view message
 	Login(LoginMessage),
 	Home(HomeMessage),
+
 	/// Messages for Charts
 	Chart(ChartMessage),
+
 	/// Tables messages
 	Tables(TableMessage),
+	SyncHeader(scrollable::AbsoluteOffset),
+	Resizing(usize, f32),
+	Resized,
 }

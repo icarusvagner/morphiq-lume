@@ -1,7 +1,10 @@
 use iced::{
 	Element,
 	Task,
-	widget::container,
+	widget::{
+		container,
+		scrollable,
+	},
 	window,
 };
 
@@ -15,10 +18,7 @@ use crate::{
 			login::LoginMessage,
 		},
 		styles::types::style_type::StyleType,
-		types::{
-			message::Message,
-			tables::DashboardTableMsg,
-		},
+		types::message::Message,
 	},
 };
 
@@ -97,17 +97,35 @@ impl Morphiq {
 					self.configs.settings.style = StyleType::Light;
 				}
 			}
-			Message::Tables(tbl_msg) => {
-				if matches!(
-					tbl_msg,
-					crate::gui::types::tables::TableMessage::Dashboard(
-						DashboardTableMsg::SyncHeader(_)
-					)
-				) {
-					self.page.home.dashboard.view();
+			Message::SyncHeader(offset) => {
+				return Task::batch(vec![
+					scrollable::scroll_to(
+						self.page.home.dashboard.table_01.header.clone(),
+						offset,
+					),
+					scrollable::scroll_to(
+						self.page.home.dashboard.table_01.footer.clone(),
+						offset,
+					),
+				]);
+			}
+			Message::Resizing(index, offset) => {
+				if let Some(column) =
+					self.page.home.dashboard.table_01.columns.get_mut(index)
+				{
+					column.resize_offset = Some(offset);
 				}
 			}
-			Message::Chart(_) => {}
+			Message::Resized => {
+				self.page.home.dashboard.table_01.columns.iter_mut().for_each(
+					|column| {
+						if let Some(offset) = column.resize_offset.take() {
+							column.width += offset;
+						}
+					},
+				);
+			}
+			// Message::Chart(_) => {}
 			_ => {}
 		}
 		Task::none()

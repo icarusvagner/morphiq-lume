@@ -28,6 +28,7 @@ use crate::{
 			dashboard_card,
 			sec_card,
 		},
+		pages::home::panes::tables::dashboard_table::DashboardTable,
 		styles::{
 			container::ContainerType,
 			rule::RuleType,
@@ -43,7 +44,9 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Default)]
-pub struct DashboardView;
+pub struct DashboardView {
+	pub table_01: DashboardTable,
+}
 
 #[allow(clippy::unused_self)]
 impl DashboardView {
@@ -119,6 +122,7 @@ impl DashboardView {
 					.push(self.chart_02())
 					.spacing(15.0),
 			)
+			.push(self.table_01.view())
 			.spacing(15.0);
 
 		container(content).width(Length::Fill).into()
@@ -160,15 +164,16 @@ impl DashboardView {
 		container(
 			Row::new()
 				.push(histogram_chart(
-					"Attendance".to_string(),
+					"Top 4 Performer".to_string(),
 					[
 						"Christian Perez".to_string(),
 						"Bert Casquejo".to_string(),
 						"Dian Enovero".to_string(),
 						"Lance Phillip Descartin".to_string(),
+						"Darven Jay Tibon".to_string(),
 					]
 					.to_vec(),
-					[12.0, 10.0, 9.0, 17.0].to_vec(),
+					[12.0, 10.0, 9.0, 17.0, 15.0].to_vec(),
 					RALEWAY_BOLD,
 					(Length::Fill, Length::Fill),
 				))
