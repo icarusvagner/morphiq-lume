@@ -10,7 +10,8 @@ use crate::{
 			home::HomeMessage,
 			login::LoginMessage,
 		},
-		styles::types::style_type::StyleType, types::tables::TableMessage,
+		styles::types::style_type::StyleType,
+		types::tables::TableMessage,
 	},
 };
 

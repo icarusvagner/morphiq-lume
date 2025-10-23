@@ -2,6 +2,7 @@ use iced::{
 	Background,
 	Border,
 	Color,
+	border::Radius,
 	widget::text_input::{
 		Catalog,
 		Status,
@@ -135,10 +136,17 @@ impl TextInputType {
 
 		Style {
 			background: Background::Color(Color::TRANSPARENT),
-			border: Border {
-				color: self.lighten_color(colors.base_100),
-				width: BORDER_WIDTH,
-				radius: BORDER_RADIUS.into(),
+			border: match self {
+				TextInputType::Ghost => Border {
+					color: Color::TRANSPARENT,
+					width: 0.0,
+					radius: Radius::default(),
+				},
+				_ => Border {
+					color: self.lighten_color(colors.base_100),
+					width: BORDER_WIDTH,
+					radius: BORDER_RADIUS.into(),
+				},
 			},
 			icon: colors.primary_content,
 			placeholder: self.placeholder_color(style),

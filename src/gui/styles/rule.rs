@@ -10,7 +10,7 @@ use iced::widget::rule::{
 
 use crate::gui::styles::types::style_type::StyleType;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub enum RuleType {
 	#[default]
 	Base100,

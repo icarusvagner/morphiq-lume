@@ -33,8 +33,9 @@ use crate::{
 		donut_chart::donut_chart,
 	},
 	gui::{
-		pages::home::panes::tables::employee_table::{
-			EmployeeTable,
+		morphiq::Morphiq,
+		pages::home::panes::tables::gen_table::employee::{
+			GenTableEmployee,
 			RowTable,
 		},
 		styles::{
@@ -49,7 +50,7 @@ use crate::{
 
 #[derive(Clone, Debug)]
 pub struct EmployeeView {
-	pub employee_table: EmployeeTable,
+	pub employee_table: GenTableEmployee,
 }
 
 impl Default for EmployeeView {
@@ -67,8 +68,19 @@ impl Default for EmployeeView {
 		];
 		let rand_num_2 = rng().random_range(0..=3);
 
-		let employee_table = EmployeeTable {
-			rows: [
+		let employee_table = GenTableEmployee::new(
+			"Employee List".to_string(),
+			[
+				"ID Num".to_string(),
+				"Fullname".to_string(),
+				"Position".to_string(),
+				"Department".to_string(),
+				"Interaction".to_string(),
+				"Work Hours".to_string(),
+				"Status".to_string(),
+			]
+			.to_vec(),
+			[
 				RowTable {
 					id_num: unique::uuid_v4(),
 					full_name: name::full(),
@@ -116,8 +128,7 @@ impl Default for EmployeeView {
 				},
 			]
 			.to_vec(),
-			..Default::default()
-		};
+		);
 
 		Self { employee_table }
 	}
@@ -125,7 +136,7 @@ impl Default for EmployeeView {
 
 #[allow(clippy::unused_self)]
 impl EmployeeView {
-	pub fn view(&self) -> Element<'_, Message, StyleType> {
+	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let content = Column::new()
 			.push(
 				text("Employee Overview")
@@ -156,7 +167,7 @@ impl EmployeeView {
 					.height(500.0)
 					.spacing(15.0),
 			)
-			.push(self.employee_table.view())
+			.push(self.employee_table.view(morphiq))
 			.spacing(15.0);
 
 		container(content).into()

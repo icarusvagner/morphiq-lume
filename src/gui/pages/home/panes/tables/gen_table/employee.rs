@@ -1,10 +1,14 @@
 use iced::{
 	Element,
 	Length,
+	Padding,
 	widget::{
 		Column,
+		Row,
 		container,
+		horizontal_rule,
 		text,
+		text_input,
 	},
 };
 use iced_aw::{
@@ -13,18 +17,26 @@ use iced_aw::{
 };
 
 use crate::gui::{
+	morphiq::Morphiq,
 	styles::{
 		container::ContainerType,
+		rule::RuleType,
+		style_constant::fonts::{
+			OUTFIT_BOLD,
+			RALEWAY_BOLD,
+		},
+		text_input::TextInputType,
 		types::style_type::StyleType,
 	},
 	types::message::Message,
 };
 
 #[derive(Debug, Clone)]
-pub struct GenTable {
+pub struct GenTableEmployee {
 	title: String,
 	header: Vec<String>,
 	body: Vec<RowTable>,
+	search: String,
 }
 
 #[derive(Default, Debug, Clone)]
@@ -60,24 +72,43 @@ impl RowTable {
 	}
 }
 
-impl GenTable {
-	fn headers(&self) -> GridRow<'_, Message> {
+impl GenTableEmployee {
+	fn headers(&self) -> GridRow<'_, Message, StyleType> {
 		let mut grid_row = GridRow::new();
 		for i in 0..self.header.len() {
-			grid_row = grid_row.push(text(self.header[i].clone()));
+			grid_row = grid_row.push(
+				text(self.header[i].clone()).size(18.0).font(OUTFIT_BOLD),
+			);
 		}
 
 		grid_row
 	}
 
-	fn bodies(&self) -> Grid<'_, Message> {
+	fn separators(
+		&self,
+		rule_type: RuleType,
+	) -> GridRow<'_, Message, StyleType> {
+		let max_len = self.header.len();
+		let elements = (0..=max_len)
+			.map(|_| horizontal_rule(2.0).class(rule_type.clone()))
+			.collect();
+
+		GridRow::with_elements(elements)
+	}
+
+	fn bodies(&self, separator_type: RuleType) -> Grid<'_, Message, StyleType> {
 		let mut content = Grid::new()
 			.width(Length::Fill)
 			.row_spacing(5.0)
 			.row_height(12.0)
-			.column_width(Length::Fill);
+			.column_width(Length::Fill)
+			.column_spacing(5.0)
+			.push(self.headers())
+			.push(self.separators(separator_type));
+
 		for v in &self.body {
 			let mut body_content = GridRow::new();
+
 			body_content = body_content
 				.push(text(v.id_num.clone()))
 				.push(text(v.full_name.clone()))
@@ -101,16 +132,32 @@ impl GenTable {
 		header: Vec<String>,
 		body: Vec<RowTable>,
 	) -> Self {
-		Self { title, header, body }
+		Self { title, header, body, search: String::new() }
 	}
 
-	pub fn view(&self) -> Element<'_, Message, StyleType> {
+	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
+		let style = morphiq.configs.settings.style.get_palette();
+		let header_elements = Row::new()
+			.push(text(self.title()).size(24.0).font(RALEWAY_BOLD))
+			.push(
+				container(
+					text_input("Search...", &self.search)
+						.width(Length::Fill)
+						.class(TextInputType::Ghost),
+				)
+				.class(ContainerType::Bordered)
+				.padding(
+					Padding::ZERO.left(5.0).right(5.0).top(2.0).bottom(2.0),
+				),
+			)
+			.spacing(15.0);
+
 		let content = Column::new()
-			.push(text(self.title()))
-			.push(self.bodies())
+			.push(header_elements)
+			.push(self.bodies(RuleType::PaletteColor(style.base_200, 2)))
 			.spacing(15.0)
 			.padding(5.0);
 
-		container(content).class(ContainerType::Base300).into()
+		container(content).class(ContainerType::Base300).padding(15.0).into()
 	}
 }

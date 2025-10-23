@@ -129,7 +129,7 @@ impl Home {
 		morphiq: &Morphiq,
 	) -> Element<'a, Message, StyleType> {
 		container(match content_view {
-			ContentView::Employee => self.employee.view(),
+			ContentView::Employee => self.employee.view(morphiq),
 			ContentView::Attendance => AttendanceView::view(),
 			ContentView::Payroll => PayrollView::view(),
 			ContentView::Leaves => LeavesView::view(),
