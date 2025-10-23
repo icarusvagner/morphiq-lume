@@ -164,7 +164,7 @@ impl DashboardView {
 		container(
 			Row::new()
 				.push(histogram_chart(
-					"Top 4 Performer".to_string(),
+					"Top 5 Performer".to_string(),
 					[
 						"Christian Perez".to_string(),
 						"Bert Casquejo".to_string(),

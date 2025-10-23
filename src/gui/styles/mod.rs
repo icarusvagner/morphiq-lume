@@ -2,6 +2,7 @@ pub mod bar;
 pub mod button;
 pub mod container;
 pub mod donut;
+pub mod menu;
 pub mod rule;
 pub mod scrollbar;
 pub mod style_constant;

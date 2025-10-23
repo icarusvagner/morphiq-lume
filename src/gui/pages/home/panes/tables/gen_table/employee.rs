@@ -2,9 +2,11 @@ use iced::{
 	Element,
 	Length,
 	Padding,
+	Renderer,
 	widget::{
 		Column,
 		Row,
+		button,
 		container,
 		horizontal_rule,
 		text,
@@ -14,11 +16,19 @@ use iced::{
 use iced_aw::{
 	Grid,
 	GridRow,
+	menu::{
+		Item,
+		Menu,
+		MenuBar,
+	},
+	menu_bar,
+	menu_items,
 };
 
 use crate::gui::{
 	morphiq::Morphiq,
 	styles::{
+		button::ButtonType,
 		container::ContainerType,
 		rule::RuleType,
 		style_constant::fonts::{
@@ -137,6 +147,19 @@ impl GenTableEmployee {
 
 	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let style = morphiq.configs.settings.style.get_palette();
+		let menu_template =
+			|items| Menu::new(items).max_width(180.0).offset(6.0);
+
+		let menu_bar: MenuBar<'_, Message, StyleType, Renderer> = menu_bar!((
+			button("Filter"),
+			menu_template(menu_items!((button("Department")
+				.class(ButtonType::Ghost))(
+				button("ID Number").class(ButtonType::Ghost)
+			)(
+				button("Status").class(ButtonType::Ghost)
+			)))
+		));
+
 		let header_elements = Row::new()
 			.push(text(self.title()).size(24.0).font(RALEWAY_BOLD))
 			.push(
@@ -150,6 +173,7 @@ impl GenTableEmployee {
 					Padding::ZERO.left(5.0).right(5.0).top(2.0).bottom(2.0),
 				),
 			)
+			.push(menu_bar)
 			.spacing(15.0);
 
 		let content = Column::new()
