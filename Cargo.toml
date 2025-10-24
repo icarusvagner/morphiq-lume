@@ -259,6 +259,20 @@ assets = [
         ],
 ]
 
+[package.metadata.bundle]
+name = "Morphiq Lume"
+identifier = "com.doe.morphiqlume"
+icon = ["32x32.png", "128x128.png", "128x128@2x.png"]
+version = "1.0.0"
+resources = ["assets", "images/**/*.png", "secrets/public_key.txt"]
+copyright = "Copyright (c) Morphiq Lume 2025. All rights reserved."
+category = "Developer Tool"
+short_description = "A Cross-platform desktop app"
+long_description = """Morphiq Lume is a modern, secure, and efficient desktop-based Human Resource Management Office (HRIS) system built using **Rust** and the **Iced GUI framework**.
+Designed for both government and private institutions, it offers a modular architecture for handling payroll, employee records, attendance, events, and more"""
+deb_depends = ["libgl1-mesa-glx", "libsdl2-2.0-0 (>= 2.0.5)"]
+osx_frameworks = ["SDL2"]
+osx_url_schemes = ["com.doe.morphiqlume"]
 
 #================================================================================
 
