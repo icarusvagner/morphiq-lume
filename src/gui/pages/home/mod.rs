@@ -76,7 +76,7 @@ pub struct Home {
 	pub content: ContentView,
 	pub settings: SettingsView,
 	pub dashboard: DashboardView,
-	employee: EmployeeView,
+	pub employee: EmployeeView,
 }
 
 #[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
@@ -104,8 +104,8 @@ impl Home {
 			Scrollable::new(self.to_view(self.content, morphiq))
 				.direction(scrollable::Direction::Vertical(
 					scrollable::Scrollbar::new()
-						.width(0.0)
-						.margin(0.0)
+						.width(2.0)
+						.margin(2.0)
 						.scroller_width(3.0)
 						.anchor(scrollable::Anchor::Start),
 				))

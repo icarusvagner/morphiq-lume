@@ -198,14 +198,30 @@ impl ButtonType {
 
 		Style {
 			background: Some(match self {
-				ButtonType::Primary => Background::Color(colors.primary),
-				ButtonType::Secondary => Background::Color(colors.secondary),
-				ButtonType::Accent => Background::Color(colors.accent),
-				ButtonType::Neutral => Background::Color(colors.neutral),
-				ButtonType::Info => Background::Color(colors.info),
-				ButtonType::Success => Background::Color(colors.success),
-				ButtonType::Warning => Background::Color(colors.warning),
-				ButtonType::Error => Background::Color(colors.error),
+				ButtonType::Primary => {
+					Background::Color(self.lighten_color(colors.primary))
+				}
+				ButtonType::Secondary => {
+					Background::Color(self.lighten_color(colors.secondary))
+				}
+				ButtonType::Accent => {
+					Background::Color(self.lighten_color(colors.accent))
+				}
+				ButtonType::Neutral => {
+					Background::Color(self.lighten_color(colors.neutral))
+				}
+				ButtonType::Info => {
+					Background::Color(self.lighten_color(colors.info))
+				}
+				ButtonType::Success => {
+					Background::Color(self.lighten_color(colors.success))
+				}
+				ButtonType::Warning => {
+					Background::Color(self.lighten_color(colors.warning))
+				}
+				ButtonType::Error => {
+					Background::Color(self.lighten_color(colors.error))
+				}
 				ButtonType::Ghost => Background::Color(Color::TRANSPARENT),
 				_ => Background::Color(colors.base_300),
 			}),

@@ -63,19 +63,6 @@ pub struct DashboardView {
 
 impl Default for DashboardView {
 	fn default() -> Self {
-		let interaction: [String; 2] =
-			[String::from("Clock In"), String::from("Clock Out")];
-		let rand_num = rng().random_range(0..=1);
-		let rand_hours = rng().random_range(1..=10);
-
-		let statuses: [String; 4] = [
-			String::from("Active"),
-			String::from("Inactive"),
-			String::from("Late"),
-			String::from("Onboarding"),
-		];
-		let rand_num_2 = rng().random_range(0..=3);
-
 		let table = GenTableDashboard::new(
 			"Employee List".to_string(),
 			[
@@ -87,14 +74,29 @@ impl Default for DashboardView {
 				"Status".to_string(),
 			]
 			.to_vec(),
-			(0..10)
-				.map(|_| RowTable {
-					id_num: unique::uuid_v4(),
-					full_name: name::full(),
-					department: job::descriptor(),
-					interaction: interaction[rand_num].clone(),
-					work_hours: format!("{rand_hours} HRS"),
-					status: statuses[rand_num_2].clone(),
+			(0..20)
+				.map(|_| {
+					let interaction: [String; 2] =
+						[String::from("Clock In"), String::from("Clock Out")];
+					let rand_num = rng().random_range(0..=1);
+					let rand_hours = rng().random_range(1..=10);
+
+					let statuses: [String; 4] = [
+						String::from("Active"),
+						String::from("Inactive"),
+						String::from("Late"),
+						String::from("Onboarding"),
+					];
+					let rand_num_2 = rng().random_range(0..=3);
+
+					RowTable {
+						id_num: unique::uuid_v4(),
+						full_name: name::full(),
+						department: job::descriptor(),
+						interaction: interaction[rand_num].clone(),
+						work_hours: format!("{rand_hours} HRS"),
+						status: statuses[rand_num_2].clone(),
+					}
 				})
 				.collect(),
 		);

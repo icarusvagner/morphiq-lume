@@ -10,6 +10,7 @@ use iced::{
 	widget::{
 		Column,
 		Row,
+		button,
 		container,
 		horizontal_space,
 		text,
@@ -39,6 +40,7 @@ use crate::{
 			RowTable,
 		},
 		styles::{
+			button::ButtonType,
 			container::ContainerType,
 			rule::RuleType,
 			style_constant::fonts::RALEWAY_BOLD,
@@ -46,31 +48,20 @@ use crate::{
 		},
 		types::message::Message,
 	},
+	utils::types::icon::Icon,
 };
 
 #[derive(Clone, Debug)]
 pub struct EmployeeView {
-	pub employee_table: GenTableEmployee,
+	pub table: GenTableEmployee,
 }
 
 impl Default for EmployeeView {
 	fn default() -> Self {
-		let interaction: [String; 2] =
-			[String::from("Clock In"), String::from("Clock Out")];
-		let rand_num = rng().random_range(0..=1);
-		let rand_hours = rng().random_range(1..=10);
-
-		let statuses: [String; 4] = [
-			String::from("Active"),
-			String::from("Inactive"),
-			String::from("Late"),
-			String::from("Onboarding"),
-		];
-		let rand_num_2 = rng().random_range(0..=3);
-
-		let employee_table = GenTableEmployee::new(
+		let table = GenTableEmployee::new(
 			"Employee List".to_string(),
 			[
+				"#".to_string(),
 				"ID Num".to_string(),
 				"Fullname".to_string(),
 				"Position".to_string(),
@@ -80,20 +71,35 @@ impl Default for EmployeeView {
 				"Status".to_string(),
 			]
 			.to_vec(),
-			(0..10)
-				.map(|_| RowTable {
-					id_num: unique::uuid_v4(),
-					full_name: name::full(),
-					position: job::title(),
-					department: job::descriptor(),
-					interaction: interaction[rand_num].clone(),
-					work_hours: format!("{rand_hours} HRS"),
-					status: statuses[rand_num_2].clone(),
+			(0..20)
+				.map(|_| {
+					let interaction: [String; 2] =
+						[String::from("Clock In"), String::from("Clock Out")];
+					let rand_num = rng().random_range(0..=1);
+					let rand_hours = rng().random_range(1..=10);
+
+					let statuses: [String; 4] = [
+						String::from("Active"),
+						String::from("Inactive"),
+						String::from("Late"),
+						String::from("Onboarding"),
+					];
+					let rand_num_2 = rng().random_range(0..=3);
+
+					RowTable {
+						id_num: unique::uuid_v4(),
+						full_name: name::full(),
+						position: job::title(),
+						department: job::descriptor(),
+						interaction: interaction[rand_num].clone(),
+						work_hours: format!("{rand_hours} HRS"),
+						status: statuses[rand_num_2].clone(),
+					}
 				})
 				.collect(),
 		);
 
-		Self { employee_table }
+		Self { table }
 	}
 }
 
@@ -102,11 +108,33 @@ impl EmployeeView {
 	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let content = Column::new()
 			.push(
-				text("Employee Overview")
-					.size(32.0)
-					.align_y(Alignment::Center)
-					.align_x(Alignment::Start)
-					.font(RALEWAY_BOLD),
+				Row::new()
+					.push(
+						text("Employee Overview")
+							.size(32.0)
+							.align_y(Alignment::Center)
+							.align_x(Alignment::Start)
+							.font(RALEWAY_BOLD),
+					)
+					.push(horizontal_space())
+					.push(
+						button(
+							Row::new()
+								.push(
+									Icon::UserRoundPlus
+										.to_text()
+										.size(18)
+										.align_y(Vertical::Center),
+								)
+								.push(
+									text("Register Employee")
+										.align_y(Vertical::Center),
+								)
+								.align_y(Alignment::Center),
+						)
+						.class(ButtonType::Info),
+					)
+					.align_y(Alignment::Center),
 			)
 			.push(
 				Row::new()
@@ -130,7 +158,7 @@ impl EmployeeView {
 					.height(500.0)
 					.spacing(15.0),
 			)
-			.push(self.employee_table.view(morphiq))
+			.push(self.table.view(morphiq))
 			.spacing(15.0);
 
 		container(content).into()

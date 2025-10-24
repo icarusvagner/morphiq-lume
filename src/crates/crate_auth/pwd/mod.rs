@@ -153,7 +153,7 @@ mod tests {
 	#[tokio::test]
 	async fn test_multi_scheme_ok() -> Result<()> {
 		// -- Setup & Fixtures
-		let fx_salt = Uuid::parse_str("f05e8961-d6ad-4086-9e78-a6de065e5453")?;
+		let fx_salt = Uuid::parse_str("818ab2bd-6e29-4be3-b2aa-504340450af6")?;
 		let fx_to_hash =
 			ContentToHash { content: "hello world".to_string(), salt: fx_salt };
 

@@ -4,6 +4,7 @@ use crate::{
 	chart::ChartMessage,
 	gui::{
 		pages::{
+			OpenPage,
 			home::HomeMessage,
 			login::LoginMessage,
 		},
@@ -38,6 +39,7 @@ pub enum Message {
 	/// Login view message
 	Login(LoginMessage),
 	Home(HomeMessage),
+	ChangePage(OpenPage),
 
 	/// Messages for Charts
 	Chart(ChartMessage),

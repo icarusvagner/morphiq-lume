@@ -76,7 +76,7 @@ impl Login {
 	}
 
 	fn username_input(&self) -> Element<'_, Message, StyleType> {
-		Column::new()
+		let mut content = Column::new()
 			.push(
 				text("Username")
 					.size(18)
@@ -98,8 +98,15 @@ impl Login {
 				.width(Length::Fill)
 				.class(ContainerType::Bordered),
 			)
-			.spacing(3)
-			.into()
+			.spacing(3);
+
+		if self.username.is_empty() {
+			content = content.push(
+				text("Username is required*").size(14).class(TextType::Error),
+			);
+		}
+
+		content.into()
 	}
 
 	fn password_input(&self) -> Element<'_, Message, StyleType> {
@@ -173,14 +180,26 @@ impl Login {
 			.into()
 	}
 
-	pub(crate) fn update(&mut self, message: LoginMessage) {
+	pub(crate) fn update(&mut self, message: LoginMessage) -> Option<Message> {
 		match message {
 			LoginMessage::InputFieldChange(username, password) => {
 				self.username = username;
 				self.password = password;
+				None
 			}
-			LoginMessage::LoginSubmitted => {}
-			LoginMessage::ShowPassword => self.is_pwd = !self.is_pwd,
+			LoginMessage::LoginSubmitted => {
+				if self.username.is_empty() && self.password.is_empty()
+					|| self.username.len().lt(&5) && self.password.len().lt(&8)
+				{
+					return None;
+				}
+
+				Some(Message::ChangePage(super::OpenPage::Home))
+			}
+			LoginMessage::ShowPassword => {
+				self.is_pwd = !self.is_pwd;
+				None
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@ pub enum TableMessage {
 #[derive(Debug, Clone)]
 pub enum DashboardTableMsg {
 	Search(String),
-	SubmitSearch,
+	FilteredBy(FilterEmployee),
 	Todo1,
 	Todo2,
 }
@@ -15,7 +15,15 @@ pub enum DashboardTableMsg {
 #[derive(Debug, Clone)]
 pub enum EmployeeTableMsg {
 	Search(String),
-	SubmitSearch,
+	FilteredBy(FilterEmployee),
 	Todo1,
 	Todo2,
+}
+
+#[derive(Debug, Clone)]
+pub enum FilterEmployee {
+	Department,
+	IdNumber,
+	Fullname,
+	Status,
 }

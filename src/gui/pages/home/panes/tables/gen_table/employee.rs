@@ -6,9 +6,11 @@ use iced::{
 	widget::{
 		Column,
 		Row,
+		Scrollable,
 		button,
 		container,
 		horizontal_rule,
+		scrollable,
 		text,
 		text_input,
 	},
@@ -39,7 +41,14 @@ use crate::{
 			text_input::TextInputType,
 			types::style_type::StyleType,
 		},
-		types::message::Message,
+		types::{
+			message::Message,
+			tables::{
+				EmployeeTableMsg,
+				FilterEmployee,
+				TableMessage,
+			},
+		},
 	},
 	utils::types::icon::Icon,
 };
@@ -49,6 +58,7 @@ pub struct GenTableEmployee {
 	title: String,
 	header: Vec<String>,
 	body: Vec<RowTable>,
+	temp: Vec<RowTable>,
 	search: String,
 }
 
@@ -112,18 +122,17 @@ impl GenTableEmployee {
 
 	fn bodies(&self, separator_type: RuleType) -> Grid<'_, Message, StyleType> {
 		let mut content = Grid::new()
-			.width(Length::Fill)
 			.row_spacing(5.0)
 			.row_height(12.0)
-			.column_width(Length::Fill)
 			.column_spacing(5.0)
 			.push(self.headers())
 			.push(self.separators(separator_type));
 
-		for v in &self.body {
+		for (i, v) in self.body.iter().enumerate() {
 			let mut body_content = GridRow::new();
 
 			body_content = body_content
+				.push(text(i))
 				.push(text(v.id_num.clone()))
 				.push(text(v.full_name.clone()))
 				.push(text(v.position.clone()))
@@ -141,12 +150,12 @@ impl GenTableEmployee {
 		self.title.clone()
 	}
 
-	pub const fn new(
+	pub fn new(
 		title: String,
 		header: Vec<String>,
 		body: Vec<RowTable>,
 	) -> Self {
-		Self { title, header, body, search: String::new() }
+		Self { title, header, temp: body.clone(), body, search: String::new() }
 	}
 
 	fn menu_bar(&self) -> MenuBar<'_, Message, StyleType, Renderer> {
@@ -159,14 +168,75 @@ impl GenTableEmployee {
 		let menu_bar: MenuBar<'_, Message, StyleType, Renderer> = menu_bar!((
 			button(icon_with_name).class(ButtonType::Ghost),
 			menu_template(menu_items!((button("Department")
+				.width(Length::Fill)
+				.on_press(Message::Tables(TableMessage::Employee(
+					EmployeeTableMsg::FilteredBy(FilterEmployee::Department)
+				)))
 				.class(ButtonType::Ghost))(
-				button("ID Number").class(ButtonType::Ghost)
+				button("ID Number")
+					.width(Length::Fill)
+					.on_press(Message::Tables(TableMessage::Employee(
+						EmployeeTableMsg::FilteredBy(FilterEmployee::IdNumber)
+					)))
+					.class(ButtonType::Ghost)
 			)(
-				button("Status").class(ButtonType::Ghost)
+				button("Status")
+					.width(Length::Fill)
+					.on_press(Message::Tables(TableMessage::Employee(
+						EmployeeTableMsg::FilteredBy(FilterEmployee::Status)
+					)))
+					.class(ButtonType::Ghost)
+			)(
+				button("Fullname")
+					.width(Length::Fill)
+					.on_press(Message::Tables(TableMessage::Employee(
+						EmployeeTableMsg::FilteredBy(FilterEmployee::Fullname)
+					)))
+					.class(ButtonType::Ghost)
 			)))
 		));
 
 		menu_bar
+	}
+
+	pub fn update(&mut self, message: EmployeeTableMsg) {
+		match message {
+			EmployeeTableMsg::Search(val) => {
+				println!("{val}");
+				self.search = val;
+				if self.search.is_empty() {
+					self.body = self.temp.clone();
+					return;
+				}
+
+				let results: Vec<RowTable> = self
+					.temp
+					.iter()
+					.filter(|v| v.full_name.contains(&self.search))
+					.cloned()
+					.collect();
+				if results.is_empty() {
+					self.body = self.temp.clone();
+				} else {
+					self.body = results;
+				}
+			}
+			EmployeeTableMsg::FilteredBy(filter_by) => match filter_by {
+				FilterEmployee::Department => {
+					self.body.sort_by(|a, b| a.department.cmp(&b.department));
+				}
+				FilterEmployee::IdNumber => {
+					self.body.sort_by(|a, b| a.id_num.cmp(&b.id_num));
+				}
+				FilterEmployee::Fullname => {
+					self.body.sort_by(|a, b| a.full_name.cmp(&b.full_name));
+				}
+				FilterEmployee::Status => {
+					self.body.sort_by(|a, b| a.status.cmp(&b.status));
+				}
+			},
+			_ => unreachable!(),
+		}
 	}
 
 	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
@@ -176,9 +246,14 @@ impl GenTableEmployee {
 			.push(text(self.title()).size(24.0).font(RALEWAY_BOLD))
 			.push(
 				container(
-					text_input("Search...", &self.search)
+					text_input("Search fullname...", &self.search)
 						.width(Length::Fill)
-						.class(TextInputType::Ghost),
+						.class(TextInputType::Ghost)
+						.on_input(|val| {
+							Message::Tables(TableMessage::Employee(
+								EmployeeTableMsg::Search(val),
+							))
+						}),
 				)
 				.class(ContainerType::Bordered)
 				.padding(
@@ -188,12 +263,31 @@ impl GenTableEmployee {
 			.push(self.menu_bar())
 			.spacing(15.0);
 
+		let scroll_content = Scrollable::new(
+			self.bodies(RuleType::PaletteColor(style.base_200, 2)),
+		)
+		.direction(scrollable::Direction::Vertical(
+			scrollable::Scrollbar::new()
+				.width(2.0)
+				.margin(2.0)
+				.scroller_width(4.0)
+				.anchor(scrollable::Anchor::Start),
+		))
+		.width(Length::Fill)
+		.height(Length::Fill);
+
 		let content = Column::new()
 			.push(header_elements)
-			.push(self.bodies(RuleType::PaletteColor(style.base_200, 2)))
+			.push(scroll_content)
+			.height(Length::Fill)
 			.spacing(15.0)
 			.padding(5.0);
 
-		container(content).class(ContainerType::Base300).padding(15.0).into()
+		container(content)
+			.height(550.0)
+			.width(Length::Fill)
+			.class(ContainerType::Base300)
+			.padding(15.0)
+			.into()
 	}
 }

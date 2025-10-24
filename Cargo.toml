@@ -131,6 +131,8 @@ uuid = { version = "1.17.0", features = [
         "v7",
 ] } # Generate UUIDs for records
 base64 = "0.22.1" # Encode/decode Base64 (for tokens, IDs)
+data-encoding = "2.9.0"
+base58 = "0.2.0"
 
 # Visual Transitions / Interpolation
 splines = "5.0.0" # Smooth animations, easing, graph lines

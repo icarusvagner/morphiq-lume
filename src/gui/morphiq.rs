@@ -12,7 +12,6 @@ use crate::{
 			OpenPage,
 			Pages,
 			home::HomeMessage,
-			login::LoginMessage,
 		},
 		styles::types::style_type::StyleType,
 		types::{
@@ -77,12 +76,11 @@ impl Morphiq {
 				);
 			}
 			Message::Login(login_msg) => {
-				if matches!(login_msg, LoginMessage::LoginSubmitted) {
-					self.open_page = OpenPage::Home;
-				} else {
-					self.page.login.update(login_msg);
+				if let Some(callback_msg) = self.page.login.update(login_msg) {
+					return self.update(callback_msg);
 				}
 			}
+			Message::ChangePage(open_page) => self.open_page = open_page,
 			Message::Home(home_msg) => {
 				if matches!(home_msg, HomeMessage::Logout) {
 					self.open_page = OpenPage::Login;
@@ -101,7 +99,9 @@ impl Morphiq {
 				TableMessage::Dashboard(dashboard_msg) => {
 					self.page.home.dashboard.table.update(dashboard_msg);
 				}
-				TableMessage::Employee(_employee_msg) => {}
+				TableMessage::Employee(employee_msg) => {
+					self.page.home.employee.table.update(employee_msg);
+				}
 			},
 			// Message::Chart(_) => {}
 			_ => {}

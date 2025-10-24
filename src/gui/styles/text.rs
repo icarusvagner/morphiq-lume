@@ -15,6 +15,10 @@ pub enum TextType {
 	BaseContent,
 	Content,
 	Standard,
+	Info,
+	Success,
+	Warning,
+	Error,
 }
 
 #[allow(clippy::trivially_copy_pass_by_ref, clippy::use_self)]
@@ -30,6 +34,10 @@ impl TextType {
 					TextType::BaseContent => color.base_content,
 					TextType::Content => color.primary_content,
 					TextType::Standard => Color::default(),
+					TextType::Info => color.info,
+					TextType::Success => color.success,
+					TextType::Warning => color.warning,
+					TextType::Error => color.error,
 				})
 			},
 		}
