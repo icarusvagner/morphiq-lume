@@ -17,6 +17,15 @@ use iced::{
 		vertical_space,
 	},
 };
+use mockd::{
+	job,
+	name,
+	unique,
+};
+use rand::{
+	Rng,
+	rng,
+};
 
 use crate::{
 	chart::types::{
@@ -28,7 +37,11 @@ use crate::{
 			dashboard_card,
 			sec_card,
 		},
-		pages::home::panes::tables::dashboard_table::DashboardTable,
+		morphiq::Morphiq,
+		pages::home::panes::tables::gen_table::dashboard::{
+			GenTableDashboard,
+			RowTable,
+		},
 		styles::{
 			container::ContainerType,
 			rule::RuleType,
@@ -43,14 +56,56 @@ use crate::{
 	utils::types::icon::Icon,
 };
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct DashboardView {
-	pub table_01: DashboardTable,
+	pub table: GenTableDashboard,
+}
+
+impl Default for DashboardView {
+	fn default() -> Self {
+		let interaction: [String; 2] =
+			[String::from("Clock In"), String::from("Clock Out")];
+		let rand_num = rng().random_range(0..=1);
+		let rand_hours = rng().random_range(1..=10);
+
+		let statuses: [String; 4] = [
+			String::from("Active"),
+			String::from("Inactive"),
+			String::from("Late"),
+			String::from("Onboarding"),
+		];
+		let rand_num_2 = rng().random_range(0..=3);
+
+		let table = GenTableDashboard::new(
+			"Employee List".to_string(),
+			[
+				"ID Num".to_string(),
+				"Fullname".to_string(),
+				"Department".to_string(),
+				"Interaction".to_string(),
+				"Work Hours".to_string(),
+				"Status".to_string(),
+			]
+			.to_vec(),
+			(0..10)
+				.map(|_| RowTable {
+					id_num: unique::uuid_v4(),
+					full_name: name::full(),
+					department: job::descriptor(),
+					interaction: interaction[rand_num].clone(),
+					work_hours: format!("{rand_hours} HRS"),
+					status: statuses[rand_num_2].clone(),
+				})
+				.collect(),
+		);
+
+		Self { table }
+	}
 }
 
 #[allow(clippy::unused_self)]
 impl DashboardView {
-	pub fn view(&self) -> Element<'_, Message, StyleType> {
+	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let first_cards = container(
 			Row::new()
 				.push(dashboard_card(
@@ -122,7 +177,7 @@ impl DashboardView {
 					.push(self.chart_02())
 					.spacing(15.0),
 			)
-			.push(self.table_01.view())
+			.push(self.table.view(morphiq))
 			.spacing(15.0);
 
 		container(content).width(Length::Fill).into()

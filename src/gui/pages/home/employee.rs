@@ -80,8 +80,8 @@ impl Default for EmployeeView {
 				"Status".to_string(),
 			]
 			.to_vec(),
-			[
-				RowTable {
+			(0..10)
+				.map(|_| RowTable {
 					id_num: unique::uuid_v4(),
 					full_name: name::full(),
 					position: job::title(),
@@ -89,45 +89,8 @@ impl Default for EmployeeView {
 					interaction: interaction[rand_num].clone(),
 					work_hours: format!("{rand_hours} HRS"),
 					status: statuses[rand_num_2].clone(),
-				},
-				RowTable {
-					id_num: unique::uuid_v4(),
-					full_name: name::full(),
-					position: job::title(),
-					department: job::descriptor(),
-					interaction: interaction[rand_num].clone(),
-					work_hours: format!("{rand_hours} HRS"),
-					status: statuses[rand_num_2].clone(),
-				},
-				RowTable {
-					id_num: unique::uuid_v4(),
-					full_name: name::full(),
-					position: job::title(),
-					department: job::descriptor(),
-					interaction: interaction[rand_num].clone(),
-					work_hours: format!("{rand_hours} HRS"),
-					status: statuses[rand_num_2].clone(),
-				},
-				RowTable {
-					id_num: unique::uuid_v4(),
-					full_name: name::full(),
-					position: job::title(),
-					department: job::descriptor(),
-					interaction: interaction[rand_num].clone(),
-					work_hours: format!("{rand_hours} HRS"),
-					status: statuses[rand_num_2].clone(),
-				},
-				RowTable {
-					id_num: unique::uuid_v4(),
-					full_name: name::full(),
-					position: job::title(),
-					department: job::descriptor(),
-					interaction: interaction[rand_num].clone(),
-					work_hours: format!("{rand_hours} HRS"),
-					status: statuses[rand_num_2].clone(),
-				},
-			]
-			.to_vec(),
+				})
+				.collect(),
 		);
 
 		Self { employee_table }

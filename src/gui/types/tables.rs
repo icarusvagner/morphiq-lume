@@ -1,5 +1,3 @@
-use iced::widget::scrollable;
-
 #[derive(Debug, Clone)]
 pub enum TableMessage {
 	Dashboard(DashboardTableMsg),
@@ -8,14 +6,16 @@ pub enum TableMessage {
 
 #[derive(Debug, Clone)]
 pub enum DashboardTableMsg {
-	SyncHeader(scrollable::AbsoluteOffset),
-	Resizing(usize, f32),
-	Resized,
+	Search(String),
+	SubmitSearch,
+	Todo1,
+	Todo2,
 }
 
 #[derive(Debug, Clone)]
 pub enum EmployeeTableMsg {
-	SyncHeader(scrollable::AbsoluteOffset),
-	Resizing(usize, f32),
-	Resized,
+	Search(String),
+	SubmitSearch,
+	Todo1,
+	Todo2,
 }

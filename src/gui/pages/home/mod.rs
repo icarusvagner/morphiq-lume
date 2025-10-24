@@ -138,7 +138,7 @@ impl Home {
 				self.settings.view(settings_view, morphiq)
 			}
 			ContentView::EditProfile => EditProfileView::view(),
-			_ => DashboardView::view(&self.dashboard),
+			_ => self.dashboard.view(morphiq),
 		})
 		.padding(Padding::ZERO.left(15).right(15).bottom(5))
 		.into()

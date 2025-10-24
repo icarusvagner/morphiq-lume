@@ -24,9 +24,9 @@ use crate::gui::styles::{
 #[derive(Default)]
 pub enum MenuType {
 	Base100,
+	#[default]
 	Base200,
 	Base300,
-	#[default]
 	Primary,
 	Secondary,
 	Accent,
@@ -82,7 +82,7 @@ impl MenuType {
 				},
 			},
 			bar_shadow: Shadow::default(),
-			bar_background_expand: Padding::from(5.0),
+			bar_background_expand: Padding::default(),
 			menu_background: match self {
 				MenuType::Base100 => Background::Color(colors.base_100),
 				MenuType::Base200 => Background::Color(colors.base_200),

@@ -1,10 +1,7 @@
 use iced::{
 	Element,
 	Task,
-	widget::{
-		container,
-		scrollable,
-	},
+	widget::container,
 	window,
 };
 
@@ -18,7 +15,10 @@ use crate::{
 			login::LoginMessage,
 		},
 		styles::types::style_type::StyleType,
-		types::message::Message,
+		types::{
+			message::Message,
+			tables::TableMessage,
+		},
 	},
 };
 
@@ -97,34 +97,12 @@ impl Morphiq {
 					self.configs.settings.style = StyleType::Light;
 				}
 			}
-			Message::SyncHeader(offset) => {
-				return Task::batch(vec![
-					scrollable::scroll_to(
-						self.page.home.dashboard.table_01.header.clone(),
-						offset,
-					),
-					scrollable::scroll_to(
-						self.page.home.dashboard.table_01.footer.clone(),
-						offset,
-					),
-				]);
-			}
-			Message::Resizing(index, offset) => {
-				if let Some(column) =
-					self.page.home.dashboard.table_01.columns.get_mut(index)
-				{
-					column.resize_offset = Some(offset);
+			Message::Tables(tbl_msg) => match tbl_msg {
+				TableMessage::Dashboard(dashboard_msg) => {
+					self.page.home.dashboard.table.update(dashboard_msg);
 				}
-			}
-			Message::Resized => {
-				self.page.home.dashboard.table_01.columns.iter_mut().for_each(
-					|column| {
-						if let Some(offset) = column.resize_offset.take() {
-							column.width += offset;
-						}
-					},
-				);
-			}
+				TableMessage::Employee(_employee_msg) => {}
+			},
 			// Message::Chart(_) => {}
 			_ => {}
 		}

@@ -1,7 +1,4 @@
-use iced::{
-	widget::scrollable,
-	window,
-};
+use iced::window;
 
 use crate::{
 	chart::ChartMessage,
@@ -47,7 +44,4 @@ pub enum Message {
 
 	/// Tables messages
 	Tables(TableMessage),
-	SyncHeader(scrollable::AbsoluteOffset),
-	Resizing(usize, f32),
-	Resized,
 }
