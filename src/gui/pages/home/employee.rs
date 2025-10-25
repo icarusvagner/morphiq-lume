@@ -10,7 +10,6 @@ use iced::{
 	widget::{
 		Column,
 		Row,
-		button,
 		container,
 		horizontal_space,
 		text,
@@ -21,7 +20,6 @@ use iced::{
 use mockd::{
 	job,
 	name,
-	unique,
 };
 use rand::{
 	Rng,
@@ -33,6 +31,7 @@ use crate::{
 		bar_chart::histogram_chart,
 		donut_chart::donut_chart,
 	},
+	crates::crate_utils::b32::b32hexu_encode,
 	gui::{
 		morphiq::Morphiq,
 		pages::home::panes::tables::gen_table::employee::{
@@ -40,7 +39,6 @@ use crate::{
 			RowTable,
 		},
 		styles::{
-			button::ButtonType,
 			container::ContainerType,
 			rule::RuleType,
 			style_constant::fonts::RALEWAY_BOLD,
@@ -48,7 +46,6 @@ use crate::{
 		},
 		types::message::Message,
 	},
-	utils::types::icon::Icon,
 };
 
 #[derive(Clone, Debug)]
@@ -72,7 +69,7 @@ impl Default for EmployeeView {
 			]
 			.to_vec(),
 			(0..20)
-				.map(|_| {
+				.map(|i| {
 					let interaction: [String; 2] =
 						[String::from("Clock In"), String::from("Clock Out")];
 					let rand_num = rng().random_range(0..=1);
@@ -85,9 +82,10 @@ impl Default for EmployeeView {
 						String::from("Onboarding"),
 					];
 					let rand_num_2 = rng().random_range(0..=3);
+					let id_num = b32hexu_encode(format!("emp-{i}").as_str());
 
 					RowTable {
-						id_num: unique::uuid_v4(),
+						id_num,
 						full_name: name::full(),
 						position: job::title(),
 						department: job::descriptor(),
@@ -115,24 +113,6 @@ impl EmployeeView {
 							.align_y(Alignment::Center)
 							.align_x(Alignment::Start)
 							.font(RALEWAY_BOLD),
-					)
-					.push(horizontal_space())
-					.push(
-						button(
-							Row::new()
-								.push(
-									Icon::UserRoundPlus
-										.to_text()
-										.size(18)
-										.align_y(Vertical::Center),
-								)
-								.push(
-									text("Register Employee")
-										.align_y(Vertical::Center),
-								)
-								.align_y(Alignment::Center),
-						)
-						.class(ButtonType::Info),
 					)
 					.align_y(Alignment::Center),
 			)

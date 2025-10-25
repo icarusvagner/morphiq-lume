@@ -3,6 +3,7 @@ use iced::{
 	Length,
 	Padding,
 	Renderer,
+	alignment::Horizontal,
 	widget::{
 		Column,
 		Row,
@@ -101,7 +102,10 @@ impl GenTableEmployee {
 		let mut grid_row = GridRow::new();
 		for i in 0..self.header.len() {
 			grid_row = grid_row.push(
-				text(self.header[i].clone()).size(18.0).font(OUTFIT_BOLD),
+				text(self.header[i].clone())
+					.size(18.0)
+					.font(OUTFIT_BOLD)
+					.align_x(Horizontal::Left),
 			);
 		}
 

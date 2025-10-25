@@ -94,6 +94,7 @@ iced = { version = "0.13.1", features = [
         "lazy",
         "image",
         "canvas",
+        "wgpu",
 ] } # Native GUI framework
 palette = "0.7.6" # Color palette library (for dynamic themes)
 
@@ -173,6 +174,7 @@ tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
 serde_with = { version = "3.15.0", features = ["time_0_3"] }
 iced_aw = { version = "0.12.2", features = ["menu"] }
+duckdb = { version = "1.4.1", features = ["bundled"] }
 
 #================================================================================
 
@@ -213,66 +215,119 @@ rustrict = { version = "0.7.36", default-features = false, features = [
 [target.'cfg(windows)'.build-dependencies]
 winres = "0.1.12"
 
+# ============================================================
+# 🐧 LINUX PACKAGING CONFIGURATIONS (.deb / .rpm / .AppImage)
+# ============================================================
+
 [package.metadata.deb]
+name = "morphiq-lume"
 maintainer = "Akaza Ruthven <ruthakaza@gmail.com>"
-copyright = "2025, Akaza Ruthven"
 license-file = ["LICENSE", "0"]
-depends = "$auto"
 section = "utils"
 priority = "optional"
+depends = "$auto"
 assets = [
-        [
-                "target/release/rust-gui-kit",
-                "usr/bin/",
-                "755",
-        ],
-        [
-                "assets/packaging/linux/rust-gui-kit.desktop",
-                "usr/share/applications/",
-                "644",
-        ],
-        [
-                "assets/packaging/linux/rust-gui-kit.png",
-                "usr/share/icons/hicolor/256x256/apps/",
-                "644",
-        ],
+    ["target/release/morphiq-lume", "usr/bin/", "755"],
+    ["assets/packaging/linux/morphiq-lume.desktop", "usr/share/applications/", "644"],
+    ["assets/logos/icons/full/icon.png", "usr/share/icons/hicolor/256x256/apps/", "644"],
 ]
+suggests = ["libgl1-mesa-glx", "libsdl2-2.0-0 (>= 2.0.5)"]
+conflicts = ["morphiq-lume-beta"]
 
 [package.metadata.rpm]
+name = "morphiq-lume"
 maintainer = "Akaza Ruthven <ruthakaza@gmail.com>"
 license = "MIT"
+summary = "Cross-platform HR management suite built in Rust with Iced"
+group = "Applications/Productivity"
 assets = [
-        [
-                "target/release/rust-gui-kit",
-                "/usr/bin/",
-                "755",
-        ],
-        [
-                "assets/packaging/linux/rust-gui-kit.desktop",
-                "/usr/share/applications/",
-                "644",
-        ],
-        [
-                "assets/packaging/linux/rust-gui-kit.png",
-                "/usr/share/icons/hicolor/256x256/apps/",
-                "644",
-        ],
+    ["target/release/morphiq-lume", "/usr/bin/", "755"],
+    ["assets/packaging/linux/morphiq-lume.desktop", "/usr/share/applications/", "644"],
+    ["assets/logos/icons/full/icon.png", "/usr/share/icons/hicolor/256x256/apps/", "644"],
 ]
+
+[package.metadata.appimage]
+# Used by cargo-appimage
+name = "Morphiq Lume"
+icon = "assets/logos/icons/full/icon.png"
+category = "Office"
+exec = "morphiq-lume"
+desktop = "assets/packaging/linux/morphiq-lume.desktop"
+additional_files = [
+    "assets/fonts/",
+    "assets/logos/",
+]
+license = "MIT"
+arch = "x86_64"
+
+# ============================================================
+# 🪟 WINDOWS PACKAGING CONFIGURATION (.exe)
+# ============================================================
+
+[package.metadata.bundle.windows]
+display_name = "Morphiq Lume"
+identifier = "com.morphiq.lume"
+icon = [
+    "assets/logos/icons/full/icon.ico",
+    "assets/logos/icons/raw/icon.ico"
+]
+copyright = "© 2025 Morphiq Lume"
+version = "1.0.0"
+category = "Office"
+description = """
+Morphiq Lume brings clarity and precision to HR operations, built with Rust and Iced.
+"""
+# Optional: add resource embedding using winres
+resources = [
+    "assets/fonts/",
+    "assets/logos/",
+    "assets/configs/"
+]
+shortcuts = true
+start_menu = true
+url_protocols = ["morphiqlume"]
+installer = { type = "nsis" }  # or "innosetup"
+
+# ============================================================
+# 🍎 MACOS PACKAGING CONFIGURATION (.app)
+# ============================================================
+
+[package.metadata.bundle.osx]
+name = "Morphiq Lume"
+identifier = "com.morphiq.lume"
+icon = [
+    "assets/logos/icons/full/icon.icns",
+]
+version = "1.0.0"
+category = "public.app-category.productivity"
+resources = [
+    "assets/",
+]
+osx_url_schemes = ["com.morphiq.lume"]
+osx_frameworks = ["SDL2"]
+copyright = "© 2025 Morphiq Lume"
+short_description = "Modern HR management software built in Rust"
+long_description = """
+Morphiq Lume is a secure, fast, and modern desktop HR system built using Rust and the Iced GUI framework.
+It manages employees, payroll, attendance, and analytics in a clean, elegant UI.
+"""
+
+# ============================================================
+# 🧊 UNIVERSAL BUNDLE METADATA (used by cargo-bundle for all)
+# ============================================================
 
 [package.metadata.bundle]
 name = "Morphiq Lume"
-identifier = "com.doe.morphiqlume"
-icon = ["32x32.png", "128x128.png", "128x128@2x.png"]
+identifier = "com.morphiq.lume"
+icon = [
+    "assets/logos/icons/full/icon.png",
+]
 version = "1.0.0"
-resources = ["assets", "images/**/*.png", "secrets/public_key.txt"]
-copyright = "Copyright (c) Morphiq Lume 2025. All rights reserved."
-category = "Developer Tool"
-short_description = "A Cross-platform desktop app"
-long_description = """Morphiq Lume is a modern, secure, and efficient desktop-based Human Resource Management Office (HRIS) system built using **Rust** and the **Iced GUI framework**.
-Designed for both government and private institutions, it offers a modular architecture for handling payroll, employee records, attendance, events, and more"""
-deb_depends = ["libgl1-mesa-glx", "libsdl2-2.0-0 (>= 2.0.5)"]
-osx_frameworks = ["SDL2"]
-osx_url_schemes = ["com.doe.morphiqlume"]
+category = "Office"
+resources = ["assets/**/*"]
+copyright = "© 2025 Morphiq Lume"
+short_description = "Cross-platform HRM desktop app"
+long_description = "Morphiq Lume: Transforming Human Resource Operations with Clarity, Precision, and Intelligence."
 
 #================================================================================
 

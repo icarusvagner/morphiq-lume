@@ -62,16 +62,19 @@ mod chart;
 mod configs;
 mod countries;
 mod crates;
+mod error;
 mod gui;
 mod images;
 mod translations;
 mod utils;
 
+use self::error::Result;
+
 const MORPHIQ_LOWERCASE: &str = "morphiq_lume";
 const MORPHIQ_TITLECASE: &str = "Morphiq Lume";
 const WINDOW_ICON: &[u8] = include_bytes!("../assets/logos/icons/raw/icon.png");
 
-pub fn main() -> anyhow::Result<()> {
+pub fn main() -> Result<()> {
 	tracing_subscriber::fmt()
 		.with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
 		.with_target(false)

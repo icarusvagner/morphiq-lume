@@ -1,7 +1,5 @@
 // region:    --- Modules
 
-pub(in crate::crates::crate_core::model) mod dbx;
-
 use sqlx::{
 	Pool,
 	Postgres,

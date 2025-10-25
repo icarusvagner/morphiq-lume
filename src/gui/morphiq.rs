@@ -1,3 +1,4 @@
+use duckdb::Connection;
 use iced::{
 	Element,
 	Task,
@@ -7,6 +8,15 @@ use iced::{
 
 use crate::{
 	configs::config::Configs,
+	crates::crate_core::model::store::{
+		self,
+		Db,
+		new_db_pool,
+	},
+	error::{
+		Error,
+		Result,
+	},
 	gui::{
 		pages::{
 			OpenPage,
@@ -28,7 +38,7 @@ pub const SVG_FULLLOGO_BYTES: &[u8] =
 pub const SVG_EMBLEMLOGO_BYTES: &[u8] =
 	include_bytes!("../../assets/logos/icons/icon_macros.svg");
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct Morphiq {
 	/// Window ID
 	pub id: Option<window::Id>,
@@ -38,6 +48,9 @@ pub struct Morphiq {
 	pub page: Pages,
 	/// Change the running page
 	pub open_page: OpenPage,
+	/// Postgresql database state
+	pub pg_pool: Option<store::Db>,
+	pub duck_pool: Option<Connection>,
 }
 
 impl Morphiq {
@@ -47,6 +60,8 @@ impl Morphiq {
 			id: None,
 			page: Pages::default(),
 			open_page: OpenPage::default(),
+			pg_pool: None,
+			duck_pool: None,
 		}
 	}
 
@@ -120,5 +135,17 @@ impl Morphiq {
 
 	pub const fn scale_factor(&self) -> f64 {
 		self.configs.settings.scale_factor
+	}
+
+	async fn connect_db() -> Result<Db> {
+		let db_pool = new_db_pool()
+			.await
+			.map_err(|ex| Error::DbInitFailed(ex.to_string()))?;
+
+		Ok(db_pool)
+	}
+
+	async fn connect_duckdb() -> Result<()> {
+		todo!()
 	}
 }

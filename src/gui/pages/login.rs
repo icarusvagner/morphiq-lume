@@ -49,12 +49,20 @@ pub struct Login {
 	pub username: String,
 	pub password: String,
 	pub is_pwd: bool,
+	pub password_required: String,
+	pub username_required: String,
 }
 
 impl Default for Login {
 	#[allow(clippy::use_self)]
 	fn default() -> Self {
-		Login { username: String::new(), password: String::new(), is_pwd: true }
+		Login {
+			username: String::new(),
+			password: String::new(),
+			is_pwd: true,
+			password_required: String::new(),
+			username_required: String::new(),
+		}
 	}
 }
 
@@ -100,7 +108,7 @@ impl Login {
 			)
 			.spacing(3);
 
-		if self.username.is_empty() {
+		if !self.username_required.is_empty() {
 			content = content.push(
 				text("Username is required*").size(14).class(TextType::Error),
 			);
@@ -110,7 +118,7 @@ impl Login {
 	}
 
 	fn password_input(&self) -> Element<'_, Message, StyleType> {
-		Column::new()
+		let mut content = Column::new()
 			.push(
 				text("Password")
 					.size(18)
@@ -147,8 +155,15 @@ impl Login {
 				.width(Length::Fill)
 				.class(ContainerType::Base100),
 			)
-			.spacing(5)
-			.into()
+			.spacing(5);
+
+		if !self.password_required.is_empty() {
+			content = content.push(
+				text("Password is required*").size(14).class(TextType::Error),
+			);
+		}
+
+		content.into()
 	}
 
 	fn toggle_pwd(&self) -> Element<'_, Message, StyleType> {
@@ -188,12 +203,11 @@ impl Login {
 				None
 			}
 			LoginMessage::LoginSubmitted => {
-				if self.username.is_empty() && self.password.is_empty()
-					|| self.username.len().lt(&5) && self.password.len().lt(&8)
-				{
+				if self.username.is_empty() && self.password.is_empty() {
+					self.password_required = "Password is required".to_string();
+					self.username_required = "Username is required".to_string();
 					return None;
 				}
-
 				Some(Message::ChangePage(super::OpenPage::Home))
 			}
 			LoginMessage::ShowPassword => {
