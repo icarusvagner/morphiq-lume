@@ -74,7 +74,7 @@ pub fn sec_card<'a>(
 	icon: Icon,
 	icon_color: ContainerType,
 	title: String,
-	count: u64,
+	count: String,
 ) -> Container<'a, Message, StyleType> {
 	let col = Column::new()
 		.push(Text::new(title).size(16).font(RALEWAY_REGULAR))

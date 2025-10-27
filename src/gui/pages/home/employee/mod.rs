@@ -34,9 +34,12 @@ use crate::{
 	crates::crate_utils::b32::b32hexu_encode,
 	gui::{
 		morphiq::Morphiq,
-		pages::home::panes::tables::gen_table::employee::{
-			GenTableEmployee,
-			RowTable,
+		pages::home::{
+			employee::create::CreateEmployee,
+			panes::tables::gen_table::employee::{
+				GenTableEmployee,
+				RowTable,
+			},
 		},
 		styles::{
 			container::ContainerType,
@@ -48,9 +51,12 @@ use crate::{
 	},
 };
 
+pub mod create;
+
 #[derive(Clone, Debug)]
 pub struct EmployeeView {
 	pub table: GenTableEmployee,
+	pub create: CreateEmployee,
 }
 
 impl Default for EmployeeView {
@@ -97,7 +103,7 @@ impl Default for EmployeeView {
 				.collect(),
 		);
 
-		Self { table }
+		Self { table, create: CreateEmployee::default() }
 	}
 }
 

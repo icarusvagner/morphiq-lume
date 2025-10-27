@@ -68,7 +68,7 @@ impl Default for Login {
 
 #[allow(clippy::unused_self)]
 impl Login {
-	fn left_image(&self) -> Element<'_, Message, StyleType> {
+	fn _left_image(&self) -> Element<'_, Message, StyleType> {
 		container(
 			Svg::new(Handle::from_memory(IMAGE_03))
 				.content_fit(iced::ContentFit::Contain)
@@ -249,9 +249,9 @@ impl Login {
 		.height(600.0)
 		.width(450.0);
 
-		let with_img = Row::new().push(self.left_image()).push(login_col);
+		// let with_img = Row::new().push(self.left_image()).push(login_col);
 
-		let content = container(with_img)
+		let content = container(login_col)
 			.class(ContainerType::Base100)
 			.height(600.0)
 			.width(900.0)

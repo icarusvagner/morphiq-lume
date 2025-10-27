@@ -136,28 +136,28 @@ impl DashboardView {
 		let second_cards = container(
 			Row::new()
 				.push(sec_card(
-					Icon::ShoppingCart,
+					Icon::UsersRound,
 					ContainerType::Icon(StandardNames::Secondary),
-					"Total Order".to_string(),
-					1172,
+					"Total Employees".to_string(),
+					"200/200".to_string(),
 				))
 				.push(sec_card(
 					Icon::Repeat,
 					ContainerType::Icon(StandardNames::Accent),
-					"Orders Pending".to_string(),
-					27,
+					"On Leave".to_string(),
+					"27/200".to_string(),
 				))
 				.push(sec_card(
 					Icon::Package,
 					ContainerType::Icon(StandardNames::Neutral),
-					"Orders Processing".to_string(),
-					4,
+					"New Joinee".to_string(),
+					"15/200".to_string(),
 				))
 				.push(sec_card(
 					Icon::Check,
 					ContainerType::Icon(StandardNames::Primary),
-					"Orders Delivered".to_string(),
-					40,
+					"Happiness Rate".to_string(),
+					"80%".to_string(),
 				))
 				.spacing(15.0),
 		)
