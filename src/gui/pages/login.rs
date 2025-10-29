@@ -246,15 +246,11 @@ impl Login {
 		.class(ContainerType::Ghost)
 		.align_y(Alignment::Center)
 		.padding(60.0)
-		.height(600.0)
-		.width(450.0);
-
-		// let with_img = Row::new().push(self.left_image()).push(login_col);
+		.height(600.0);
 
 		let content = container(login_col)
 			.class(ContainerType::Base100)
 			.height(600.0)
-			.width(900.0)
 			.align_x(Alignment::Center)
 			.align_y(Alignment::Center);
 
