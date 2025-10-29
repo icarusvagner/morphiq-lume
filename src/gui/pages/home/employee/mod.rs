@@ -17,28 +17,22 @@ use iced::{
 		vertical_space,
 	},
 };
-use mockd::{
-	job,
-	name,
-};
-use rand::{
-	Rng,
-	rng,
-};
 
 use crate::{
 	chart::types::{
 		bar_chart::histogram_chart,
 		donut_chart::donut_chart,
 	},
-	crates::crate_utils::b32::b32hexu_encode,
 	gui::{
 		morphiq::Morphiq,
 		pages::home::{
-			employee::create::CreateEmployee,
-			panes::tables::gen_table::employee::{
-				GenTableEmployee,
-				RowTable,
+			employee::{
+				create::CreateEmployee,
+				create_msg::CreateEmployeeMsg,
+			},
+			panes::tables::{
+				employee_table::EmployeeRow,
+				gen_table::employee::GenTableEmployee,
 			},
 		},
 		styles::{
@@ -52,6 +46,14 @@ use crate::{
 };
 
 pub mod create;
+pub mod create_msg;
+
+#[derive(Debug, Clone)]
+pub enum EmployeeMsg {
+	Create(CreateEmployeeMsg),
+	Todo1,
+	Todo2,
+}
 
 #[derive(Clone, Debug)]
 pub struct EmployeeView {
@@ -63,44 +65,7 @@ impl Default for EmployeeView {
 	fn default() -> Self {
 		let table = GenTableEmployee::new(
 			"Employee List".to_string(),
-			[
-				"#".to_string(),
-				"ID Num".to_string(),
-				"Fullname".to_string(),
-				"Position".to_string(),
-				"Department".to_string(),
-				"Interaction".to_string(),
-				"Work Hours".to_string(),
-				"Status".to_string(),
-			]
-			.to_vec(),
-			(0..20)
-				.map(|i| {
-					let interaction: [String; 2] =
-						[String::from("Clock In"), String::from("Clock Out")];
-					let rand_num = rng().random_range(0..=1);
-					let rand_hours = rng().random_range(1..=10);
-
-					let statuses: [String; 4] = [
-						String::from("Active"),
-						String::from("Inactive"),
-						String::from("Late"),
-						String::from("Onboarding"),
-					];
-					let rand_num_2 = rng().random_range(0..=3);
-					let id_num = b32hexu_encode(format!("emp-{i}").as_str());
-
-					RowTable {
-						id_num,
-						full_name: name::full(),
-						position: job::title(),
-						department: job::descriptor(),
-						interaction: interaction[rand_num].clone(),
-						work_hours: format!("{rand_hours} HRS"),
-						status: statuses[rand_num_2].clone(),
-					}
-				})
-				.collect(),
+			(0..40).map(|_| EmployeeRow::generate_sample()).collect(),
 		);
 
 		Self { table, create: CreateEmployee::default() }
@@ -109,6 +74,13 @@ impl Default for EmployeeView {
 
 #[allow(clippy::unused_self)]
 impl EmployeeView {
+	pub fn update(&mut self, message: EmployeeMsg) {
+		match message {
+			EmployeeMsg::Create(create_msg) => self.create.update(create_msg),
+			_ => {}
+		}
+	}
+
 	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let content = Column::new()
 			.push(
@@ -177,6 +149,7 @@ impl EmployeeView {
 							.align_y(Vertical::Center),
 					),
 			)
+			.spacing(15.0)
 			.padding(5)
 			.align_y(Alignment::Center)
 			.into()

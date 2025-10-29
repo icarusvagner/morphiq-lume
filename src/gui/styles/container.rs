@@ -127,7 +127,7 @@ impl ContainerType {
 					..Default::default()
 				},
 				ContainerType::Bordered => Border {
-					color: self.lighten_color(colors.base_100),
+					color: self.lighten_color(colors.base_content),
 					width: 1.0,
 					radius: 5.0.into(),
 				},

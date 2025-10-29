@@ -17,15 +17,6 @@ use iced::{
 		vertical_space,
 	},
 };
-use mockd::{
-	job,
-	name,
-	unique,
-};
-use rand::{
-	Rng,
-	rng,
-};
 
 use crate::{
 	chart::types::{
@@ -38,9 +29,9 @@ use crate::{
 			sec_card,
 		},
 		morphiq::Morphiq,
-		pages::home::panes::tables::gen_table::dashboard::{
-			GenTableDashboard,
-			RowTable,
+		pages::home::panes::tables::{
+			dashboard_table::DashboardRow,
+			gen_table::dashboard::GenTableDashboard,
 		},
 		styles::{
 			container::ContainerType,
@@ -65,40 +56,7 @@ impl Default for DashboardView {
 	fn default() -> Self {
 		let table = GenTableDashboard::new(
 			"Employee List".to_string(),
-			[
-				"ID Num".to_string(),
-				"Fullname".to_string(),
-				"Department".to_string(),
-				"Interaction".to_string(),
-				"Work Hours".to_string(),
-				"Status".to_string(),
-			]
-			.to_vec(),
-			(0..20)
-				.map(|_| {
-					let interaction: [String; 2] =
-						[String::from("Clock In"), String::from("Clock Out")];
-					let rand_num = rng().random_range(0..=1);
-					let rand_hours = rng().random_range(1..=10);
-
-					let statuses: [String; 4] = [
-						String::from("Active"),
-						String::from("Inactive"),
-						String::from("Late"),
-						String::from("Onboarding"),
-					];
-					let rand_num_2 = rng().random_range(0..=3);
-
-					RowTable {
-						id_num: unique::uuid_v4(),
-						full_name: name::full(),
-						department: job::descriptor(),
-						interaction: interaction[rand_num].clone(),
-						work_hours: format!("{rand_hours} HRS"),
-						status: statuses[rand_num_2].clone(),
-					}
-				})
-				.collect(),
+			(0..20).map(|_| DashboardRow::generate_sample()).collect(),
 		);
 
 		Self { table }
@@ -212,6 +170,7 @@ impl DashboardView {
 							.align_y(Vertical::Center),
 					),
 			)
+			.spacing(15.0)
 			.padding(5)
 			.align_y(Alignment::Center)
 			.into()

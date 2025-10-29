@@ -96,6 +96,7 @@ pub enum Icon {
 	CalendarClock,
 	Flag,
 	Information,
+	CloudUpload,
 }
 
 impl Icon {
@@ -190,6 +191,7 @@ impl Icon {
 			Icon::CalendarClock => '\'',
 			Icon::Flag => '(',
 			Icon::Information => ')',
+			Icon::CloudUpload => '*',
 		}
 	}
 

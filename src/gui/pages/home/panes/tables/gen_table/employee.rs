@@ -1,24 +1,21 @@
 use iced::{
+	Alignment,
 	Element,
 	Length,
 	Padding,
 	Renderer,
-	alignment::Horizontal,
 	widget::{
 		Column,
+		Container,
 		Row,
-		Scrollable,
 		button,
 		container,
-		horizontal_rule,
-		scrollable,
+		responsive,
 		text,
 		text_input,
 	},
 };
 use iced_aw::{
-	Grid,
-	GridRow,
 	menu::{
 		Item,
 		Menu,
@@ -27,18 +24,19 @@ use iced_aw::{
 	menu_bar,
 	menu_items,
 };
+use iced_table::table;
 
 use crate::{
 	gui::{
 		morphiq::Morphiq,
+		pages::home::panes::tables::employee_table::{
+			EmployeeRow,
+			EmployeeTable,
+		},
 		styles::{
 			button::ButtonType,
 			container::ContainerType,
-			rule::RuleType,
-			style_constant::fonts::{
-				OUTFIT_BOLD,
-				RALEWAY_BOLD,
-			},
+			style_constant::fonts::RALEWAY_BOLD,
 			text_input::TextInputType,
 			types::style_type::StyleType,
 		},
@@ -54,112 +52,23 @@ use crate::{
 	utils::types::icon::Icon,
 };
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct GenTableEmployee {
-	title: String,
-	header: Vec<String>,
-	body: Vec<RowTable>,
-	temp: Vec<RowTable>,
-	search: String,
-}
-
-#[derive(Default, Debug, Clone)]
-pub struct RowTable {
-	pub id_num: String,
-	pub full_name: String,
-	pub position: String,
-	pub department: String,
-	pub interaction: String,
-	pub work_hours: String,
-	pub status: String,
-}
-
-impl RowTable {
-	pub fn new(
-		id_num: String,
-		full_name: String,
-		position: String,
-		department: String,
-		interaction: String,
-		work_hours: String,
-		status: String,
-	) -> Self {
-		Self {
-			id_num,
-			full_name,
-			position,
-			department,
-			interaction,
-			work_hours,
-			status: status.to_uppercase(),
-		}
-	}
+	pub title: String,
+	pub search: String,
+	pub table: EmployeeTable,
 }
 
 #[allow(clippy::use_self, clippy::unused_self)]
 impl GenTableEmployee {
-	fn headers(&self) -> GridRow<'_, Message, StyleType> {
-		let mut grid_row = GridRow::new();
-		for i in 0..self.header.len() {
-			grid_row = grid_row.push(
-				text(self.header[i].clone())
-					.size(18.0)
-					.font(OUTFIT_BOLD)
-					.align_x(Horizontal::Left),
-			);
-		}
+	pub fn new(title: String, rows: Vec<EmployeeRow>) -> Self {
+		let table = EmployeeTable::new(rows);
 
-		grid_row
-	}
-
-	fn separators(
-		&self,
-		rule_type: RuleType,
-	) -> GridRow<'_, Message, StyleType> {
-		let max_len = self.header.len();
-		let elements = (0..=max_len)
-			.map(|_| horizontal_rule(2.0).class(rule_type.clone()))
-			.collect();
-
-		GridRow::with_elements(elements)
-	}
-
-	fn bodies(&self, separator_type: RuleType) -> Grid<'_, Message, StyleType> {
-		let mut content = Grid::new()
-			.row_spacing(5.0)
-			.row_height(12.0)
-			.column_spacing(5.0)
-			.push(self.headers())
-			.push(self.separators(separator_type));
-
-		for (i, v) in self.body.iter().enumerate() {
-			let mut body_content = GridRow::new();
-
-			body_content = body_content
-				.push(text(i))
-				.push(text(v.id_num.clone()))
-				.push(text(v.full_name.clone()))
-				.push(text(v.position.clone()))
-				.push(text(v.department.clone()))
-				.push(text(v.interaction.clone()))
-				.push(text(v.work_hours.clone()))
-				.push(text(v.status.clone()));
-			content = content.push(body_content);
-		}
-
-		content
+		Self { title, table, ..Default::default() }
 	}
 
 	fn title(&self) -> String {
 		self.title.clone()
-	}
-
-	pub fn new(
-		title: String,
-		header: Vec<String>,
-		body: Vec<RowTable>,
-	) -> Self {
-		Self { title, header, temp: body.clone(), body, search: String::new() }
 	}
 
 	fn menu_bar(&self) -> MenuBar<'_, Message, StyleType, Renderer> {
@@ -171,36 +80,84 @@ impl GenTableEmployee {
 
 		let menu_bar: MenuBar<'_, Message, StyleType, Renderer> = menu_bar!((
 			button(icon_with_name).class(ButtonType::Ghost),
-			menu_template(menu_items!((button("Department")
+			menu_template(menu_items!((button(
+				text("Department")
+					.align_x(Alignment::Center)
+					.width(Length::Fill)
+			)
+			.width(Length::Fill)
+			.on_press(Message::Tables(TableMessage::Employee(
+				EmployeeTableMsg::FilteredBy(FilterEmployee::Department)
+			)))
+			.class(ButtonType::Ghost))(
+				button(
+					text("ID Number")
+						.align_x(Alignment::Center)
+						.width(Length::Fill)
+				)
 				.width(Length::Fill)
 				.on_press(Message::Tables(TableMessage::Employee(
-					EmployeeTableMsg::FilteredBy(FilterEmployee::Department)
+					EmployeeTableMsg::FilteredBy(FilterEmployee::IdNumber)
 				)))
-				.class(ButtonType::Ghost))(
-				button("ID Number")
-					.width(Length::Fill)
-					.on_press(Message::Tables(TableMessage::Employee(
-						EmployeeTableMsg::FilteredBy(FilterEmployee::IdNumber)
-					)))
-					.class(ButtonType::Ghost)
+				.class(ButtonType::Ghost)
 			)(
-				button("Status")
-					.width(Length::Fill)
-					.on_press(Message::Tables(TableMessage::Employee(
-						EmployeeTableMsg::FilteredBy(FilterEmployee::Status)
-					)))
-					.class(ButtonType::Ghost)
+				button(
+					text("Status")
+						.align_x(Alignment::Center)
+						.width(Length::Fill)
+				)
+				.width(Length::Fill)
+				.on_press(Message::Tables(TableMessage::Employee(
+					EmployeeTableMsg::FilteredBy(FilterEmployee::Status)
+				)))
+				.class(ButtonType::Ghost)
 			)(
-				button("Fullname")
-					.width(Length::Fill)
-					.on_press(Message::Tables(TableMessage::Employee(
-						EmployeeTableMsg::FilteredBy(FilterEmployee::Fullname)
-					)))
-					.class(ButtonType::Ghost)
+				button(
+					text("Position")
+						.align_x(Alignment::Center)
+						.width(Length::Fill)
+				)
+				.width(Length::Fill)
+				.on_press(Message::Tables(TableMessage::Employee(
+					EmployeeTableMsg::FilteredBy(FilterEmployee::Fullname)
+				)))
+				.class(ButtonType::Ghost)
+			)(
+				button(
+					text("Fullname")
+						.align_x(Alignment::Center)
+						.width(Length::Fill)
+				)
+				.width(Length::Fill)
+				.on_press(Message::Tables(TableMessage::Employee(
+					EmployeeTableMsg::FilteredBy(FilterEmployee::Fullname)
+				)))
+				.class(ButtonType::Ghost)
 			)))
 		));
 
 		menu_bar
+	}
+
+	fn table(&self) -> Container<'_, Message, StyleType> {
+		let table = responsive(move |size| {
+			let mut table = table(
+				self.table.header.clone(),
+				self.table.body.clone(),
+				&self.table.columns,
+				&self.table.rows,
+				Message::EmployeeTableSyncHeader,
+			);
+
+			table = table.on_column_resize(
+				Message::EmployeeTableResizing,
+				Message::EmployeeTableResized,
+			);
+			table = table.min_width(size.width);
+			table.cell_padding(Padding::from(5.0)).divider_width(2.0).into()
+		});
+
+		container(table).class(ContainerType::Ghost).width(Length::Fill)
 	}
 
 	pub fn update(&mut self, message: EmployeeTableMsg) {
@@ -208,44 +165,49 @@ impl GenTableEmployee {
 			EmployeeTableMsg::Search(val) => {
 				println!("{val}");
 				self.search = val;
-				if self.search.is_empty() {
-					self.body = self.temp.clone();
-					return;
-				}
+				// if self.search.is_empty() {
+				// 	self.body = self.temp.clone();
+				// 	return;
+				// }
 
-				let results: Vec<RowTable> = self
-					.temp
-					.iter()
-					.filter(|v| v.full_name.contains(&self.search))
-					.cloned()
-					.collect();
-				if results.is_empty() {
-					self.body = self.temp.clone();
-				} else {
-					self.body = results;
-				}
+				// let results: Vec<RowTable> = self
+				// 	.temp
+				// 	.iter()
+				// 	.filter(|v| v.full_name.contains(&self.search))
+				// 	.cloned()
+				// 	.collect();
+				// if results.is_empty() {
+				// 	self.body = self.temp.clone();
+				// } else {
+				// 	self.body = results;
+				// }
 			}
 			EmployeeTableMsg::FilteredBy(filter_by) => match filter_by {
+				FilterEmployee::Position => {
+					self.table.rows.sort_by(|a, b| a.position.cmp(&b.position));
+				}
 				FilterEmployee::Department => {
-					self.body.sort_by(|a, b| a.department.cmp(&b.department));
+					self.table
+						.rows
+						.sort_by(|a, b| a.department.cmp(&b.department));
 				}
 				FilterEmployee::IdNumber => {
-					self.body.sort_by(|a, b| a.id_num.cmp(&b.id_num));
+					self.table.rows.sort_by(|a, b| a.id.cmp(&b.id));
 				}
 				FilterEmployee::Fullname => {
-					self.body.sort_by(|a, b| a.full_name.cmp(&b.full_name));
+					self.table
+						.rows
+						.sort_by(|a, b| a.full_name.cmp(&b.full_name));
 				}
 				FilterEmployee::Status => {
-					self.body.sort_by(|a, b| a.status.cmp(&b.status));
+					self.table.rows.sort_by(|a, b| a.status.cmp(&b.status));
 				}
 			},
 			_ => unreachable!(),
 		}
 	}
 
-	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
-		let style = morphiq.configs.settings.style.get_palette();
-
+	pub fn view(&self, _morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let header_elements = Row::new()
 			.push(text(self.title()).size(24.0).font(RALEWAY_BOLD))
 			.push(
@@ -267,22 +229,9 @@ impl GenTableEmployee {
 			.push(self.menu_bar())
 			.spacing(15.0);
 
-		let scroll_content = Scrollable::new(
-			self.bodies(RuleType::PaletteColor(style.base_200, 2)),
-		)
-		.direction(scrollable::Direction::Vertical(
-			scrollable::Scrollbar::new()
-				.width(2.0)
-				.margin(2.0)
-				.scroller_width(4.0)
-				.anchor(scrollable::Anchor::Start),
-		))
-		.width(Length::Fill)
-		.height(Length::Fill);
-
 		let content = Column::new()
 			.push(header_elements)
-			.push(scroll_content)
+			.push(self.table())
 			.height(Length::Fill)
 			.spacing(15.0)
 			.padding(5.0);

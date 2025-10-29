@@ -25,7 +25,10 @@ use crate::gui::{
 		dashboard::DashboardView,
 		documents::DocumentsView,
 		edit_profile::EditProfileView,
-		employee::EmployeeView,
+		employee::{
+			EmployeeMsg,
+			EmployeeView,
+		},
 		leaves::LeavesView,
 		payroll::PayrollView,
 	},
@@ -85,13 +88,17 @@ pub enum HomeMessage {
 	Header(HeaderMessage),
 	Content(ContentView),
 	Logout,
+	Employee(EmployeeMsg),
 }
 
 impl Home {
-	pub const fn update(&mut self, message: HomeMessage) {
+	pub fn update(&mut self, message: HomeMessage) {
 		match message {
 			HomeMessage::Header(header_msg) => self.header.update(header_msg),
 			HomeMessage::Content(view) => self.content = view,
+			HomeMessage::Employee(employee_msg) => {
+				self.employee.update(employee_msg);
+			}
 			HomeMessage::Logout => {}
 		}
 	}

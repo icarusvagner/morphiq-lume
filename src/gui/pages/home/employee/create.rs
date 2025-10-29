@@ -8,27 +8,33 @@ use iced::{
 		TextInput,
 		button,
 		container,
+		horizontal_space,
 		text,
 	},
 };
 
-use crate::gui::{
-	styles::{
-		container::ContainerType,
-		style_constant::fonts::{
-			RALEWAY_BOLD,
-			RALEWAY_SEMI_BOLD,
+use crate::{
+	gui::{
+		pages::home::employee::create_msg::CreateEmployeeMsg,
+		styles::{
+			button::ButtonType,
+			container::ContainerType,
+			style_constant::fonts::{
+				RALEWAY_BOLD,
+				RALEWAY_SEMI_BOLD,
+			},
+			text_input::TextInputType,
+			types::style_type::StyleType,
 		},
-		text_input::TextInputType,
-		types::style_type::StyleType,
+		types::message::Message,
 	},
-	types::message::Message,
+	utils::types::icon::Icon,
 };
 
 #[derive(Default, Debug, Clone)]
 pub struct CreateEmployee {
 	pub first_name: String,
-	pub middle_name: String,
+	pub middle_name: Option<String>,
 	pub last_name: String,
 	pub email_add: String,
 	pub employee_type: String,
@@ -72,11 +78,15 @@ impl CreateEmployee {
 									.font(RALEWAY_SEMI_BOLD),
 							)
 							.push(
-								TextInput::new("", &self.middle_name)
-									.class(TextInputType::Base200)
-									.line_height(text::LineHeight::Relative(
-										1.7,
-									)),
+								TextInput::new(
+									"",
+									&self
+										.middle_name
+										.clone()
+										.unwrap_or_default(),
+								)
+								.class(TextInputType::Base200)
+								.line_height(text::LineHeight::Relative(1.7)),
 							)
 							.spacing(5.0),
 					)
@@ -122,6 +132,25 @@ impl CreateEmployee {
 		container(content).padding(15.0).class(ContainerType::Bordered).into()
 	}
 
+	pub fn update(&mut self, message: CreateEmployeeMsg) {
+		match message {
+			CreateEmployeeMsg::InputFullnameChange(fname) => {
+				self.first_name = fname;
+			}
+			CreateEmployeeMsg::InputMiddlenameChange(mname) => {
+				self.middle_name = Some(mname);
+			}
+			CreateEmployeeMsg::InputLastnameChange(lname) => {
+				self.last_name = lname;
+			}
+			CreateEmployeeMsg::InputEmailAddressChange(email) => {
+				self.email_add = email;
+			}
+			CreateEmployeeMsg::SubmitInput => {}
+			_ => {}
+		}
+	}
+
 	pub fn view(&self) -> Element<'_, Message, StyleType> {
 		let mut content = Column::new()
 			.push(
@@ -144,9 +173,24 @@ impl CreateEmployee {
 					)
 					.push(
 						button(
-							text("Upload Photo")
+							Row::new()
+								.push(horizontal_space())
+								.push(
+									Icon::CloudUpload
+										.to_text()
+										.size(24.0)
+										.align_y(Alignment::Center)
+										.align_x(Alignment::Center),
+								)
+								.push(
+									text("Upload Photo")
+										.size(18.0)
+										.align_x(Alignment::Center),
+								)
+								.push(horizontal_space())
 								.width(Length::Fill)
-								.align_x(Alignment::Center),
+								.align_y(Alignment::Center)
+								.spacing(2.0),
 						)
 						.width(Length::Fill)
 						.height(35.0),
@@ -154,9 +198,28 @@ impl CreateEmployee {
 					.width(Length::Fixed(250.0))
 					.spacing(15.0),
 			)
+			.spacing(15.0)
 			.push(self.info_fields());
 
+		let btn_submit = container(
+			Row::new()
+				.push(
+					button(
+						text("Submit")
+							.size(18)
+							.width(Length::Fill)
+							.align_x(Alignment::Center),
+					)
+					.class(ButtonType::Primary),
+				)
+				.width(300.0),
+		)
+		.width(Length::Fill)
+		.align_x(Alignment::End);
+
 		content = content.push(sub_content);
+
+		content = content.push(btn_submit);
 
 		container(content).width(Length::Fill).into()
 	}

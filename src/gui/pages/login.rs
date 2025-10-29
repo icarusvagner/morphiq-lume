@@ -153,7 +153,7 @@ impl Login {
 				)
 				.padding(10.0)
 				.width(Length::Fill)
-				.class(ContainerType::Base100),
+				.class(ContainerType::Bordered),
 			)
 			.spacing(5);
 
@@ -251,6 +251,7 @@ impl Login {
 		let content = container(login_col)
 			.class(ContainerType::Base100)
 			.height(600.0)
+			.width(550.0)
 			.align_x(Alignment::Center)
 			.align_y(Alignment::Center);
 

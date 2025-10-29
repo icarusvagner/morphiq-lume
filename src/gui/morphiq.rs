@@ -2,7 +2,10 @@ use duckdb::Connection;
 use iced::{
 	Element,
 	Task,
-	widget::container,
+	widget::{
+		container,
+		scrollable,
+	},
 	window,
 };
 
@@ -118,6 +121,72 @@ impl Morphiq {
 					self.page.home.employee.table.update(employee_msg);
 				}
 			},
+			Message::DashboardTableSyncHeader(offset) => {
+				return Task::batch(vec![
+					scrollable::scroll_to(
+						self.page.home.dashboard.table.table.header.clone(),
+						offset,
+					),
+					scrollable::scroll_to(
+						self.page.home.dashboard.table.table.footer.clone(),
+						offset,
+					),
+				]);
+			}
+			Message::DashboardTableResizing(index, offset) => {
+				if let Some(column) =
+					self.page.home.dashboard.table.table.columns.get_mut(index)
+				{
+					column.resize_offset = Some(offset);
+				}
+			}
+			Message::DashboardTableResized => {
+				self.page
+					.home
+					.dashboard
+					.table
+					.table
+					.columns
+					.iter_mut()
+					.for_each(|column| {
+						if let Some(offset) = column.resize_offset.take() {
+							column.width += offset;
+						}
+					});
+			}
+			Message::EmployeeTableSyncHeader(offset) => {
+				return Task::batch(vec![
+					scrollable::scroll_to(
+						self.page.home.employee.table.table.header.clone(),
+						offset,
+					),
+					scrollable::scroll_to(
+						self.page.home.dashboard.table.table.footer.clone(),
+						offset,
+					),
+				]);
+			}
+			Message::EmployeeTableResizing(index, offset) => {
+				if let Some(column) =
+					self.page.home.employee.table.table.columns.get_mut(index)
+				{
+					column.resize_offset = Some(offset);
+				}
+			}
+			Message::EmployeeTableResized => {
+				self.page
+					.home
+					.employee
+					.table
+					.table
+					.columns
+					.iter_mut()
+					.for_each(|column| {
+						if let Some(offset) = column.resize_offset.take() {
+							column.width += offset;
+						}
+					});
+			}
 			// Message::Chart(_) => {}
 			_ => {}
 		}
