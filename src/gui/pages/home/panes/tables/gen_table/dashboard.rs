@@ -1,55 +1,23 @@
 use iced::{
-	Alignment,
-	Element,
-	Length,
-	Padding,
-	Renderer,
-	widget::{
-		Column,
-		Container,
-		Row,
-		button,
-		container,
-		responsive,
-		text,
-		text_input,
-	},
+	Alignment, Element, Length, Padding, Renderer, Task, widget::{
+		Column, Container, Row, button, container, responsive, scrollable, text, text_input
+	}
 };
 use iced_aw::{
-	menu::{
-		Item,
-		Menu,
-		MenuBar,
-	},
-	menu_bar,
-	menu_items,
+	menu::{Item, Menu, MenuBar}, menu_bar, menu_items
 };
 use iced_table::table;
 
 use crate::{
 	gui::{
-		morphiq::Morphiq,
-		pages::home::panes::tables::dashboard_table::{
-			DashboardRow,
-			DashboardTable,
-		},
-		styles::{
-			button::ButtonType,
-			container::ContainerType,
-			style_constant::fonts::RALEWAY_BOLD,
-			text_input::TextInputType,
-			types::style_type::StyleType,
-		},
-		types::{
-			message::Message,
-			tables::{
-				DashboardTableMsg,
-				FilterEmployee,
-				TableMessage,
-			},
-		},
-	},
-	utils::types::icon::Icon,
+		morphiq::Morphiq, pages::home::{
+			HomeMessage, dashboard::types::dashboard_msg::{
+				DashboardMsg, DashboardTableMsg
+			}, panes::tables::dashboard_table::{DashboardRow, DashboardTable}
+		}, styles::{
+			button::ButtonType, container::ContainerType, style_constant::fonts::RALEWAY_BOLD, text_input::TextInputType, types::style_type::StyleType
+		}, types::{message::Message, tables::FilterEmployee}
+	}, utils::types::icon::Icon
 };
 
 #[derive(Debug, Clone, Default)]
@@ -87,8 +55,10 @@ impl GenTableDashboard {
 					.width(Length::Fill)
 			)
 			.width(Length::Fill)
-			.on_press(Message::Tables(TableMessage::Dashboard(
-				DashboardTableMsg::FilteredBy(FilterEmployee::Department)
+			.on_press(Message::Home(HomeMessage::Dashboard(
+				DashboardMsg::Table(DashboardTableMsg::FilteredBy(
+					FilterEmployee::Department
+				))
 			)))
 			.class(ButtonType::Ghost))(
 				button(
@@ -97,8 +67,10 @@ impl GenTableDashboard {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Dashboard(
-					DashboardTableMsg::FilteredBy(FilterEmployee::IdNumber)
+				.on_press(Message::Home(HomeMessage::Dashboard(
+					DashboardMsg::Table(DashboardTableMsg::FilteredBy(
+						FilterEmployee::IdNumber
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)(
@@ -108,8 +80,10 @@ impl GenTableDashboard {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Dashboard(
-					DashboardTableMsg::FilteredBy(FilterEmployee::Status)
+				.on_press(Message::Home(HomeMessage::Dashboard(
+					DashboardMsg::Table(DashboardTableMsg::FilteredBy(
+						FilterEmployee::Status
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)(
@@ -119,8 +93,10 @@ impl GenTableDashboard {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Dashboard(
-					DashboardTableMsg::FilteredBy(FilterEmployee::Fullname)
+				.on_press(Message::Home(HomeMessage::Dashboard(
+					DashboardMsg::Table(DashboardTableMsg::FilteredBy(
+						FilterEmployee::Fullname
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)))
@@ -136,12 +112,22 @@ impl GenTableDashboard {
 				self.table.body.clone(),
 				&self.table.columns,
 				&self.table.rows,
-				Message::DashboardTableSyncHeader,
+				|val| {
+					Message::Home(HomeMessage::Dashboard(DashboardMsg::Table(
+						DashboardTableMsg::TableSyncHeader(val),
+					)))
+				},
 			);
 
 			table = table.on_column_resize(
-				Message::DashboardTableResizing,
-				Message::DashboardTableResized,
+				|index, resizing| {
+					Message::Home(HomeMessage::Dashboard(DashboardMsg::Table(
+						DashboardTableMsg::TableResizing(index, resizing),
+					)))
+				},
+				Message::Home(HomeMessage::Dashboard(DashboardMsg::Table(
+					DashboardTableMsg::TableResized,
+				))),
 			);
 			table = table.min_width(size.width);
 			table.cell_padding(Padding::from(5.0)).divider_width(2.0).into()
@@ -150,47 +136,84 @@ impl GenTableDashboard {
 		container(table).class(ContainerType::Ghost).width(Length::Fill)
 	}
 
-	pub fn update(&mut self, message: DashboardTableMsg) {
+	pub fn update(
+		&mut self,
+		message: DashboardTableMsg,
+	) -> Task<DashboardTableMsg> {
 		match message {
+			// Search filter
 			DashboardTableMsg::Search(val) => {
 				self.search = val;
+
+				// Optionally implement filtering logic (commented out for now)
 				// if self.search.is_empty() {
-				// 	self.body = self.temp.clone();
-				// 	return;
+				//     self.body = self.temp.clone();
+				// } else {
+				//     let results: Vec<RowTable> = self.temp
+				//         .iter()
+				//         .filter(|v| v.full_name.contains(&self.search))
+				//         .cloned()
+				//         .collect();
+				//     self.body = if results.is_empty() {
+				//         self.temp.clone()
+				//     } else {
+				//         results
+				//     };
 				// }
 
-				// let results: Vec<RowTable> = self
-				// 	.temp
-				// 	.iter()
-				// 	.filter(|v| v.full_name.contains(&self.search))
-				// 	.cloned()
-				// 	.collect();
-				// if results.is_empty() {
-				// 	self.body = self.temp.clone();
-				// } else {
-				// 	self.body = results;
-				// }
+				Task::none()
 			}
-			DashboardTableMsg::FilteredBy(filter_by) => match filter_by {
-				FilterEmployee::Department => {
-					self.table
-						.rows
-						.sort_by(|a, b| a.department.cmp(&b.department));
+
+			// Sorting logic
+			DashboardTableMsg::FilteredBy(filter_by) => {
+				match filter_by {
+					FilterEmployee::Department => {
+						self.table
+							.rows
+							.sort_by(|a, b| a.department.cmp(&b.department));
+					}
+					FilterEmployee::IdNumber => {
+						self.table.rows.sort_by(|a, b| a.id.cmp(&b.id));
+					}
+					FilterEmployee::Fullname => {
+						self.table
+							.rows
+							.sort_by(|a, b| a.full_name.cmp(&b.full_name));
+					}
+					FilterEmployee::Status => {
+						self.table.rows.sort_by(|a, b| a.status.cmp(&b.status));
+					}
+					FilterEmployee::Position => {
+						// You can define sorting by position later
+					}
 				}
-				FilterEmployee::IdNumber => {
-					self.table.rows.sort_by(|a, b| a.id.cmp(&b.id));
+
+				Task::none()
+			}
+
+			// Scroll sync
+			DashboardTableMsg::TableSyncHeader(offset) => Task::batch([
+				scrollable::scroll_to(self.table.header.clone(), offset),
+				scrollable::scroll_to(self.table.footer.clone(), offset),
+			]),
+
+			// Column resizing start
+			DashboardTableMsg::TableResizing(index, offset) => {
+				if let Some(column) = self.table.columns.get_mut(index) {
+					column.resize_offset = Some(offset);
 				}
-				FilterEmployee::Fullname => {
-					self.table
-						.rows
-						.sort_by(|a, b| a.full_name.cmp(&b.full_name));
+				Task::none()
+			}
+
+			// Apply final column sizes
+			DashboardTableMsg::TableResized => {
+				for column in &mut self.table.columns {
+					if let Some(offset) = column.resize_offset.take() {
+						column.width += offset;
+					}
 				}
-				FilterEmployee::Status => {
-					self.table.rows.sort_by(|a, b| a.status.cmp(&b.status));
-				}
-				FilterEmployee::Position => {}
-			},
-			_ => unreachable!(),
+				Task::none()
+			}
 		}
 	}
 
@@ -203,8 +226,8 @@ impl GenTableDashboard {
 						.width(Length::Fill)
 						.class(TextInputType::Ghost)
 						.on_input(|val| {
-							Message::Tables(TableMessage::Dashboard(
-								DashboardTableMsg::Search(val),
+							Message::Home(HomeMessage::Dashboard(
+								DashboardMsg::Search(val),
 							))
 						}),
 				)

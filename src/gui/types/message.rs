@@ -1,19 +1,9 @@
-use iced::{
-	widget::scrollable,
-	window,
-};
+use iced::window;
 
 use crate::{
-	chart::ChartMessage,
-	gui::{
-		pages::{
-			OpenPage,
-			home::HomeMessage,
-			login::LoginMessage,
-		},
-		styles::types::style_type::StyleType,
-		types::tables::TableMessage,
-	},
+	chart::ChartMessage, gui::{
+		pages::{OpenPage, home::HomeMessage, login::LoginMessage}, styles::types::style_type::StyleType
+	}
 };
 
 #[allow(clippy::large_enum_variant)]
@@ -46,13 +36,4 @@ pub enum Message {
 
 	/// Messages for Charts
 	Chart(ChartMessage),
-
-	/// Tables messages
-	Tables(TableMessage),
-	DashboardTableSyncHeader(scrollable::AbsoluteOffset),
-	DashboardTableResizing(usize, f32),
-	DashboardTableResized,
-	EmployeeTableSyncHeader(scrollable::AbsoluteOffset),
-	EmployeeTableResizing(usize, f32),
-	EmployeeTableResized,
 }

@@ -1,51 +1,22 @@
 use iced::{
-	Alignment,
-	Element,
-	Length,
-	Pixels,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
-	widget::{
-		Column,
-		Row,
-		container,
-		horizontal_space,
-		text,
-		vertical_rule,
-		vertical_space,
-	},
+	Alignment, Element, Length, Pixels, Task, alignment::{Horizontal, Vertical}, widget::{
+		Column, Row, container, horizontal_space, text, vertical_rule, vertical_space
+	}
 };
 
 use crate::{
-	chart::types::{
-		bar_chart::histogram_chart,
-		donut_chart::donut_chart,
-	},
-	gui::{
-		components::cards::dashboard_card::{
-			dashboard_card,
-			sec_card,
-		},
-		morphiq::Morphiq,
-		pages::home::panes::tables::{
-			dashboard_table::DashboardRow,
-			gen_table::dashboard::GenTableDashboard,
-		},
-		styles::{
-			container::ContainerType,
-			rule::RuleType,
-			style_constant::{
-				StandardNames,
-				fonts::RALEWAY_BOLD,
-			},
-			types::style_type::StyleType,
-		},
-		types::message::Message,
-	},
-	utils::types::icon::Icon,
+	chart::types::{bar_chart::histogram_chart, donut_chart::donut_chart}, gui::{
+		components::cards::dashboard_card::{dashboard_card, sec_card}, morphiq::Morphiq, pages::home::{
+			dashboard::types::dashboard_msg::DashboardMsg, panes::tables::{
+				dashboard_table::DashboardRow, gen_table::dashboard::GenTableDashboard
+			}
+		}, styles::{
+			container::ContainerType, rule::RuleType, style_constant::{StandardNames, fonts::RALEWAY_BOLD}, types::style_type::StyleType
+		}, types::message::Message
+	}, utils::types::icon::Icon
 };
+
+pub mod types;
 
 #[derive(Debug, Clone)]
 pub struct DashboardView {
@@ -65,6 +36,19 @@ impl Default for DashboardView {
 
 #[allow(clippy::unused_self)]
 impl DashboardView {
+	pub fn update(&mut self, message: DashboardMsg) -> Task<DashboardMsg> {
+		match message {
+			DashboardMsg::Search(val) => {
+				self.table.search = val;
+				Task::none()
+			}
+			DashboardMsg::Table(tbl_msg) => {
+				// return table's task mapped into parent message
+				self.table.update(tbl_msg).map(DashboardMsg::Table)
+			}
+		}
+	}
+
 	pub fn view(&self, morphiq: &Morphiq) -> Element<'_, Message, StyleType> {
 		let first_cards = container(
 			Row::new()

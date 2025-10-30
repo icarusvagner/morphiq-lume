@@ -1,39 +1,13 @@
 use iced::{
-	Element,
-	Length,
-	Padding,
-	widget::{
-		Column,
-		Row,
-		Scrollable,
-		container,
-		scrollable,
-	},
+	Element, Length, Padding, Task, widget::{Column, Row, Scrollable, container, scrollable}
 };
 
 use crate::gui::{
 	components::{
-		header::{
-			Header,
-			HeaderMessage,
-		},
-		sidebar::SidebarMenu,
-	},
-	morphiq::Morphiq,
-	pages::home::{
-		attendance::AttendanceView,
-		dashboard::DashboardView,
-		documents::DocumentsView,
-		edit_profile::EditProfileView,
-		employee::{
-			EmployeeMsg,
-			EmployeeView,
-		},
-		leaves::LeavesView,
-		payroll::PayrollView,
-	},
-	styles::types::style_type::StyleType,
-	types::message::Message,
+		header::{Header, HeaderMessage}, sidebar::SidebarMenu
+	}, morphiq::Morphiq, pages::home::{
+		attendance::AttendanceView, dashboard::{DashboardView, types::dashboard_msg::DashboardMsg}, documents::DocumentsView, edit_profile::EditProfileView, employee::{EmployeeView, types::employee_msg::EmployeeMsg}, leaves::LeavesView, payroll::PayrollView
+	}, styles::types::style_type::StyleType, types::message::Message
 };
 
 mod attendance;
@@ -46,10 +20,7 @@ mod panes;
 mod payroll;
 mod settings;
 
-pub use settings::{
-	OpenSettings,
-	SettingsView,
-};
+pub use settings::{OpenSettings, SettingsView};
 
 #[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 #[derive(Debug, Clone, PartialEq, Eq, Copy, Default)]
@@ -89,17 +60,27 @@ pub enum HomeMessage {
 	Content(ContentView),
 	Logout,
 	Employee(EmployeeMsg),
+	Dashboard(DashboardMsg),
 }
 
 impl Home {
-	pub fn update(&mut self, message: HomeMessage) {
+	pub fn update(&mut self, message: HomeMessage) -> Task<HomeMessage> {
 		match message {
-			HomeMessage::Header(header_msg) => self.header.update(header_msg),
-			HomeMessage::Content(view) => self.content = view,
-			HomeMessage::Employee(employee_msg) => {
-				self.employee.update(employee_msg);
+			HomeMessage::Content(view) => {
+				self.content = view;
+				Task::none()
 			}
-			HomeMessage::Logout => {}
+			HomeMessage::Employee(employee_msg) => {
+				self.employee.update(employee_msg).map(HomeMessage::Employee)
+			}
+			HomeMessage::Dashboard(db_msg) => {
+				self.dashboard.update(db_msg).map(HomeMessage::Dashboard)
+			}
+			HomeMessage::Logout => {
+				// Maybe trigger cleanup or navigation
+				Task::none()
+			}
+			HomeMessage::Header(_) => Task::none(),
 		}
 	}
 

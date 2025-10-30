@@ -1,8 +1,7 @@
 use iced::widget::Text;
 
 use crate::gui::styles::{
-	style_constant::fonts::ICONS,
-	types::style_type::StyleType,
+	style_constant::fonts::ICONS, types::style_type::StyleType
 };
 
 #[allow(clippy::large_enum_variant, unused)]
@@ -94,6 +93,7 @@ pub enum Icon {
 	Coins,
 	HandCoins,
 	CalendarClock,
+	Calendar,
 	Flag,
 	Information,
 	CloudUpload,
@@ -192,6 +192,7 @@ impl Icon {
 			Icon::Flag => '(',
 			Icon::Information => ')',
 			Icon::CloudUpload => '*',
+			Icon::Calendar => '+',
 		}
 	}
 

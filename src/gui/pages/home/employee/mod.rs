@@ -1,59 +1,25 @@
 use iced::{
-	Alignment,
-	Element,
-	Length,
-	Pixels,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
-	widget::{
-		Column,
-		Row,
-		container,
-		horizontal_space,
-		text,
-		vertical_rule,
-		vertical_space,
-	},
+	Alignment, Element, Length, Pixels, Task, alignment::{Horizontal, Vertical}, widget::{
+		Column, Row, container, horizontal_space, text, vertical_rule, vertical_space
+	}
 };
 
 use crate::{
-	chart::types::{
-		bar_chart::histogram_chart,
-		donut_chart::donut_chart,
-	},
-	gui::{
-		morphiq::Morphiq,
-		pages::home::{
+	chart::types::{bar_chart::histogram_chart, donut_chart::donut_chart}, gui::{
+		morphiq::Morphiq, pages::home::{
 			employee::{
-				create::CreateEmployee,
-				create_msg::CreateEmployeeMsg,
-			},
-			panes::tables::{
-				employee_table::EmployeeRow,
-				gen_table::employee::GenTableEmployee,
-			},
-		},
-		styles::{
-			container::ContainerType,
-			rule::RuleType,
-			style_constant::fonts::RALEWAY_BOLD,
-			types::style_type::StyleType,
-		},
-		types::message::Message,
-	},
+				create::CreateEmployee, types::employee_msg::EmployeeMsg
+			}, panes::tables::{
+				employee_table::EmployeeRow, gen_table::employee::GenTableEmployee
+			}
+		}, styles::{
+			container::ContainerType, rule::RuleType, style_constant::fonts::RALEWAY_BOLD, types::style_type::StyleType
+		}, types::message::Message
+	}
 };
 
 pub mod create;
-pub mod create_msg;
-
-#[derive(Debug, Clone)]
-pub enum EmployeeMsg {
-	Create(CreateEmployeeMsg),
-	Todo1,
-	Todo2,
-}
+pub mod types;
 
 #[derive(Clone, Debug)]
 pub struct EmployeeView {
@@ -74,10 +40,14 @@ impl Default for EmployeeView {
 
 #[allow(clippy::unused_self)]
 impl EmployeeView {
-	pub fn update(&mut self, message: EmployeeMsg) {
+	pub fn update(&mut self, message: EmployeeMsg) -> Task<EmployeeMsg> {
 		match message {
-			EmployeeMsg::Create(create_msg) => self.create.update(create_msg),
-			_ => {}
+			EmployeeMsg::Create(create_msg) => {
+				self.create.update(create_msg).map(EmployeeMsg::Create)
+			}
+			EmployeeMsg::Table(tbl_msg) => {
+				self.table.update(tbl_msg).map(EmployeeMsg::Table)
+			}
 		}
 	}
 

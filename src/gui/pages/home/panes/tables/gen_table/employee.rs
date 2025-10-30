@@ -1,55 +1,21 @@
 use iced::{
-	Alignment,
-	Element,
-	Length,
-	Padding,
-	Renderer,
-	widget::{
-		Column,
-		Container,
-		Row,
-		button,
-		container,
-		responsive,
-		text,
-		text_input,
-	},
+	Alignment, Element, Length, Padding, Renderer, Task, widget::{
+		Column, Container, Row, button, container, responsive, scrollable, text, text_input
+	}
 };
 use iced_aw::{
-	menu::{
-		Item,
-		Menu,
-		MenuBar,
-	},
-	menu_bar,
-	menu_items,
+	menu::{Item, Menu, MenuBar}, menu_bar, menu_items
 };
 use iced_table::table;
 
 use crate::{
 	gui::{
-		morphiq::Morphiq,
-		pages::home::panes::tables::employee_table::{
-			EmployeeRow,
-			EmployeeTable,
-		},
-		styles::{
-			button::ButtonType,
-			container::ContainerType,
-			style_constant::fonts::RALEWAY_BOLD,
-			text_input::TextInputType,
-			types::style_type::StyleType,
-		},
-		types::{
-			message::Message,
-			tables::{
-				EmployeeTableMsg,
-				FilterEmployee,
-				TableMessage,
-			},
-		},
-	},
-	utils::types::icon::Icon,
+		morphiq::Morphiq, pages::home::{
+			HomeMessage, employee::types::employee_msg::{EmployeeMsg, EmployeeTableMsg}, panes::tables::employee_table::{EmployeeRow, EmployeeTable}
+		}, styles::{
+			button::ButtonType, container::ContainerType, style_constant::fonts::RALEWAY_BOLD, text_input::TextInputType, types::style_type::StyleType
+		}, types::{message::Message, tables::FilterEmployee}
+	}, utils::types::icon::Icon
 };
 
 #[derive(Debug, Clone, Default)]
@@ -86,9 +52,9 @@ impl GenTableEmployee {
 					.width(Length::Fill)
 			)
 			.width(Length::Fill)
-			.on_press(Message::Tables(TableMessage::Employee(
+			.on_press(Message::Home(HomeMessage::Employee(EmployeeMsg::Table(
 				EmployeeTableMsg::FilteredBy(FilterEmployee::Department)
-			)))
+			))))
 			.class(ButtonType::Ghost))(
 				button(
 					text("ID Number")
@@ -96,8 +62,10 @@ impl GenTableEmployee {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Employee(
-					EmployeeTableMsg::FilteredBy(FilterEmployee::IdNumber)
+				.on_press(Message::Home(HomeMessage::Employee(
+					EmployeeMsg::Table(EmployeeTableMsg::FilteredBy(
+						FilterEmployee::IdNumber
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)(
@@ -107,8 +75,10 @@ impl GenTableEmployee {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Employee(
-					EmployeeTableMsg::FilteredBy(FilterEmployee::Status)
+				.on_press(Message::Home(HomeMessage::Employee(
+					EmployeeMsg::Table(EmployeeTableMsg::FilteredBy(
+						FilterEmployee::Status
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)(
@@ -118,8 +88,10 @@ impl GenTableEmployee {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Employee(
-					EmployeeTableMsg::FilteredBy(FilterEmployee::Fullname)
+				.on_press(Message::Home(HomeMessage::Employee(
+					EmployeeMsg::Table(EmployeeTableMsg::FilteredBy(
+						FilterEmployee::Position
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)(
@@ -129,8 +101,10 @@ impl GenTableEmployee {
 						.width(Length::Fill)
 				)
 				.width(Length::Fill)
-				.on_press(Message::Tables(TableMessage::Employee(
-					EmployeeTableMsg::FilteredBy(FilterEmployee::Fullname)
+				.on_press(Message::Home(HomeMessage::Employee(
+					EmployeeMsg::Table(EmployeeTableMsg::FilteredBy(
+						FilterEmployee::Fullname
+					))
 				)))
 				.class(ButtonType::Ghost)
 			)))
@@ -146,12 +120,22 @@ impl GenTableEmployee {
 				self.table.body.clone(),
 				&self.table.columns,
 				&self.table.rows,
-				Message::EmployeeTableSyncHeader,
+				|val| {
+					Message::Home(HomeMessage::Employee(EmployeeMsg::Table(
+						EmployeeTableMsg::TableSyncHeader(val),
+					)))
+				},
 			);
 
 			table = table.on_column_resize(
-				Message::EmployeeTableResizing,
-				Message::EmployeeTableResized,
+				|index, resizing| {
+					Message::Home(HomeMessage::Employee(EmployeeMsg::Table(
+						EmployeeTableMsg::TableResizing(index, resizing),
+					)))
+				},
+				Message::Home(HomeMessage::Employee(EmployeeMsg::Table(
+					EmployeeTableMsg::TableResized,
+				))),
 			);
 			table = table.min_width(size.width);
 			table.cell_padding(Padding::from(5.0)).divider_width(2.0).into()
@@ -160,50 +144,81 @@ impl GenTableEmployee {
 		container(table).class(ContainerType::Ghost).width(Length::Fill)
 	}
 
-	pub fn update(&mut self, message: EmployeeTableMsg) {
+	pub fn update(
+		&mut self,
+		message: EmployeeTableMsg,
+	) -> Task<EmployeeTableMsg> {
 		match message {
+			// Search filter
 			EmployeeTableMsg::Search(val) => {
-				println!("{val}");
 				self.search = val;
+				// Optionally implement filtering logic (commented out for now)
 				// if self.search.is_empty() {
-				// 	self.body = self.temp.clone();
-				// 	return;
-				// }
-
-				// let results: Vec<RowTable> = self
-				// 	.temp
-				// 	.iter()
-				// 	.filter(|v| v.full_name.contains(&self.search))
-				// 	.cloned()
-				// 	.collect();
-				// if results.is_empty() {
-				// 	self.body = self.temp.clone();
+				//     self.body = self.temp.clone();
 				// } else {
-				// 	self.body = results;
+				//     let results: Vec<RowTable> = self.temp
+				//         .iter()
+				//         .filter(|v| v.full_name.contains(&self.search))
+				//         .cloned()
+				//         .collect();
+				//     self.body = if results.is_empty() {
+				//         self.temp.clone()
+				//     } else {
+				//         results
+				//     };
 				// }
+				Task::none()
 			}
-			EmployeeTableMsg::FilteredBy(filter_by) => match filter_by {
-				FilterEmployee::Position => {
-					self.table.rows.sort_by(|a, b| a.position.cmp(&b.position));
+			EmployeeTableMsg::FilteredBy(filter_by) => {
+				match filter_by {
+					FilterEmployee::Position => {
+						self.table
+							.rows
+							.sort_by(|a, b| a.position.cmp(&b.position));
+					}
+					FilterEmployee::Department => {
+						self.table
+							.rows
+							.sort_by(|a, b| a.department.cmp(&b.department));
+					}
+					FilterEmployee::IdNumber => {
+						self.table.rows.sort_by(|a, b| a.id.cmp(&b.id));
+					}
+					FilterEmployee::Fullname => {
+						self.table
+							.rows
+							.sort_by(|a, b| a.full_name.cmp(&b.full_name));
+					}
+					FilterEmployee::Status => {
+						self.table.rows.sort_by(|a, b| a.status.cmp(&b.status));
+					}
 				}
-				FilterEmployee::Department => {
-					self.table
-						.rows
-						.sort_by(|a, b| a.department.cmp(&b.department));
+				Task::none()
+			}
+
+			// Scroll sync
+			EmployeeTableMsg::TableSyncHeader(offset) => Task::batch([
+				scrollable::scroll_to(self.table.header.clone(), offset),
+				scrollable::scroll_to(self.table.footer.clone(), offset),
+			]),
+
+			// Column resizing start
+			EmployeeTableMsg::TableResizing(index, offset) => {
+				if let Some(column) = self.table.columns.get_mut(index) {
+					column.resize_offset = Some(offset);
 				}
-				FilterEmployee::IdNumber => {
-					self.table.rows.sort_by(|a, b| a.id.cmp(&b.id));
+				Task::none()
+			}
+
+			// Apply final column sizes
+			EmployeeTableMsg::TableResized => {
+				for column in &mut self.table.columns {
+					if let Some(offset) = column.resize_offset.take() {
+						column.width += offset;
+					}
 				}
-				FilterEmployee::Fullname => {
-					self.table
-						.rows
-						.sort_by(|a, b| a.full_name.cmp(&b.full_name));
-				}
-				FilterEmployee::Status => {
-					self.table.rows.sort_by(|a, b| a.status.cmp(&b.status));
-				}
-			},
-			_ => unreachable!(),
+				Task::none()
+			}
 		}
 	}
 
@@ -216,8 +231,10 @@ impl GenTableEmployee {
 						.width(Length::Fill)
 						.class(TextInputType::Ghost)
 						.on_input(|val| {
-							Message::Tables(TableMessage::Employee(
-								EmployeeTableMsg::Search(val),
+							Message::Home(HomeMessage::Employee(
+								EmployeeMsg::Table(EmployeeTableMsg::Search(
+									val,
+								)),
 							))
 						}),
 				)

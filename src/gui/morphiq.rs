@@ -1,37 +1,10 @@
 use duckdb::Connection;
-use iced::{
-	Element,
-	Task,
-	widget::{
-		container,
-		scrollable,
-	},
-	window,
-};
+use iced::{Element, Task, widget::container, window};
 
 use crate::{
-	configs::config::Configs,
-	crates::crate_core::model::store::{
-		self,
-		Db,
-		new_db_pool,
-	},
-	error::{
-		Error,
-		Result,
-	},
-	gui::{
-		pages::{
-			OpenPage,
-			Pages,
-			home::HomeMessage,
-		},
-		styles::types::style_type::StyleType,
-		types::{
-			message::Message,
-			tables::TableMessage,
-		},
-	},
+	configs::config::Configs, crates::crate_core::model::store::{self, Db, new_db_pool}, error::{Error, Result}, gui::{
+		pages::{OpenPage, Pages}, styles::types::style_type::StyleType, types::message::Message
+	}
 };
 
 pub const ICON_FONT_FAMILY_NAME: &str = "Icons for Morphiq Lume";
@@ -83,10 +56,6 @@ impl Morphiq {
 			Message::Style(style) => {
 				self.configs.settings.style = style;
 			}
-			// Message::TickDashboard => {}
-			// Message::CloseSettings => {}
-			// Message::ChangeVolume(_) => {}
-			// Message::FetchChats => {}
 			Message::Quit => {
 				let _ = self.configs.clone().store();
 				return window::close(
@@ -100,11 +69,8 @@ impl Morphiq {
 			}
 			Message::ChangePage(open_page) => self.open_page = open_page,
 			Message::Home(home_msg) => {
-				if matches!(home_msg, HomeMessage::Logout) {
-					self.open_page = OpenPage::Login;
-				} else {
-					self.page.home.update(home_msg);
-				}
+				let sub_task = self.page.home.update(home_msg);
+				let _ = sub_task.map(Message::Home);
 			}
 			Message::ChangeTheme => {
 				if self.configs.settings.style == StyleType::Light {
@@ -112,80 +78,6 @@ impl Morphiq {
 				} else {
 					self.configs.settings.style = StyleType::Light;
 				}
-			}
-			Message::Tables(tbl_msg) => match tbl_msg {
-				TableMessage::Dashboard(dashboard_msg) => {
-					self.page.home.dashboard.table.update(dashboard_msg);
-				}
-				TableMessage::Employee(employee_msg) => {
-					self.page.home.employee.table.update(employee_msg);
-				}
-			},
-			Message::DashboardTableSyncHeader(offset) => {
-				return Task::batch(vec![
-					scrollable::scroll_to(
-						self.page.home.dashboard.table.table.header.clone(),
-						offset,
-					),
-					scrollable::scroll_to(
-						self.page.home.dashboard.table.table.footer.clone(),
-						offset,
-					),
-				]);
-			}
-			Message::DashboardTableResizing(index, offset) => {
-				if let Some(column) =
-					self.page.home.dashboard.table.table.columns.get_mut(index)
-				{
-					column.resize_offset = Some(offset);
-				}
-			}
-			Message::DashboardTableResized => {
-				self.page
-					.home
-					.dashboard
-					.table
-					.table
-					.columns
-					.iter_mut()
-					.for_each(|column| {
-						if let Some(offset) = column.resize_offset.take() {
-							column.width += offset;
-						}
-					});
-			}
-			Message::EmployeeTableSyncHeader(offset) => {
-				return Task::batch(vec![
-					scrollable::scroll_to(
-						self.page.home.employee.table.table.header.clone(),
-						offset,
-					),
-					scrollable::scroll_to(
-						self.page.home.dashboard.table.table.footer.clone(),
-						offset,
-					),
-				]);
-			}
-			Message::EmployeeTableResizing(index, offset) => {
-				if let Some(column) =
-					self.page.home.employee.table.table.columns.get_mut(index)
-				{
-					column.resize_offset = Some(offset);
-				}
-			}
-			Message::EmployeeTableResized => {
-				self.page
-					.home
-					.employee
-					.table
-					.table
-					.columns
-					.iter_mut()
-					.for_each(|column| {
-						if let Some(offset) = column.resize_offset.take() {
-							column.width += offset;
-						}
-					});
 			}
 			// Message::Chart(_) => {}
 			_ => {}

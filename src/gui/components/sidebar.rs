@@ -1,46 +1,22 @@
 use iced::{
-	Alignment,
-	Element,
-	Length,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
-	widget::{
-		Column,
-		Row,
-		button,
-		container,
-		horizontal_rule,
-		text,
-		vertical_space,
-	},
+	Alignment, Element, Length, alignment::{Horizontal, Vertical}, widget::{
+		Column, Row, button, container, horizontal_rule, text, vertical_space
+	}
 };
 
 use crate::{
 	gui::{
-		morphiq::Morphiq,
-		pages::home::{
-			ContentView,
-			HomeMessage,
-		},
-		styles::{
-			button::ButtonType,
-			container::ContainerType,
-			rule::RuleType,
-			text::TextType,
-			types::style_type::StyleType,
-		},
-		types::message::Message,
-	},
-	utils::types::icon::Icon,
+		morphiq::Morphiq, pages::home::{ContentView, HomeMessage}, styles::{
+			button::ButtonType, container::ContainerType, rule::RuleType, text::TextType, types::style_type::StyleType
+		}, types::message::Message
+	}, utils::types::icon::Icon
 };
 
 #[derive(Debug, Default, Clone, Copy)]
 pub struct SidebarMenu;
 
 impl SidebarMenu {
-	pub const FIRST_ALL: [(&str, Icon, Message); 6] = [
+	pub const FIRST_ALL: [(&str, Icon, Message); 5] = [
 		(
 			"Dashboard",
 			Icon::House,
@@ -66,13 +42,7 @@ impl SidebarMenu {
 			Icon::CalendarClock,
 			Message::Home(HomeMessage::Content(ContentView::Leaves)),
 		),
-		(
-			"Documents",
-			Icon::Newspaper,
-			Message::Home(HomeMessage::Content(ContentView::Documents)),
-		),
 	];
-
 	pub const SECOND_ALL: [(&str, Icon, Message); 3] = [
 		(
 			"Settings",

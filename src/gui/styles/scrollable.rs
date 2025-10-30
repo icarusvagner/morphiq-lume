@@ -1,36 +1,20 @@
 use iced::{
-	Background,
-	Border,
-	Color,
-	widget::{
-		container,
-		scrollable::{
-			Catalog,
-			Rail,
-			Scrollbar,
-			Scroller,
-			Status,
-			Style,
-		},
-	},
+	Background, Border, Color, widget::{
+		container, scrollable::{Catalog, Rail, Scrollbar, Scroller, Status, Style}
+	}
 };
 
 use crate::gui::styles::{
-	style_constant::{
-		BORDER_RADIUS,
-		BORDER_ROUNDED_RADIUS,
-		BORDER_WIDTH,
-	},
-	types::style_type::StyleType,
+	style_constant::{BORDER_RADIUS, BORDER_ROUNDED_RADIUS, BORDER_WIDTH}, types::style_type::StyleType
 };
 
 #[derive(Default)]
-pub enum ScrollbarType {
+pub enum ScrollableType {
 	#[default]
 	Standard,
 }
 
-impl ScrollbarType {
+impl ScrollableType {
 	#[allow(clippy::unused_self, clippy::trivially_copy_pass_by_ref)]
 	fn active(&self, style: &StyleType) -> Style {
 		let colors = style.get_palette();
@@ -108,7 +92,7 @@ impl ScrollbarType {
 }
 
 impl Catalog for StyleType {
-	type Class<'a> = ScrollbarType;
+	type Class<'a> = ScrollableType;
 
 	fn default<'a>() -> Self::Class<'a> {
 		Self::Class::default()

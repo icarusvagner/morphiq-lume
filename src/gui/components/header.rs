@@ -1,35 +1,13 @@
 use iced::{
-	Element,
-	Length,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
-	widget::{
-		Row,
-		button,
-		container,
-		horizontal_space,
-		text,
-	},
+	Element, Length, alignment::{Horizontal, Vertical}, widget::{Row, button, container, horizontal_space, text}
 };
 
 use crate::{
 	gui::{
-		morphiq::Morphiq,
-		pages::home::{
-			ContentView,
-			HomeMessage,
-			OpenSettings,
-		},
-		styles::{
-			button::ButtonType,
-			container::ContainerType,
-			types::style_type::StyleType,
-		},
-		types::message::Message,
-	},
-	utils::types::icon::Icon,
+		morphiq::Morphiq, pages::home::{ContentView, HomeMessage}, styles::{
+			button::ButtonType, container::ContainerType, types::style_type::StyleType
+		}, types::message::Message
+	}, utils::types::icon::Icon
 };
 
 #[derive(Debug, Default, Clone)]
@@ -47,6 +25,7 @@ pub enum HeaderMessage {
 	Chat,
 	Notifications,
 	Profile,
+	Candidates,
 }
 
 impl Header {
@@ -106,16 +85,19 @@ impl Header {
 				Message::Home(HomeMessage::Content(ContentView::AddEmployee)),
 			))
 			.push(self.header_btn(
-				Some("Event Postings".to_string()),
+				Some("Events".to_string()),
 				Icon::CalendarDays,
 				Message::Home(HomeMessage::Content(ContentView::EventsPosting)),
 			))
 			.push(self.header_btn(
-				Some("Organization Settings".to_string()),
-				Icon::LayoutPanelLeft,
-				Message::Home(HomeMessage::Content(ContentView::Settings(
-					OpenSettings::OrgSettings,
-				))),
+				Some("Jobs".to_string()),
+				Icon::NotebookText,
+				Message::Home(HomeMessage::Content(ContentView::Dashboard)),
+			))
+			.push(self.header_btn(
+				Some("Candidates".to_string()),
+				Icon::UsersRound,
+				Message::Home(HomeMessage::Content(ContentView::Dashboard)),
 			))
 			.spacing(5)
 			.align_y(Vertical::Center)
@@ -135,13 +117,6 @@ impl Header {
 
 		Row::new()
 			.push(self.header_btn(None, toggle_theme, Message::ChangeTheme))
-			.push(self.header_btn(
-				None,
-				Icon::Globe,
-				Message::Home(HomeMessage::Content(ContentView::Settings(
-					OpenSettings::Languages,
-				))),
-			))
 			.push(self.header_btn(
 				None,
 				Icon::BellRing,
@@ -169,6 +144,7 @@ impl Header {
 			HeaderMessage::Chat => {}
 			HeaderMessage::Notifications => {}
 			HeaderMessage::Profile => {}
+			HeaderMessage::Candidates => {}
 		}
 	}
 

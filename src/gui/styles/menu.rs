@@ -1,24 +1,10 @@
-use iced::{
-	Background,
-	Border,
-	Color,
-	Padding,
-	Shadow,
-};
+use iced::{Background, Border, Color, Padding, Shadow};
 use iced_aw::{
-	card::Status,
-	menu::{
-		Catalog,
-		Style,
-	},
+	card::Status, menu::{Catalog, Style}
 };
 
 use crate::gui::styles::{
-	style_constant::{
-		BORDER_RADIUS,
-		BORDER_WIDTH,
-	},
-	types::style_type::StyleType,
+	style_constant::{BORDER_RADIUS, BORDER_WIDTH}, types::style_type::StyleType
 };
 
 #[derive(Default)]
