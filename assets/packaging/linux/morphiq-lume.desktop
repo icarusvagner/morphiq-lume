@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=Morphiq Lume
+Comment=Modern Human Resource Management System
+Categories=Utility;Office;Productivity;
+Exec=/usr/bin/morphiq-lume
+Icon=morphiq-lume
+Terminal=false
+StartupNotify=true
+Keywords=HR;Payroll;Attendance;HRIS;
