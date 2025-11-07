@@ -12,7 +12,7 @@ Morphiq Lume is a modern, secure, and efficient desktop-based Human Resource Man
 
 Traditional HR systems are either too rigid or overly bloated. **Morphiq Lume** introduces a new paradigm:
 
-> ✅ **“Clarity Through Adaptability”**
+> **“Clarity Through Adaptability”**
 
 Where:
 - **Morphiq** = Modular + Adaptive logic that evolves with organizational needs  
@@ -66,6 +66,90 @@ Together, Morphiq Lume is built to reveal clarity in people operations while sta
 git clone https://github.com/your-org/morphiq_lume.git
 cd morphiq_lume
 cargo run --release
+```
+
+---
+
+## 📁 Project Structure
+
+Morphiq Lume uses a **feature-driven architecture**, adapted for Rust + Iced.
+
+```
+  src
+   ├─ core
+   │  ├─ error.rs
+   │  ├─ mod.rs
+   │  ├─ theme
+   │  │  ├─ colors.rs
+   │  │  ├─ dark.rs
+   │  │  ├─ fonts.rs
+   │  │  ├─ light.rs
+   │  │  └─ mod.rs
+   │  ├─ types.rs
+   │  └─ utils
+   │     ├─ constants
+   │     │  ├─ mod.rs
+   │     │  └─ widgets.rs
+   │     ├─ message.rs
+   │     └─ mod.rs
+   ├─ data
+   │  ├─ mod.rs
+   │  ├─ models
+   │  │  └─ mod.rs
+   │  └─ repositories
+   │     └─ mod.rs
+   ├─ features
+   │  ├─ attendance
+   │  │  └─ mod.rs
+   │  ├─ auth
+   │  │  ├─ auth_msg.rs
+   │  │  ├─ lockscreen.rs
+   │  │  ├─ login.rs
+   │  │  └─ mod.rs
+   │  ├─ dashboard
+   │  │  ├─ dashboard_msg.rs
+   │  │  ├─ mod.rs
+   │  │  └─ view.rs
+   │  ├─ employees
+   │  │  ├─ addition_fields.rs
+   │  │  ├─ create.rs
+   │  │  ├─ employee_msg.rs
+   │  │  ├─ employee_type.rs
+   │  │  ├─ mod.rs
+   │  │  └─ view.rs
+   │  ├─ mod.rs
+   │  ├─ payroll
+   │  │  └─ mod.rs
+   │  └─ settings
+   │     └─ mod.rs
+   ├─ main.rs
+   ├─ morphiq.rs
+   ├─ router.rs
+   ├─ styles
+   │  ├─ bar.rs
+   │  ├─ button.rs
+   │  ├─ color_remote.rs
+   │  ├─ container.rs
+   │  ├─ datepicker.rs
+   │  ├─ donut.rs
+   │  ├─ menu.rs
+   │  ├─ mod.rs
+   │  ├─ palette.rs
+   │  ├─ pick_list.rs
+   │  ├─ rule.rs
+   │  ├─ scrollable.rs
+   │  ├─ style_constant.rs
+   │  ├─ style_type.rs
+   │  ├─ svg.rs
+   │  ├─ table.rs
+   │  ├─ text.rs
+   │  └─ text_input.rs
+   ├─ widgets
+   │  ├─ mod.rs
+   │  └─ widget_custom_card.rs
+   ├─ morphiq.rs
+   ├─ router.rs
+   └─ main.rs
 ```
 
 ---
