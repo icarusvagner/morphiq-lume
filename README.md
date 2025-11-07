@@ -12,7 +12,7 @@ Morphiq Lume is a modern, secure, and efficient desktop-based Human Resource Man
 
 Traditional HR systems are either too rigid or overly bloated. **Morphiq Lume** introduces a new paradigm:
 
-> ✅ **“Clarity Through Adaptability”**
+> **“Clarity Through Adaptability”**
 
 Where:
 - **Morphiq** = Modular + Adaptive logic that evolves with organizational needs  
@@ -20,6 +20,49 @@ Where:
 
 Together, Morphiq Lume is built to reveal clarity in people operations while staying lean and future-ready.
 
+---
+
+## 📁 Project Structure
+
+Morphiq Lume uses a **feature-driven architecture** for Rust + Iced.
+
+```
+src/
+│
+├── core/ # Framework-agnostic logic
+│ ├── theme/ # theme manager (colors, spacing, typography)
+│ ├── utils/ # helpers, validation, formatters
+│ ├── error.rs # shared error types
+│ └── types.rs # reusable domain types
+│
+├── data/ # Data models and repositories
+│ ├── models/ # employee, attendance, payroll, etc.
+│ ├── repositories/ # CRUD logic, local storage or DB integration
+│ └── mod.rs
+│
+├── features/ # Each HR module is isolated here
+│ ├── dashboard/ # charts, metrics, overview screens
+│ ├── employees/ # employee list, create, profile
+│ ├── attendance/ # logs, summaries
+│ ├── payroll/ # computation UI, tables
+│ ├── settings/ # themes, config pages
+│ └── auth/ # login & lock screens
+│
+├── widgets/ # Reusable UI components (Iced widgets)
+│ ├── button.rs
+│ ├── card.rs
+│ ├── modal.rs
+│ ├── search_bar.rs
+│ ├── table.rs
+│ └── charts/ # charting components using plotters-iced
+│ ├── stacked_bar.rs
+│ ├── donut.rs
+│ └── horizontal_bar.rs
+│
+├── app.rs # Root application: state, message routing
+├── router.rs # Navigation system for switching pages
+└── main.rs # Entry point of Morphiq Lume
+```
 ---
 
 ## 🧩 Core Features
@@ -63,7 +106,7 @@ Together, Morphiq Lume is built to reveal clarity in people operations while sta
 ### 🏃 Run It
 
 ```bash
-git clone https://github.com/your-org/morphiq_lume.git
+git clone https://github.com/icarusvagner/morphiq-lume.git
 cd morphiq_lume
 cargo run --release
 ```
@@ -90,7 +133,7 @@ Each module in Morphiq Lume acts as a dynamic unit that:
 | Principle      | Implementation                                            |
 |----------------|------------------------------------------------------------|
 | Offline-first  | Native app, no browser or Electron dependencies            |
-| Modular        | All core modules live independently inside `core/` and `view/` |
+| Modular        | All core modules live independently inside `core/` and `features/` |
 | Secure         | No external telemetry, encrypted config, local-first       |
 | Extensible     | Easily connect biometric devices, performance review engines |
 
@@ -137,7 +180,7 @@ Choose either:
 ## 👤 Maintainers
 
 - **Akaza Ruthven** – Founder, Engineer  
-- **YourTeamName** – Systems + UI
+- **Devixion** – Systems + UI
 
 ---
 
