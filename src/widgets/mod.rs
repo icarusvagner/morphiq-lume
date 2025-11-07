@@ -1,9 +1,9 @@
 pub mod bar_chart;
 pub mod dashboard_card;
 pub mod donut_chart;
-pub mod line_chart;
-pub mod widget_custom_card;
 pub mod header;
+pub mod line_chart;
 pub mod loading;
 pub mod modal;
 pub mod sidebar;
+pub mod widget_custom_card;

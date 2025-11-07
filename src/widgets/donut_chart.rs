@@ -1,29 +1,12 @@
 use std::f32::consts;
 
 use iced::{
-	Font,
-	Length,
-	Radians,
-	Renderer,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
-	widget::{
-		Canvas,
-		canvas::{
-			self,
-			Frame,
-			Text,
-			path::Arc,
-		},
-	},
+	Font, Length, Radians, Renderer, alignment::{Horizontal, Vertical}, widget::{
+		Canvas, canvas::{self, Frame, Text, path::Arc}
+	}
 };
 
-use crate::gui::styles::{
-	donut::Catalog,
-	style_constant::fonts::FONT_SIZE_TITLE,
-};
+use crate::{core::theme::fonts::FONT_SIZE_TITLE, styles::donut::Catalog};
 
 #[derive(Clone, Debug)]
 pub struct DonutChart {

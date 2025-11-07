@@ -3,11 +3,11 @@ use iced::{
 };
 
 use crate::{
-	gui::{
-		morphiq::Morphiq, pages::home::{ContentView, HomeMessage}, styles::{
-			button::ButtonType, container::ContainerType, types::style_type::StyleType
-		}, types::message::Message
-	}, utils::types::icon::Icon
+	core::utils::{
+		icon::Icon, messages::{Message, home::HomeMessage}
+	}, features::contentview::ContentView, morphiq::Morphiq, styles::{
+		button::ButtonType, container::ContainerType, style_type::StyleType
+	}
 };
 
 #[derive(Debug, Default, Clone)]

@@ -31,15 +31,8 @@ use lazy_regex::regex_captures;
 pub use scheme::SchemeStatus;
 use uuid::Uuid;
 
-pub use self::error::{
-	Error,
-	Result,
-};
-use crate::crates::crate_auth::pwd::scheme::{
-	DEFAULT_SCHEME,
-	Scheme,
-	get_scheme,
-};
+pub use self::error::{Error, Result};
+use crate::crates::auth::pwd::scheme::{DEFAULT_SCHEME, get_scheme};
 
 // endregion: --- Modules
 

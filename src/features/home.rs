@@ -1,3 +1,13 @@
+use iced::{
+	Element, Length, Padding, Task, widget::{Column, Row, Scrollable, container, scrollable}
+};
+
+use crate::{
+	core::utils::messages::{Message, home::HomeMessage}, features::{
+		attendance::view::AttendanceView, contentview::ContentView, dashboard::view::DashboardView, documents::view::DocumentsView, employees::view::EmployeeView, leaves::view::LeavesView, payroll::view::PayrollView, settings::{edit_profile::EditProfileView, view::SettingsView}
+	}, morphiq::Morphiq, styles::style_type::StyleType, widgets::{header::Header, sidebar::SidebarMenu}
+};
+
 #[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 #[derive(Debug, Clone, Default)]
 pub struct Home {
@@ -69,9 +79,7 @@ impl Home {
 			ContentView::Payroll => PayrollView::view(),
 			ContentView::Leaves => LeavesView::view(),
 			ContentView::Documents => DocumentsView::view(),
-			ContentView::Settings(settings_view) => {
-				self.settings.view(settings_view, morphiq)
-			}
+			ContentView::Settings => SettingsView::view(),
 			ContentView::EditProfile => EditProfileView::view(),
 			_ => self.dashboard.view(morphiq),
 		})

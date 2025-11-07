@@ -1,38 +1,15 @@
 use iced::{
-	Alignment,
-	Element,
-	Font,
-	Length,
-	alignment::{
-		Horizontal,
-		Vertical,
-	},
-	widget::{
-		Column,
-		Row,
-		Svg,
-		button,
-		container,
-		svg::Handle,
-		text,
-		text_input,
-	},
+	Alignment, Element, Font, Length, alignment::{Horizontal, Vertical}, widget::{
+		Column, Row, Svg, button, container, svg::Handle, text, text_input
+	}
 };
 
 use crate::{
-	gui::{
-		styles::{
-			button::ButtonType,
-			container::ContainerType,
-			style_constant::fonts::RALEWAY_SEMI_BOLD,
-			text::TextType,
-			text_input::TextInputType,
-			types::style_type::StyleType,
-		},
-		types::message::Message,
-	},
-	images::IMAGE_03,
-	utils::types::icon::Icon,
+	core::{
+		theme::fonts::RALEWAY_SEMI_BOLD, utils::{constants::widgets::IMAGE_03, icon::Icon, messages::Message}
+	}, router::OpenPage, styles::{
+		button::ButtonType, container::ContainerType, style_type::StyleType, text::TextType, text_input::TextInputType
+	}
 };
 
 #[allow(clippy::enum_variant_names)]
@@ -208,7 +185,7 @@ impl Login {
 					self.username_required = "Username is required".to_string();
 					return None;
 				}
-				Some(Message::ChangePage(super::OpenPage::Home))
+				Some(Message::ChangePage(OpenPage::Home))
 			}
 			LoginMessage::ShowPassword => {
 				self.is_pwd = !self.is_pwd;

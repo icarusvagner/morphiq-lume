@@ -6,15 +6,17 @@ use iced::{
 use iced_aw::{date_picker::Date, helpers::date_picker};
 
 use crate::{
-	gui::{
-		pages::home::{
-			HomeMessage, employee::types::{
-				addition_fields::AdditionalFields, create_msg::CreateEmployeeMsg, employee_msg::EmployeeMsg, employee_type::{EmployeeStatus, EmployeeType}
+	core::{
+		theme::fonts::{RALEWAY_BOLD, RALEWAY_SEMI_BOLD}, utils::{
+			icon::Icon, messages::{
+				Message, employee::{CreateEmployeeMsg, EmployeeMsg}, home::HomeMessage
 			}
-		}, styles::{
-			button::ButtonType, container::ContainerType, datepicker::DatePickerType, style_constant::fonts::{RALEWAY_BOLD, RALEWAY_SEMI_BOLD}, text::TextType, text_input::TextInputType, types::style_type::StyleType
-		}, types::message::Message
-	}, utils::types::icon::Icon
+		}
+	}, features::employees::{
+		addition_fields::AdditionalFields, employee_type::{EmployeeStatus, EmployeeType}
+	}, styles::{
+		button::ButtonType, container::ContainerType, datepicker::DatePickerType, style_type::StyleType, text::TextType, text_input::TextInputType
+	}
 };
 
 #[derive(Default, Debug, Clone)]

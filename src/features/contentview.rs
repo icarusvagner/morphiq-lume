@@ -9,7 +9,7 @@ pub enum ContentView {
 	Payroll,
 	Leaves,
 	Documents,
-	Settings(OpenSettings),
+	Settings,
 	Profile,
 	EditProfile,
 	Search,

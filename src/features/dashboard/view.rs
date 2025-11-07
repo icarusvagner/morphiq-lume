@@ -6,11 +6,11 @@ use iced::{
 
 use crate::{
 	core::{
-		theme::fonts::RALEWAY_BOLD, utils::{icon::Icon, message::Message}
-	}, features::{
-		dashboard::dashboard_msg::DashboardMsg, tables::dashboard::{
-			dashboard::GenTableDashboard, table::DashboardRow
+		theme::fonts::RALEWAY_BOLD, utils::{
+			icon::Icon, messages::{Message, dashboard::DashboardMsg}
 		}
+	}, features::tables::dashboard::{
+		dashboard::GenTableDashboard, table::DashboardRow
 	}, morphiq::Morphiq, styles::{
 		StandardNames, container::ContainerType, rule::RuleType, style_type::StyleType
 	}, widgets::{

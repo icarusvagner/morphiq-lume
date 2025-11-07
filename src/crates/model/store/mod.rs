@@ -1,12 +1,8 @@
 // region:    --- Modules
 
-use sqlx::{
-	Pool,
-	Postgres,
-	postgres::PgPoolOptions,
-};
+use sqlx::{Pool, Postgres, postgres::PgPoolOptions};
 
-use crate::crates::crate_core::core_config;
+use crate::crates::core_config;
 
 // endregion: --- Modules
 

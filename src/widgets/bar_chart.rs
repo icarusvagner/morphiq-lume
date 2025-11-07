@@ -1,32 +1,13 @@
-use std::{
-	f64,
-	time::Instant,
-};
+use std::{f64, time::Instant};
 
 use iced::{
-	Color,
-	Font,
-	Length,
-	Point,
-	Rectangle,
-	Renderer,
-	Size,
-	advanced::mouse,
-	widget::canvas::{
-		self,
-		Cache,
-		Canvas,
-		Frame,
-		Path,
-		Style,
-		Text,
-		event,
-	},
+	Color, Font, Length, Point, Rectangle, Renderer, Size, advanced::mouse, widget::canvas::{self, Cache, Canvas, Frame, Path, Style, Text, event}
 };
 
-use crate::gui::{
-	styles::bar::Catalog,
-	types::message::Message,
+use crate::{
+	core::utils::messages::{
+		Message, chart::{ChartMessage, bar::BarMessage}
+	}, styles::bar::Catalog
 };
 
 #[derive(Clone, Debug)]
@@ -35,11 +16,6 @@ pub struct HistogramChart {
 	labels: Vec<String>,
 	values: Vec<f64>,
 	font: Font,
-}
-
-#[derive(Debug, Clone)]
-pub enum BarMessage {
-	BarHovered(Option<usize>),
 }
 
 #[derive(Debug, Default)]
@@ -102,22 +78,18 @@ impl<Theme: Catalog> canvas::Program<Message, Theme> for HistogramChart {
 							state.hovered_bar = Some(hovered);
 							return (
 								event::Status::Captured,
-								Some(Message::Chart(
-									crate::chart::ChartMessage::Bar(
-										BarMessage::BarHovered(Some(hovered)),
-									),
-								)),
+								Some(Message::Chart(ChartMessage::Bar(
+									BarMessage::BarHovered(Some(hovered)),
+								))),
 							);
 						}
 					} else if state.hovered_bar.is_some() {
 						state.hovered_bar = None;
 						return (
 							event::Status::Captured,
-							Some(Message::Chart(
-								crate::chart::ChartMessage::Bar(
-									BarMessage::BarHovered(None),
-								),
-							)),
+							Some(Message::Chart(ChartMessage::Bar(
+								BarMessage::BarHovered(None),
+							))),
 						);
 					}
 				}

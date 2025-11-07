@@ -5,11 +5,11 @@ use iced::{
 };
 
 use crate::{
-	gui::{
-		morphiq::Morphiq, pages::home::{ContentView, HomeMessage}, styles::{
-			button::ButtonType, container::ContainerType, rule::RuleType, text::TextType, types::style_type::StyleType
-		}, types::message::Message
-	}, utils::types::icon::Icon
+	core::utils::{
+		icon::Icon, messages::{Message, home::HomeMessage}
+	}, features::contentview::ContentView, morphiq::Morphiq, styles::{
+		button::ButtonType, container::ContainerType, rule::RuleType, style_type::StyleType, text::TextType
+	}
 };
 
 #[derive(Debug, Default, Clone, Copy)]
@@ -47,9 +47,7 @@ impl SidebarMenu {
 		(
 			"Settings",
 			Icon::Settings,
-			Message::Home(HomeMessage::Content(ContentView::Settings(
-				crate::gui::pages::home::OpenSettings::All,
-			))),
+			Message::Home(HomeMessage::Content(ContentView::Settings)),
 		),
 		(
 			"Report",

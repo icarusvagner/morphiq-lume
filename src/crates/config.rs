@@ -1,9 +1,6 @@
 use std::sync::OnceLock;
 
-use crate::crates::crate_utils::envs::{
-	self,
-	get_env,
-};
+use crate::crates::utils::envs::{self, get_env};
 
 pub fn core_config() -> &'static CoreConfig {
 	static INSTANCE: OnceLock<CoreConfig> = OnceLock::new();

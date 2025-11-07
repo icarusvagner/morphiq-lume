@@ -1,12 +1,6 @@
-use iced::{
-	Element,
-	widget::text,
-};
+use iced::{Element, widget::text};
 
-use crate::gui::{
-	styles::types::style_type::StyleType,
-	types::message::Message,
-};
+use crate::{core::utils::messages::Message, styles::style_type::StyleType};
 
 #[derive(Debug, Clone, Default)]
 pub struct LoadingContainer;

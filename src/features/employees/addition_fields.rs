@@ -1,7 +1,7 @@
 use iced_aw::date_picker::Date;
 
-use crate::{
-	countries::types::nationalities::Nationality, utils::types::{blood_type::BloodType, marital_status::MaritalStatus}
+use crate::core::utils::{
+	blood_type::BloodType, marital_status::MaritalStatus, nationalities::Nationality
 };
 
 #[derive(Debug, Clone, Default)]

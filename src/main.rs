@@ -6,13 +6,13 @@ use iced::{Font, Settings, Task, window};
 use iced_aw::iced_fonts::REQUIRED_FONT_BYTES;
 
 mod core;
+mod crates;
 mod data;
 mod error;
 mod features;
 mod morphiq;
 mod router;
 mod styles;
-mod crates;
 mod widgets;
 
 use self::error::Result;
@@ -21,7 +21,7 @@ use crate::{
 		theme::fonts::*, utils::{
 			configs::{
 				config::CONFIGS, config_window::{ConfigWindow, ToPosition, ToSize}
-			}, message::Message
+			}, messages::Message
 		}
 	}, morphiq::{FONT_FAMILY_NAME, Morphiq}
 };

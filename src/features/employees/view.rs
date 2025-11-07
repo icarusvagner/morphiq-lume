@@ -5,9 +5,11 @@ use iced::{
 };
 
 use crate::{
-	core::{theme::fonts::RALEWAY_BOLD, utils::message::Message}, features::{
-		employees::{create::CreateEmployee, employee_msg::EmployeeMsg}, tables::employee::{employee::GenTableEmployee, table::EmployeeRow}
-	}, morphiq::Morphiq, styles::{container::ContainerType, style_type::StyleType}
+	core::{
+		theme::fonts::RALEWAY_BOLD, utils::messages::{Message, employee::EmployeeMsg}
+	}, features::{
+		employees::create::CreateEmployee, tables::employee::{employee::GenTableEmployee, table::EmployeeRow}
+	}, morphiq::Morphiq, styles::{container::ContainerType, rule::RuleType, style_type::StyleType}, widgets::{bar_chart::histogram_chart, donut_chart::donut_chart}
 };
 
 #[derive(Clone, Debug)]

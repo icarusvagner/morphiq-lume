@@ -5,10 +5,10 @@ use iced::{
 use crate::{core::utils::messages::Message, styles::style_type::StyleType};
 
 #[derive(Default, Clone, Debug, Copy)]
-pub struct AttendanceView;
+pub struct DocumentsView;
 
-impl AttendanceView {
+impl DocumentsView {
 	pub(crate) fn view<'a>() -> Element<'a, Message, StyleType> {
-		container(Text::new("Attendance view").size(42)).into()
+		container(Text::new("Documents view").size(42)).into()
 	}
 }

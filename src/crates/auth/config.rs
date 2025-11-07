@@ -1,12 +1,6 @@
 use std::sync::OnceLock;
 
-use crate::crates::crate_utils::{
-	self,
-	envs::{
-		get_env_b64u_as_u8s,
-		get_env_parse,
-	},
-};
+use crate::crates::utils::envs::{self, get_env_b64u_as_u8s, get_env_parse};
 
 pub fn auth_config() -> &'static AuthConfig {
 	static INSTANCE: OnceLock<AuthConfig> = OnceLock::new();
@@ -28,7 +22,7 @@ pub struct AuthConfig {
 }
 
 impl AuthConfig {
-	fn load_from_env() -> crate_utils::envs::Result<Self> {
+	fn load_from_env() -> envs::Result<Self> {
 		Ok(Self {
 			// -- Crypt
 			PWD_KEY: get_env_b64u_as_u8s("SERVICE_PWD_KEY")?,

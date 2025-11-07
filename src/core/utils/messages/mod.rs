@@ -1,7 +1,13 @@
 use iced::window;
 
-use crate::styles::style_type::StyleType;
+use crate::{
+	core::utils::messages::{
+		auth::AuthMessage, chart::ChartMessage, home::HomeMessage
+	}, router::OpenPage, styles::style_type::StyleType
+};
 
+pub mod auth;
+pub mod chart;
 pub mod dashboard;
 pub mod employee;
 pub mod header;

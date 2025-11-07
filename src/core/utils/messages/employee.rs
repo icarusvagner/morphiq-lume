@@ -7,14 +7,6 @@ use crate::{
 
 #[derive(Debug, Clone)]
 pub enum EmployeeMsg {
-	/// Inputs state
-	InputFullnameChange(String),
-	InputMiddlenameChange(String),
-	InputLastnameChange(String),
-	InputEmailAddressChange(String),
-	SubmitInput,
-	UploadPhoto,
-
 	/// Datepicker state
 	ChooseDate,
 	SubmitDate(Date),
@@ -30,4 +22,18 @@ pub enum EmployeeMsg {
 	TableSyncHeader(scrollable::AbsoluteOffset),
 	TableResizing(usize, f32),
 	TableResized,
+
+	// Create operation msg
+	Create(CreateEmployeeMsg),
+}
+
+#[derive(Debug, Clone)]
+pub enum CreateEmployeeMsg {
+	/// Inputs state
+	InputFullnameChange(String),
+	InputMiddlenameChange(String),
+	InputLastnameChange(String),
+	InputEmailAddressChange(String),
+	SubmitInput,
+	UploadPhoto,
 }
