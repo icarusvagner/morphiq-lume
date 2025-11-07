@@ -5,17 +5,9 @@ use iced::{
 };
 
 use crate::{
-	chart::types::{bar_chart::histogram_chart, donut_chart::donut_chart}, gui::{
-		morphiq::Morphiq, pages::home::{
-			employee::{
-				create::CreateEmployee, types::employee_msg::EmployeeMsg
-			}, panes::tables::{
-				employee_table::EmployeeRow, gen_table::employee::GenTableEmployee
-			}
-		}, styles::{
-			container::ContainerType, rule::RuleType, style_constant::fonts::RALEWAY_BOLD, types::style_type::StyleType
-		}, types::message::Message
-	}
+	core::{theme::fonts::RALEWAY_BOLD, utils::message::Message}, features::{
+		employees::{create::CreateEmployee, employee_msg::EmployeeMsg}, tables::employee::{employee::GenTableEmployee, table::EmployeeRow}
+	}, morphiq::Morphiq, styles::{container::ContainerType, style_type::StyleType}
 };
 
 #[derive(Clone, Debug)]

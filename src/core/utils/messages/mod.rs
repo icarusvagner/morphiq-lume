@@ -1,10 +1,11 @@
 use iced::window;
 
-use crate::{
-	chart::ChartMessage, gui::{
-		pages::{OpenPage, home::HomeMessage, login::LoginMessage}, styles::types::style_type::StyleType
-	}
-};
+use crate::styles::style_type::StyleType;
+
+pub mod dashboard;
+pub mod employee;
+pub mod header;
+pub mod home;
 
 #[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone)]
@@ -30,7 +31,7 @@ pub enum Message {
 
 	// Messages for views
 	/// Login view message
-	Login(LoginMessage),
+	Login(AuthMessage),
 	Home(HomeMessage),
 	ChangePage(OpenPage),
 

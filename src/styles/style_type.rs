@@ -1,19 +1,9 @@
-use iced::application::{
-	Appearance,
-	DefaultStyle,
+use iced::{
+	application::{Appearance, DefaultStyle}, theme::Palette
 };
-use serde::{
-	Deserialize,
-	Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::gui::styles::{
-	style_constant::colors::{
-		DARK_COLOR,
-		LIGHT_COLOR,
-	},
-	types::palette::Palette,
-};
+use crate::core::theme::colors::{DARK_COLOR, LIGHT_COLOR};
 
 #[derive(
 	Default, Clone, Copy, Serialize, Deserialize, Debug, Hash, PartialEq, Eq,

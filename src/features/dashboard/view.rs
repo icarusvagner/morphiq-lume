@@ -5,15 +5,17 @@ use iced::{
 };
 
 use crate::{
-	chart::types::{bar_chart::histogram_chart, donut_chart::donut_chart}, gui::{
-		components::cards::dashboard_card::{dashboard_card, sec_card}, morphiq::Morphiq, pages::home::{
-			dashboard::types::dashboard_msg::DashboardMsg, panes::tables::{
-				dashboard_table::DashboardRow, gen_table::dashboard::GenTableDashboard
-			}
-		}, styles::{
-			container::ContainerType, rule::RuleType, style_constant::{StandardNames, fonts::RALEWAY_BOLD}, types::style_type::StyleType
-		}, types::message::Message
-	}, utils::types::icon::Icon
+	core::{
+		theme::fonts::RALEWAY_BOLD, utils::{icon::Icon, message::Message}
+	}, features::{
+		dashboard::dashboard_msg::DashboardMsg, tables::dashboard::{
+			dashboard::GenTableDashboard, table::DashboardRow
+		}
+	}, morphiq::Morphiq, styles::{
+		StandardNames, container::ContainerType, rule::RuleType, style_type::StyleType
+	}, widgets::{
+		bar_chart::histogram_chart, dashboard_card::{dashboard_card, sec_card}, donut_chart::donut_chart
+	}
 };
 
 #[derive(Debug, Clone)]

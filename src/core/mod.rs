@@ -1,4 +1,4 @@
-mod theme;
-mod utils;
-mod error;
-mod types;
+pub mod error;
+pub mod theme;
+pub mod types;
+pub mod utils;

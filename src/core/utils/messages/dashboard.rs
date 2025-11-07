@@ -1,16 +1,12 @@
 use iced::widget::scrollable;
 
-use crate::gui::types::tables::FilterEmployee;
+use crate::core::utils::filters::FilterEmployee;
 
 #[derive(Debug, Clone)]
 pub enum DashboardMsg {
 	Search(String),
-	Table(DashboardTableMsg),
-}
 
-#[derive(Debug, Clone)]
-pub enum DashboardTableMsg {
-	Search(String),
+	/// Dashboard table messages
 	FilteredBy(FilterEmployee),
 	TableSyncHeader(scrollable::AbsoluteOffset),
 	TableResizing(usize, f32),

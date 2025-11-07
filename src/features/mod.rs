@@ -1,6 +1,9 @@
-mod attendance;
-mod auth;
-mod dashboard;
-mod employees;
-mod payroll;
-mod settings;
+pub mod attendance;
+pub mod auth;
+pub mod contentview;
+pub mod dashboard;
+pub mod employees;
+pub mod home;
+pub mod payroll;
+pub mod settings;
+pub mod tables;

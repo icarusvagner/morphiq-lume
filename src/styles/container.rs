@@ -1,20 +1,9 @@
 use iced::{
-	Background,
-	Border,
-	Color,
-	Shadow,
-	widget::container::{
-		Catalog,
-		Style,
-	},
+	Background, Border, Color, Shadow, widget::container::{Catalog, Style}
 };
 
-use crate::gui::styles::{
-	style_constant::{
-		BORDER_RADIUS,
-		StandardNames,
-	},
-	types::style_type::StyleType,
+use crate::{
+	core::utils::constants::widgets::BORDER_RADIUS, styles::{StandardNames, style_type::StyleType}
 };
 
 #[allow(clippy::enum_variant_names, clippy::large_enum_variant, dead_code)]

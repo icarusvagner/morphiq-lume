@@ -1,13 +1,12 @@
 use iced::widget::scrollable;
+use iced_aw::date_picker::Date;
 
-use crate::gui::{
-	pages::home::employee::types::create_msg::CreateEmployeeMsg, types::tables::FilterEmployee
+use crate::{
+	core::utils::filters::FilterEmployee, features::employees::employee_type::{EmployeeStatus, EmployeeType}
 };
 
 #[derive(Debug, Clone)]
 pub enum EmployeeMsg {
-	Table(EmployeeTableMsg),
-
 	/// Inputs state
 	InputFullnameChange(String),
 	InputMiddlenameChange(String),
@@ -32,4 +31,3 @@ pub enum EmployeeMsg {
 	TableResizing(usize, f32),
 	TableResized,
 }
-
